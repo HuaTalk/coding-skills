@@ -1,0 +1,19 @@
+{
+  "name": "skill",
+  "description": "Reusable Claude Code plugin framework: a collection of commands, skills, and MCP configurations. Built on \"Rules Are for You\" philosophy.",
+  "description_zh": "Claude Code plugin 通用框架：commands、skills、MCP 配置的可复用集合。遵循 \"Rules Are for You\" 哲学——规则为 AI 决策服务。",
+  "version": "0.1.0",
+  "languages": ["en", "zh"],
+  "author": {
+    "name": "HuaTalk"
+  },
+  "repository": "https://github.com/HuaTalk/skills.git",
+  "keywords": [
+    "claude-code",
+    "plugin",
+    "skills",
+    "workflow",
+    "openspec",
+    "planning"
+  ]
+}

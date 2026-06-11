@@ -1,0 +1,13 @@
+{
+  "name": "skill",
+  "owner": {
+    "name": "HuaTalk"
+  },
+  "plugins": [
+    {
+      "name": "skill",
+      "source": "./",
+      "description": "Reusable Claude Code plugin framework: commands, skills, and MCP configurations."
+    }
+  ]
+}

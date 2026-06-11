@@ -1,0 +1,121 @@
+# Rules Are for You, Not the Output
+
+## The Invisible Wall Between Instructions and Results
+
+You write a CLAUDE.md. You pour your team's conventions into it—commit message formats, testing frameworks, domain terminology, code patterns. You craft it carefully. You ship it to the team.
+
+And then Claude says:
+
+> *"Based on the rules in CLAUDE.md, I'll follow the commit format..."*
+
+Or:
+
+> *"As instructed, I'll use JUnit 4 + JMockit, not Mockito..."*
+
+Every single time. The rules bleed into the output like ink through cheap paper.
+
+---
+
+## The Problem Isn't the Rules. It's Where They Land.
+
+When you write an instruction for an AI, you're writing for two different audiences:
+
+1. **Claude the Decision Engine** — needs to know what tools to pick, what patterns to follow, what constraints to respect
+2. **You the Developer** — needs to see code, decisions, results. Not a play-by-play of which rule was consulted to produce them
+
+Rule leakage isn't just annoying. It's **cognitive noise**. Every "as instructed in CLAUDE.md" forces you to context-switch—you're reading a commit message, then suddenly you're reading about the commit message format you already know. You wrote it.
+
+This is a design problem, not a prompting problem. It's an architectural concern for skill authors.
+
+---
+
+## The Core Principle
+
+> **Rules describe how the AI should think, not what it should say.**
+
+A well-designed skill or rule file should be *invisible in its output*—like a compiler optimization. You don't see the register allocation; you see the running program. You don't see the coding convention; you see code that's already compliant.
+
+This isn't about hiding information. It's about placing it correctly:
+
+| Where | What Belongs |
+|-------|--------------|
+| CLAUDE.md, skills, system prompt | Behavioral constraints, decision guidance, domain context |
+| Output | The result itself—code, commits, reviews, docs—already shaped by those constraints |
+
+---
+
+## The Three Leakage Patterns
+
+### 1. The Rule Citation
+
+> *"Following the team's commit format, I'll write..."*
+
+The fix: just write the formatted commit message. If the format is correct, the user doesn't need to see the instruction that got you there.
+
+### 2. The Context Echo
+
+> *"I recall from the architecture docs that the pipeline has three layers..."*
+
+The fix: use the understanding to inform your decision, not your narration. "The cache miss here triggers a re-query" is a fact about the code. "According to cache-layers.md, a cache miss triggers a re-query" is a fact about your documentation.
+
+### 3. The Constraint Apology
+
+> *"I can't use Mockito because the team standard is JMockit..."*
+
+The fix: just use JMockit. The import statement speaks louder than the explanation. If you must diverge from a common default, one brief "team convention: JMockit" suffices—no apology, no citation, no defense.
+
+---
+
+## What This Means for Skill Design
+
+The best skills follow a principle borrowed from good API design: **progressive disclosure with a hard boundary.**
+
+```
+┌─────────────────────────────────┐
+│  SKILL.md                       │
+│  (behavioral instructions)      │
+│  ┌───────────────────────────┐  │
+│  │ Output                    │  │
+│  │ (never references         │  │
+│  │  the instructions)        │  │
+│  └───────────────────────────┘  │
+└─────────────────────────────────┘
+```
+
+The instructions are *for Claude*. The output is *for the user*. The two never meet.
+
+Write skill descriptions, trigger keywords, and behavioral rules with confidence—put whatever context Claude needs. But structure them so they feel like *settings*, not commands. A `/commit` skill that helps format messages should never produce output that includes "based on the commit skill…"
+
+---
+
+## A Practical Test
+
+Before publishing a skill, ask:
+
+> *If I strip all meta-commentary from the output, is the result still correct and complete?*
+
+If yes, the skill is clean. If no—if removing "following our convention…" leaves something unexplained—then the explanation belongs in the output itself, not in a rule citation.
+
+Rule commentary is a **crutch for incomplete output**. When the output is well-formed, it speaks for itself.
+
+---
+
+## Why This Matters
+
+We're building shared AI infrastructure. A skill that leaks "as instructed" once per session costs your team hundreds of context-switches per month. Each one is a tiny "not for me" moment—a reminder that the AI doesn't quite understand its audience.
+
+The great skills feel like they were written by a senior engineer who already knows the conventions and just does the work. The mediocre ones feel like an intern reading the onboarding doc aloud while typing.
+
+The difference isn't the quality of the rules. It's whether those rules know their place.
+
+---
+
+## The Meta-Lesson
+
+Here's the recursion: this blog post is a rule about rules. If it were a skill, it would tell you: *don't cite this rule in your output.*
+
+But it's not a skill. It's a blog post. So it gets to break its own rule—just this once.
+
+---
+
+*This post draws from patterns observed across multiple Claude Code skill ecosystems, including [obra/superpowers](https://github.com/obra/superpowers), [davila7/claude-code-templates](https://github.com/davila7/claude-code-templates), [claude-ground](https://github.com/akinalpfdn/claude-ground), and the [i-have-adhd](https://github.com/ayghri/i-have-adhd) output discipline skill.*

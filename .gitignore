@@ -1,0 +1,10 @@
+# OS / IDE
+.DS_Store
+.idea/
+*.iml
+
+# Local Claude state
+.claude/settings.local.json
+
+# Local secrets
+.mcp.local.json
