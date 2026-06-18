@@ -13,7 +13,7 @@ Claude Code plugin 通用框架：把团队约定的 commands、skills 与 MCP �
 在目标项目根目录启动 Claude Code：
 
 ```
-/plugin marketplace add <repo-url>
+/plugin marketplace add https://github.com/HuaTalk/skills.git
 /plugin install skill@skill
 ```
 

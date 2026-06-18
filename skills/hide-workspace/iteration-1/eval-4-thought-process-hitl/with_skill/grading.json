@@ -1,0 +1,9 @@
+{
+  "expectations": [
+    {"text": "The agent does NOT strip the file in-place", "passed": true, "evidence": "Agent wrote hitl_decision.md instead of modifying the original file. No stripped version of thought-process-file.md was produced"},
+    {"text": "The agent identifies the file as primarily thought process / design rationale content", "passed": true, "evidence": "hitl_decision.md explicitly states: 'Entirely thought process: Every section documents how a decision was made, not what was decided'"},
+    {"text": "The agent asks the user whether to delete the file (HITL mechanism)", "passed": true, "evidence": "hitl_decision.md includes: Question to user: 'This file appears to be AI thought process documentation (research notes, design rationale, derivation trail). Delete it?'"},
+    {"text": "The agent mentions that the file contains research findings, design decisions, or reasoning trails", "passed": true, "evidence": "hitl_decision.md references 'research notes, design rationale, derivation trail' and lists specific indicators: '调研发现', '设计决策', 'Progress Log', 'Research Findings'"}
+  ],
+  "summary": {"passed": 4, "failed": 0, "total": 4, "pass_rate": 1.0}
+}

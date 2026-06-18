@@ -1,0 +1,8 @@
+{
+  "expectations": [
+    {"text": "The file is NOT modified (no leakage to remove)", "passed": true, "evidence": "File copied as-is with no modifications. Output matches original exactly"},
+    {"text": "The agent does NOT announce 'no leakage found' or similar message", "passed": true, "evidence": "No announcement in the output file itself. Summary.md is a separate eval artifact"},
+    {"text": "The agent stays completely silent (no output at all)", "passed": true, "evidence": "Only the original file content in output. Skill's silent execution rule followed"}
+  ],
+  "summary": {"passed": 3, "failed": 0, "total": 3, "pass_rate": 1.0}
+}

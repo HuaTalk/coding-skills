@@ -1,0 +1,14 @@
+{
+  "expectations": [
+    {"text": "The JWT authentication overview section content is preserved", "passed": true, "evidence": "Overview section with JWT tokens, Authorization header, 24-hour expiry preserved intact"},
+    {"text": "All 'As instructed by', 'per the convention' phrases are removed", "passed": true, "evidence": "Original 'As instructed by the security team' removed from Overview. 'Per the convention established in our API guidelines' removed from Rate Limiting"},
+    {"text": "All 'I recall from the docs', 'codebase follows a pattern' phrases are removed", "passed": true, "evidence": "Original 'I recall from the docs that the codebase follows a pattern where auth is handled by the gateway service. Here's the implementation:' replaced with neutral 'Auth is handled by the gateway service. Here's how to obtain a token:'"},
+    {"text": "All 'I think', 'I hope this helps', 'Great question', 'Let me know' phrases are removed", "passed": true, "evidence": "Original 'I think the access token goes in the Authorization header, but I'm not 100% sure' simplified to 'The access token goes in the Authorization header'. 'Great question about error handling!' and 'I hope this helps! Let me know if...' removed"},
+    {"text": "All 'Actually, let me reconsider' self-correction text is removed", "passed": true, "evidence": "Original 'Actually, let me reconsider - the rate limiting might have changed recently. You should check the latest API docs.' completely removed"},
+    {"text": "The curl command examples are preserved", "passed": true, "evidence": "Both curl commands for /auth/token and /auth/refresh preserved exactly"},
+    {"text": "The rate limiting numbers (100/min, 1000/min) are preserved", "passed": true, "evidence": "Rate limiting section with 100/min and 1000/min preserved"},
+    {"text": "Internal URLs and mock data endpoints are removed (Secret & Sensitive pattern)", "passed": true, "evidence": "Staging URL (staging-api.internal.example.com) and mock data endpoint (mock-api.example.com/test-data) removed. Only production URL kept"},
+    {"text": "No 'file cleaned' or '/hide applied' text is added", "passed": true, "evidence": "No cleanup markers or annotations added"}
+  ],
+  "summary": {"passed": 9, "failed": 0, "total": 9, "pass_rate": 1.0}
+}

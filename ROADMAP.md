@@ -50,6 +50,23 @@
 - 不追求 100% 覆盖率，重点覆盖高频触发词
 - 作为 #1 CI 流程的可选步骤（允许部分未命中，不阻塞 PR）
 
+## #6 — /hide Skill: Proactive Hiding（事前隐藏）
+
+**问题**：`/hide` v1.0 只支持事后文件清理，用户必须在规则泄露发生后手动执行。更理想的方案是在会话开始前建立隐藏纪律，AI 在 Hidden CoT 中处理规则，visible output 绝不泄露。
+
+**落地动作**：
+- **Proactive Mode**: `/hide` 作为 session 级模式（非一次性命令），激活后 AI 在整个 session 中静默遵守隐藏规则
+- **Hidden CoT 协议**: 利用 Claude Code AI 的 internal reasoning（已对用户隐藏）和 visible output 两层边界，规则处理只在 Hidden CoT 中，结果只进入 visible output
+- **用户自定义隐藏目标**: `/hide <自然语言描述>` 支持用户指定隐藏目标，如 "隐藏mock数据"、"不要提及内部代号"
+- **退出机制**: 不需要 `/hide:off`，通过 `/handoff` 或新 session 退出
+
+**范围**：
+- 调研 Hidden CoT 机制在 Claude Code 中的可行性和边界
+- 设计 Proactive Mode 的 activation protocol
+- 自定义目标与内置规则的合并策略
+
+**详见**: `docs/hide-skill-design/`
+
 ## 已完成
 
 - ~~英文 README + 国际化~~：README.md 英文化、全部 9 个 skill 中英双版本、CLAUDE.md/commands 双版本、install.sh --lang、i18n-switch.sh —— 全部完成于 2026-06-11

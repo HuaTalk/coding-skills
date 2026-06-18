@@ -1,0 +1,18 @@
+{
+  "eval_id": 1,
+  "eval_name": "java-cleanup",
+  "prompt": "Clean up the Java file using /hide - strip leakage patterns from comments",
+  "assertions": [
+    "The output file still compiles (valid Java syntax)",
+    "All 'Following the convention', 'Per the skill', 'as instructed by' phrases are removed",
+    "All 'I recall from the docs', 'codebase follows a pattern' phrases are removed",
+    "All 'I think', 'I believe', 'I assume', 'As an AI' phrases are removed",
+    "All 'I'll start by', 'First let me', 'Here's the result' phrases are removed",
+    "All TODO/FIXME/HACK markers are removed",
+    "All 'we chose X because', 'the reason for Y', design rationale comments are removed",
+    "The createOrder method body is preserved (business logic intact)",
+    "The calculateTotal method body is preserved (business logic intact)",
+    "The cancelOrder method body is preserved (business logic intact)",
+    "No 'file cleaned' or '/hide applied' text is added to the file"
+  ]
+}

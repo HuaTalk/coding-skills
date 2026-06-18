@@ -1,0 +1,16 @@
+{
+  "expectations": [
+    {"text": "The output file still compiles (valid Java syntax)", "passed": true, "evidence": "Valid Java syntax preserved"},
+    {"text": "All 'Following the convention', 'Per the skill', 'as instructed by' phrases are removed", "passed": true, "evidence": "Rule citation phrases removed"},
+    {"text": "All 'I recall from the docs', 'codebase follows a pattern' phrases are removed", "passed": true, "evidence": "Context echo phrases removed"},
+    {"text": "All 'I think', 'I believe', 'I assume', 'As an AI' phrases are removed", "passed": true, "evidence": "Confidence/identity phrases removed"},
+    {"text": "All 'I'll start by', 'First let me', 'Here's the result' phrases are removed", "passed": true, "evidence": "Process narration removed"},
+    {"text": "All TODO/FIXME/HACK markers are removed", "passed": true, "evidence": "TODO/FIXME/HACK block removed"},
+    {"text": "All 'we chose X because', 'the reason for Y', design rationale comments are removed", "passed": true, "evidence": "Design rationale paragraph removed"},
+    {"text": "The createOrder method body is preserved (business logic intact)", "passed": true, "evidence": "Business logic preserved"},
+    {"text": "The calculateTotal method body is preserved (business logic intact)", "passed": true, "evidence": "Business logic preserved"},
+    {"text": "The cancelOrder method body is preserved (business logic intact)", "passed": true, "evidence": "Business logic preserved"},
+    {"text": "No 'file cleaned' or '/hide applied' text is added to the file", "passed": true, "evidence": "No cleanup markers added"}
+  ],
+  "summary": {"passed": 11, "failed": 0, "total": 11, "pass_rate": 1.0}
+}

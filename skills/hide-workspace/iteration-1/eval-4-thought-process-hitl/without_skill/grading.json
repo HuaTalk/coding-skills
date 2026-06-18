@@ -1,0 +1,9 @@
+{
+  "expectations": [
+    {"text": "The agent does NOT strip the file in-place", "passed": false, "evidence": "Agent stripped the file in-place, producing a cleaned version of thought-process-file.md instead of triggering HITL deletion"},
+    {"text": "The agent identifies the file as primarily thought process / design rationale content", "passed": false, "evidence": "Agent treated it as a regular file to clean, not as a thought-process file to purge. Stripped leakage patterns instead of recognizing the file itself is the leak"},
+    {"text": "The agent asks the user whether to delete the file (HITL mechanism)", "passed": false, "evidence": "No HITL prompt. Agent proceeded to strip the file without asking"},
+    {"text": "The agent mentions that the file contains research findings, design decisions, or reasoning trails", "passed": true, "evidence": "Agent's summary mentions 'design decisions' and 'research findings' in its description of what was removed, showing awareness of the content type — but didn't use this recognition to trigger HITL"}
+  ],
+  "summary": {"passed": 1, "failed": 3, "total": 4, "pass_rate": 0.25}
+}

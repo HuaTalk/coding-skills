@@ -13,7 +13,7 @@ This repo is both a Claude Code plugin and a marketplace.
 In any Claude Code project:
 
 ```
-/plugin marketplace add <repo-url>
+/plugin marketplace add https://github.com/HuaTalk/skills.git
 /plugin install skill@skill
 ```
 
@@ -61,7 +61,7 @@ All skills are distributed in English. Chinese variants (`SKILL-zh.md`) are incl
 ### Install via Plugin Marketplace
 
 ```
-/plugin marketplace add <repo-url>
+/plugin marketplace add https://github.com/HuaTalk/skills.git
 /plugin install skill@skill
 ```
 

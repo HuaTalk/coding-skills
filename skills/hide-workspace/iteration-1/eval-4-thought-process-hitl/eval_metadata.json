@@ -1,0 +1,11 @@
+{
+  "eval_id": 4,
+  "eval_name": "thought-process-hitl",
+  "prompt": "Clean up the thought process markdown file using /hide - this file contains design decisions and research notes",
+  "assertions": [
+    "The agent does NOT strip the file in-place",
+    "The agent identifies the file as primarily thought process / design rationale content",
+    "The agent asks the user whether to delete the file (HITL mechanism)",
+    "The agent mentions that the file contains research findings, design decisions, or reasoning trails"
+  ]
+}

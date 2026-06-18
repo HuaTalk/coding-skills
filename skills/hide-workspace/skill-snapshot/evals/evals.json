@@ -1,0 +1,81 @@
+{
+  "skill_name": "hide",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Clean up /Users/linqh/IdeaProjects/skill/skills/hide/evals/fixtures/java-with-leakage.java using /hide",
+      "expected_output": "Java file with all leakage comments removed, executable code preserved intact",
+      "files": ["evals/fixtures/java-with-leakage.java"],
+      "expectations": [
+        "The output file still compiles (valid Java syntax)",
+        "All 'Following the convention', 'Per the skill', 'as instructed by' phrases are removed",
+        "All 'I recall from the docs', 'codebase follows a pattern' phrases are removed",
+        "All 'I think', 'I believe', 'I assume', 'As an AI' phrases are removed",
+        "All 'I'll start by', 'First let me', 'Here's the result' phrases are removed",
+        "All TODO/FIXME/HACK markers are removed",
+        "All 'we chose X because', 'the reason for Y', design rationale comments are removed",
+        "The createOrder method body is preserved (business logic intact)",
+        "The calculateTotal method body is preserved (business logic intact)",
+        "The cancelOrder method body is preserved (business logic intact)",
+        "No 'file cleaned' or '/hide applied' text is added to the file"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Clean up /Users/linqh/IdeaProjects/skill/skills/hide/evals/fixtures/markdown-with-leakage.md using /hide",
+      "expected_output": "Markdown doc with leakage prose removed, technical content preserved",
+      "files": ["evals/fixtures/markdown-with-leakage.md"],
+      "expectations": [
+        "The JWT authentication overview section content is preserved",
+        "All 'As instructed by', 'per the convention' phrases are removed",
+        "All 'I recall from the docs', 'codebase follows a pattern' phrases are removed",
+        "All 'I think', 'I hope this helps', 'Great question', 'Let me know' phrases are removed",
+        "All 'Actually, let me reconsider' self-correction text is removed",
+        "The curl command examples are preserved",
+        "The rate limiting numbers (100/min, 1000/min) are preserved",
+        "Internal URLs and mock data endpoints are removed (Secret & Sensitive pattern)",
+        "No 'file cleaned' or '/hide applied' text is added"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Clean up /Users/linqh/IdeaProjects/skill/skills/hide/evals/fixtures/config-with-leakage.yml using /hide",
+      "expected_output": "Config file with leakage comments removed, config values preserved, sensitive data stripped",
+      "files": ["evals/fixtures/config-with-leakage.yml"],
+      "expectations": [
+        "App name 'order-service' and version '1.2.0' are preserved",
+        "Database host, port, and name values are preserved",
+        "All API keys, tokens, passwords, and connection strings are removed",
+        "All 'Following the convention', 'Per the team standard' comments are removed",
+        "All 'I recall from the docs', 'codebase follows a pattern' comments are removed",
+        "All TODO/FIXME/HACK markers are removed",
+        "Feature flag values (true/false) are preserved",
+        "The YAML structure remains valid",
+        "No 'file cleaned' or '/hide applied' text is added"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Clean up /Users/linqh/IdeaProjects/skill/skills/hide/evals/fixtures/thought-process-file.md using /hide",
+      "expected_output": "Agent should recognize this as a thought-process file and prompt for HITL deletion rather than stripping in-place",
+      "files": ["evals/fixtures/thought-process-file.md"],
+      "expectations": [
+        "The agent does NOT strip the file in-place",
+        "The agent identifies the file as primarily thought process / design rationale content",
+        "The agent asks the user whether to delete the file (HITL mechanism)",
+        "The agent mentions that the file contains research findings, design decisions, or reasoning trails"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Clean up /Users/linqh/IdeaProjects/skill/skills/hide/evals/fixtures/clean-file.java using /hide",
+      "expected_output": "No changes to the file, no output or announcements",
+      "files": ["evals/fixtures/clean-file.java"],
+      "expectations": [
+        "The file is NOT modified (no leakage to remove)",
+        "The agent does NOT announce 'no leakage found' or similar message",
+        "The agent stays completely silent (no output at all)"
+      ]
+    }
+  ]
+}

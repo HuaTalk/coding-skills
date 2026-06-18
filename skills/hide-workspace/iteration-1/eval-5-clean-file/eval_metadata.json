@@ -1,0 +1,10 @@
+{
+  "eval_id": 5,
+  "eval_name": "clean-file-boundary",
+  "prompt": "Clean up the clean Java file using /hide - this file has no leakage",
+  "assertions": [
+    "The file is NOT modified (no leakage to remove)",
+    "The agent does NOT announce 'no leakage found' or similar message",
+    "The agent stays completely silent (no output at all)"
+  ]
+}

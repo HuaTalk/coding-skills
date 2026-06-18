@@ -1,0 +1,198 @@
+{
+  "metadata": {
+    "skill_name": "hide",
+    "skill_path": "skills/hide",
+    "executor_model": "mimo-v2.5-pro",
+    "timestamp": "2026-06-11T11:29:08Z",
+    "evals_run": [1, 2, 3, 4, 5],
+    "runs_per_configuration": 1
+  },
+  "runs": [
+    {
+      "eval_id": 1,
+      "eval_name": "java-cleanup",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {"pass_rate": 1.0, "passed": 11, "failed": 0, "total": 11, "time_seconds": 73.1, "tokens": 0, "tool_calls": 7, "errors": 0},
+      "expectations": [
+        {"text": "Valid Java syntax", "passed": true, "evidence": "Valid Java with proper structure"},
+        {"text": "Rule citation phrases removed", "passed": true, "evidence": "All 3 instances removed"},
+        {"text": "Context echo phrases removed", "passed": true, "evidence": "BigDecimal paragraph removed"},
+        {"text": "Confidence/identity phrases removed", "passed": true, "evidence": "I think/I believe/I assume/As an AI removed"},
+        {"text": "Process narration removed", "passed": true, "evidence": "I'll start by/Here's the result removed"},
+        {"text": "TODO/FIXME/HACK removed", "passed": true, "evidence": "All 3 markers removed"},
+        {"text": "Design rationale removed", "passed": true, "evidence": "calculateTotal rationale removed"},
+        {"text": "createOrder preserved", "passed": true, "evidence": "Business logic intact"},
+        {"text": "calculateTotal preserved", "passed": true, "evidence": "Business logic intact"},
+        {"text": "cancelOrder preserved", "passed": true, "evidence": "Business logic intact"},
+        {"text": "No cleanup markers", "passed": true, "evidence": "No markers added"}
+      ]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "java-cleanup",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {"pass_rate": 1.0, "passed": 11, "failed": 0, "total": 11, "time_seconds": 37.9, "tokens": 0, "tool_calls": 5, "errors": 0},
+      "expectations": [
+        {"text": "Valid Java syntax", "passed": true, "evidence": "Valid Java"},
+        {"text": "Rule citation phrases removed", "passed": true, "evidence": "Removed"},
+        {"text": "Context echo phrases removed", "passed": true, "evidence": "Removed"},
+        {"text": "Confidence/identity phrases removed", "passed": true, "evidence": "Removed"},
+        {"text": "Process narration removed", "passed": true, "evidence": "Removed"},
+        {"text": "TODO/FIXME/HACK removed", "passed": true, "evidence": "Removed"},
+        {"text": "Design rationale removed", "passed": true, "evidence": "Removed"},
+        {"text": "createOrder preserved", "passed": true, "evidence": "Preserved"},
+        {"text": "calculateTotal preserved", "passed": true, "evidence": "Preserved"},
+        {"text": "cancelOrder preserved", "passed": true, "evidence": "Preserved"},
+        {"text": "No cleanup markers", "passed": true, "evidence": "No markers"}
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "markdown-cleanup",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {"pass_rate": 1.0, "passed": 9, "failed": 0, "total": 9, "time_seconds": 68.5, "tokens": 0, "tool_calls": 8, "errors": 0},
+      "expectations": [
+        {"text": "JWT overview preserved", "passed": true, "evidence": "Preserved intact"},
+        {"text": "Rule citation removed", "passed": true, "evidence": "All instances removed"},
+        {"text": "Context echo removed", "passed": true, "evidence": "Removed with neutral rewrite"},
+        {"text": "Confidence phrases removed", "passed": true, "evidence": "I think/I hope/Great question removed"},
+        {"text": "Self-correction removed", "passed": true, "evidence": "Actually let me reconsider removed"},
+        {"text": "Curl commands preserved", "passed": true, "evidence": "Both commands preserved"},
+        {"text": "Rate limits preserved", "passed": true, "evidence": "100/min and 1000/min preserved"},
+        {"text": "Internal URLs removed", "passed": true, "evidence": "Staging and mock endpoints removed"},
+        {"text": "No cleanup markers", "passed": true, "evidence": "No markers added"}
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "markdown-cleanup",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {"pass_rate": 1.0, "passed": 9, "failed": 0, "total": 9, "time_seconds": 35.7, "tokens": 0, "tool_calls": 4, "errors": 0},
+      "expectations": [
+        {"text": "JWT overview preserved", "passed": true, "evidence": "Preserved"},
+        {"text": "Rule citation removed", "passed": true, "evidence": "Removed"},
+        {"text": "Context echo removed", "passed": true, "evidence": "Removed"},
+        {"text": "Confidence phrases removed", "passed": true, "evidence": "Removed"},
+        {"text": "Self-correction removed", "passed": true, "evidence": "Removed"},
+        {"text": "Curl commands preserved", "passed": true, "evidence": "Preserved"},
+        {"text": "Rate limits preserved", "passed": true, "evidence": "Preserved"},
+        {"text": "Internal URLs removed", "passed": true, "evidence": "Removed"},
+        {"text": "No cleanup markers", "passed": true, "evidence": "No markers"}
+      ]
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "config-cleanup",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {"pass_rate": 1.0, "passed": 9, "failed": 0, "total": 9, "time_seconds": 88.5, "tokens": 0, "tool_calls": 8, "errors": 0},
+      "expectations": [
+        {"text": "App name/version preserved", "passed": true, "evidence": "Preserved"},
+        {"text": "DB connection values preserved", "passed": true, "evidence": "host/port/name preserved"},
+        {"text": "Secrets removed", "passed": true, "evidence": "All API keys/passwords/tokens removed"},
+        {"text": "Rule citation comments removed", "passed": true, "evidence": "Removed"},
+        {"text": "Context echo comments removed", "passed": true, "evidence": "Removed"},
+        {"text": "TODO/FIXME/HACK removed", "passed": true, "evidence": "Removed"},
+        {"text": "Feature flags preserved", "passed": true, "evidence": "All 3 flags preserved"},
+        {"text": "Valid YAML", "passed": true, "evidence": "Valid YAML structure"},
+        {"text": "No cleanup markers", "passed": true, "evidence": "No markers"}
+      ]
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "config-cleanup",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {"pass_rate": 1.0, "passed": 9, "failed": 0, "total": 9, "time_seconds": 44.0, "tokens": 0, "tool_calls": 6, "errors": 0},
+      "expectations": [
+        {"text": "App name/version preserved", "passed": true, "evidence": "Preserved"},
+        {"text": "DB connection values preserved", "passed": true, "evidence": "Preserved"},
+        {"text": "Secrets removed", "passed": true, "evidence": "Removed"},
+        {"text": "Rule citation comments removed", "passed": true, "evidence": "Removed"},
+        {"text": "Context echo comments removed", "passed": true, "evidence": "Removed"},
+        {"text": "TODO/FIXME/HACK removed", "passed": true, "evidence": "Removed"},
+        {"text": "Feature flags preserved", "passed": true, "evidence": "Preserved"},
+        {"text": "Valid YAML", "passed": true, "evidence": "Valid"},
+        {"text": "No cleanup markers", "passed": true, "evidence": "No markers"}
+      ]
+    },
+    {
+      "eval_id": 4,
+      "eval_name": "thought-process-hitl",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {"pass_rate": 1.0, "passed": 4, "failed": 0, "total": 4, "time_seconds": 56.8, "tokens": 0, "tool_calls": 8, "errors": 0},
+      "expectations": [
+        {"text": "Did NOT strip in-place", "passed": true, "evidence": "Wrote hitl_decision.md instead"},
+        {"text": "Identified as thought process", "passed": true, "evidence": "Explicitly identified as entirely thought process"},
+        {"text": "Asked user about deletion (HITL)", "passed": true, "evidence": "Included deletion question for user"},
+        {"text": "Mentioned research/decisions/reasoning", "passed": true, "evidence": "Referenced all HITL indicators"}
+      ]
+    },
+    {
+      "eval_id": 4,
+      "eval_name": "thought-process-hitl",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {"pass_rate": 0.25, "passed": 1, "failed": 3, "total": 4, "time_seconds": 42.5, "tokens": 0, "tool_calls": 4, "errors": 0},
+      "expectations": [
+        {"text": "Did NOT strip in-place", "passed": false, "evidence": "Stripped the file in-place"},
+        {"text": "Identified as thought process", "passed": false, "evidence": "Treated as regular file to clean"},
+        {"text": "Asked user about deletion (HITL)", "passed": false, "evidence": "No HITL prompt"},
+        {"text": "Mentioned research/decisions/reasoning", "passed": true, "evidence": "Mentioned in summary but didn't trigger HITL"}
+      ]
+    },
+    {
+      "eval_id": 5,
+      "eval_name": "clean-file-boundary",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {"pass_rate": 1.0, "passed": 3, "failed": 0, "total": 3, "time_seconds": 41.4, "tokens": 0, "tool_calls": 9, "errors": 0},
+      "expectations": [
+        {"text": "File NOT modified", "passed": true, "evidence": "Copied as-is"},
+        {"text": "No announcement", "passed": true, "evidence": "Silent"},
+        {"text": "Agent stayed silent", "passed": true, "evidence": "Only file content in output"}
+      ]
+    },
+    {
+      "eval_id": 5,
+      "eval_name": "clean-file-boundary",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {"pass_rate": 1.0, "passed": 3, "failed": 0, "total": 3, "time_seconds": 15.9, "tokens": 0, "tool_calls": 4, "errors": 0},
+      "expectations": [
+        {"text": "File NOT modified", "passed": true, "evidence": "Copied as-is"},
+        {"text": "No announcement", "passed": true, "evidence": "No announcement"},
+        {"text": "Agent stayed silent", "passed": true, "evidence": "Only file content"}
+      ]
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {"mean": 1.0, "stddev": 0.0, "min": 1.0, "max": 1.0},
+      "time_seconds": {"mean": 65.7, "stddev": 16.3, "min": 41.4, "max": 88.5},
+      "tokens": {"mean": 0, "stddev": 0, "min": 0, "max": 0}
+    },
+    "without_skill": {
+      "pass_rate": {"mean": 0.85, "stddev": 0.30, "min": 0.25, "max": 1.0},
+      "time_seconds": {"mean": 35.2, "stddev": 10.0, "min": 15.9, "max": 44.0},
+      "tokens": {"mean": 0, "stddev": 0, "min": 0, "max": 0}
+    },
+    "delta": {
+      "pass_rate": "+0.15",
+      "time_seconds": "+30.5",
+      "tokens": "+0"
+    }
+  },
+  "notes": [
+    "Eval 4 (thought-process HITL) is the key differentiator: with-skill correctly triggers HITL deletion prompt (4/4 pass), baseline strips the file instead (1/4 pass). This tests the skill's most unique feature.",
+    "Evals 1-3 and 5 show similar pass rates between with-skill and baseline — both configurations handle straightforward leakage removal well. The skill's value is in edge cases (HITL) and consistency.",
+    "With-skill runs take ~65s avg vs ~35s for baseline — the skill adds ~30s overhead due to reading the skill definition and following its more structured approach.",
+    "Baseline agent for eval-2 (markdown) made slightly different editorial choices (e.g., 'Here's how to obtain a token' vs keeping original phrasing) — both acceptable but the skill produces more consistent results.",
+    "Baseline agent for eval-3 (config) kept monitoring/dashboard URLs, while with-skill correctly kept them too — both handled the secret/non-secret boundary correctly in this case."
+  ]
+}

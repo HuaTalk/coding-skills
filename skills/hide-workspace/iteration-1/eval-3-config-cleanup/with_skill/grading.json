@@ -1,0 +1,14 @@
+{
+  "expectations": [
+    {"text": "App name 'order-service' and version '1.2.0' are preserved", "passed": true, "evidence": "Lines 1-3: app name and version preserved"},
+    {"text": "Database host, port, and name values are preserved", "passed": true, "evidence": "Lines 5-8: db-primary.internal.example.com:5432/orders preserved"},
+    {"text": "All API keys, tokens, passwords, and connection strings are removed", "passed": true, "evidence": "admin_key, redis url with password, payment gateway api_key/webhook_secret, email service api_key all removed"},
+    {"text": "All 'Following the convention', 'Per the team standard' comments are removed", "passed": true, "evidence": "All rule citation comments removed"},
+    {"text": "All 'I recall from the docs', 'codebase follows a pattern' comments are removed", "passed": true, "evidence": "Context echo about Redis session caching removed"},
+    {"text": "All TODO/FIXME/HACK markers are removed", "passed": true, "evidence": "TODO about key rotation, FIXME about sandbox key, HACK about personal API key all removed"},
+    {"text": "Feature flag values (true/false) are preserved", "passed": true, "evidence": "Lines 30-33: all three feature flags preserved with correct values"},
+    {"text": "The YAML structure remains valid", "passed": true, "evidence": "Valid YAML with proper indentation and nesting"},
+    {"text": "No 'file cleaned' or '/hide applied' text is added", "passed": true, "evidence": "No cleanup markers"}
+  ],
+  "summary": {"passed": 9, "failed": 0, "total": 9, "pass_rate": 1.0}
+}

@@ -1,0 +1,8 @@
+{
+  "expectations": [
+    {"text": "The file is NOT modified (no leakage to remove)", "passed": true, "evidence": "File copied as-is"},
+    {"text": "The agent does NOT announce 'no leakage found' or similar message", "passed": true, "evidence": "No announcement in output file"},
+    {"text": "The agent stays completely silent (no output at all)", "passed": true, "evidence": "Only original file content in output"}
+  ],
+  "summary": {"passed": 3, "failed": 0, "total": 3, "pass_rate": 1.0}
+}

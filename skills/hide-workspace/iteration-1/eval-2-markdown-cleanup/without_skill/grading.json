@@ -1,0 +1,14 @@
+{
+  "expectations": [
+    {"text": "The JWT authentication overview section content is preserved", "passed": true, "evidence": "Overview section preserved"},
+    {"text": "All 'As instructed by', 'per the convention' phrases are removed", "passed": true, "evidence": "Rule citation phrases removed"},
+    {"text": "All 'I recall from the docs', 'codebase follows a pattern' phrases are removed", "passed": true, "evidence": "Context echo removed. However, the rewrite changed 'Here's the implementation:' to 'Here's how to obtain a token:' which is slightly different from skill guidance"},
+    {"text": "All 'I think', 'I hope this helps', 'Great question', 'Let me know' phrases are removed", "passed": true, "evidence": "Confidence/identity phrases removed"},
+    {"text": "All 'Actually, let me reconsider' self-correction text is removed", "passed": true, "evidence": "Self-correction text removed"},
+    {"text": "The curl command examples are preserved", "passed": true, "evidence": "Both curl commands preserved"},
+    {"text": "The rate limiting numbers (100/min, 1000/min) are preserved", "passed": true, "evidence": "Rate limits preserved"},
+    {"text": "Internal URLs and mock data endpoints are removed (Secret & Sensitive pattern)", "passed": true, "evidence": "Internal staging URL and mock endpoint removed"},
+    {"text": "No 'file cleaned' or '/hide applied' text is added", "passed": true, "evidence": "No markers added"}
+  ],
+  "summary": {"passed": 9, "failed": 0, "total": 9, "pass_rate": 1.0}
+}

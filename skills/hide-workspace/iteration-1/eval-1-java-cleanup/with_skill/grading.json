@@ -1,0 +1,16 @@
+{
+  "expectations": [
+    {"text": "The output file still compiles (valid Java syntax)", "passed": true, "evidence": "File contains valid Java with proper class structure, imports, method signatures, and balanced braces"},
+    {"text": "All 'Following the convention', 'Per the skill', 'as instructed by' phrases are removed", "passed": true, "evidence": "No rule citation phrases found in output. Original had 'Following the convention established in CLAUDE.md', 'Per the skill instructions', 'As instructed by the team lead' — all removed"},
+    {"text": "All 'I recall from the docs', 'codebase follows a pattern' phrases are removed", "passed": true, "evidence": "No context echo phrases found. Original 'I recall from the docs that we use BigDecimal' paragraph completely removed"},
+    {"text": "All 'I think', 'I believe', 'I assume', 'As an AI' phrases are removed", "passed": true, "evidence": "No confidence/identity phrases found. Original had 'I think we should also validate', 'I believe this is the right approach', 'I assume empty lists', 'As an AI, I should note' — all removed"},
+    {"text": "All 'I'll start by', 'First let me', 'Here's the result' phrases are removed", "passed": true, "evidence": "No process narration found. Original Javadoc 'I'll start by validating the customer, then check inventory...' removed. 'Here's the result:' removed"},
+    {"text": "All TODO/FIXME/HACK markers are removed", "passed": true, "evidence": "Original had 'TODO: Add proper error handling', 'FIXME: This doesn't handle partial fulfillment', 'HACK: Temporary workaround' — all removed"},
+    {"text": "All 'we chose X because', 'the reason for Y', design rationale comments are removed", "passed": true, "evidence": "Original calculateTotal Javadoc had full design rationale about service-level vs database-level calculation — completely removed"},
+    {"text": "The createOrder method body is preserved (business logic intact)", "passed": true, "evidence": "All business logic preserved: null checks, inventory loop, order creation, save. Only leakage comments stripped"},
+    {"text": "The calculateTotal method body is preserved (business logic intact)", "passed": true, "evidence": "Method body with Money.ZERO initialization and loop over items preserved exactly"},
+    {"text": "The cancelOrder method body is preserved (business logic intact)", "passed": true, "evidence": "findById, status check, setStatus, save all preserved"},
+    {"text": "No 'file cleaned' or '/hide applied' text is added to the file", "passed": true, "evidence": "No cleanup markers, annotations, or traces of removal process in output"}
+  ],
+  "summary": {"passed": 11, "failed": 0, "total": 11, "pass_rate": 1.0}
+}

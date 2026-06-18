@@ -1,0 +1,16 @@
+{
+  "eval_id": 2,
+  "eval_name": "markdown-cleanup",
+  "prompt": "Clean up the markdown file using /hide - strip leakage patterns from prose",
+  "assertions": [
+    "The JWT authentication overview section content is preserved",
+    "All 'As instructed by', 'per the convention' phrases are removed",
+    "All 'I recall from the docs', 'codebase follows a pattern' phrases are removed",
+    "All 'I think', 'I hope this helps', 'Great question', 'Let me know' phrases are removed",
+    "All 'Actually, let me reconsider' self-correction text is removed",
+    "The curl command examples are preserved",
+    "The rate limiting numbers (100/min, 1000/min) are preserved",
+    "Internal URLs and mock data endpoints are removed (Secret & Sensitive pattern)",
+    "No 'file cleaned' or '/hide applied' text is added"
+  ]
+}

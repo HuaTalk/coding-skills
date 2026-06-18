@@ -1,0 +1,56 @@
+# Following the convention from CLAUDE.md, all config files
+# must include environment and version metadata
+app:
+  name: order-service
+  version: 1.2.0
+
+# Per the infrastructure team's standard, database connections
+# use the internal service mesh endpoint
+database:
+  host: db-primary.internal.example.com
+  port: 5432
+  name: orders
+  # API key for database admin access
+  # TODO: Rotate this key before production deployment
+  admin_key: sk-db-admin-prod-abc123xyz789
+  pool:
+    min: 5
+    max: 20
+
+# I recall from the docs that Redis is used for session caching
+# because the codebase follows a pattern where sticky sessions
+# don't work well with our load balancer setup
+redis:
+  host: redis-cluster.internal.example.com
+  port: 6379
+  # Connection string with embedded credentials
+  url: redis://default:p@ssw0rd123@redis-cluster.internal.example.com:6379/0
+
+# As instructed by the security team, all external service
+# credentials must be rotated quarterly
+external_services:
+  payment_gateway:
+    # FIXME: This is the sandbox key, need to swap for prod
+    api_key: pk_test_51H7xY2Z3abc123def456ghi789
+    endpoint: https://api.stripe.com/v1
+    webhook_secret: whsec_test_abc123def456
+
+  email_service:
+    # HACK: Using personal API key until service account is provisioned
+    api_key: SG.abc123.def456.ghi789jkl012mno345pqr678
+    from_address: noreply@example.com
+
+# Here's the result of the environment configuration
+# As requested by the platform team
+monitoring:
+  enabled: true
+  # Internal Grafana dashboard
+  dashboard_url: https://grafana.internal.example.com/d/order-service
+  alert_endpoint: https://pagerduty.internal.example.com/webhook
+
+# Feature flags - I believe these are correct per the latest sprint planning
+features:
+  new_checkout_flow: true
+  beta_recommendations: false
+  # TODO: Enable this after the Q2 security audit
+  advanced_analytics: false

@@ -1,0 +1,14 @@
+{
+  "expectations": [
+    {"text": "App name 'order-service' and version '1.2.0' are preserved", "passed": true, "evidence": "App name and version preserved"},
+    {"text": "Database host, port, and name values are preserved", "passed": true, "evidence": "Database connection values preserved"},
+    {"text": "All API keys, tokens, passwords, and connection strings are removed", "passed": true, "evidence": "All sensitive credentials removed"},
+    {"text": "All 'Following the convention', 'Per the team standard' comments are removed", "passed": true, "evidence": "Rule citation comments removed"},
+    {"text": "All 'I recall from the docs', 'codebase follows a pattern' comments are removed", "passed": true, "evidence": "Context echo comments removed"},
+    {"text": "All TODO/FIXME/HACK markers are removed", "passed": true, "evidence": "TODO/FIXME/HACK markers removed"},
+    {"text": "Feature flag values (true/false) are preserved", "passed": true, "evidence": "Feature flags preserved"},
+    {"text": "The YAML structure remains valid", "passed": true, "evidence": "Valid YAML"},
+    {"text": "No 'file cleaned' or '/hide applied' text is added", "passed": true, "evidence": "No markers added"}
+  ],
+  "summary": {"passed": 9, "failed": 0, "total": 9, "pass_rate": 1.0}
+}

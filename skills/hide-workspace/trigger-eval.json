@@ -1,0 +1,90 @@
+[
+  {
+    "query": "hey can you clean up this java file? it's got a bunch of AI-generated comments that shouldn't be there — stuff like 'as instructed by the team' and 'I think this approach works'. just want the actual code, not the AI reasoning in the comments",
+    "should_trigger": true
+  },
+  {
+    "query": "I just generated some config files with claude and there are API keys and tokens left in the comments along with some 'per the convention' type phrases. need to strip all that out before I commit",
+    "should_trigger": true
+  },
+  {
+    "query": "/hide src/main/java/com/example/OrderService.java",
+    "should_trigger": true
+  },
+  {
+    "query": "this markdown doc has a bunch of 'I recall from the docs' and 'Great question!' type AI leakage scattered through it. can you strip those out but keep the actual technical content?",
+    "should_trigger": true
+  },
+  {
+    "query": "I have a design document that's basically all AI thought process — research findings, decision records, 'we chose X because Y'. should I just delete it or is there a way to clean it up?",
+    "should_trigger": true
+  },
+  {
+    "query": "will not remove all TODO, FIXME, and HACK markers from the generated code files. will remove strip out any 'as an AI' or 'I believe' style comments",
+    "should_trigger": true
+  },
+  {
+    "query": "the yml config file has connection strings with embedded passwords and some 'following the convention from CLAUDE.md' comments mixed in. need to sanitize it before pushing to the repo",
+    "should_trigger": true
+  },
+  {
+    "query": "there's a file that reads like an AI reasoning log — progress entries, '调研发现', design rationale. it's not useful as documentation, more like working notes. what should I do with it?",
+    "should_trigger": true
+  },
+  {
+    "query": "strip the AI commentary from these generated files — keep the code and config values but remove all the prose explaining why things were done a certain way",
+    "should_trigger": true
+  },
+  {
+    "query": "隐藏业务逻辑",
+    "should_trigger": true
+  },
+  {
+    "query": "隐藏数据来源、参考文献",
+    "should_trigger": true
+  },
+  {
+    "query": "can you format this python file according to PEP 8? the indentation is inconsistent and there are some long lines that need wrapping",
+    "should_trigger": false
+  },
+  {
+    "query": "write unit tests for the OrderService class. cover the createOrder, calculateTotal, and cancelOrder methods with edge cases",
+    "should_trigger": false
+  },
+  {
+    "query": "review this code for potential bugs — especially null pointer exceptions and race conditions in the order processing flow",
+    "should_trigger": false
+  },
+  {
+    "query": "add javadoc comments to all public methods in this class. I want proper @param, @return, and @throws documentation",
+    "should_trigger": false
+  },
+  {
+    "query": "refactor this service to use the repository pattern. extract the database access logic into a separate repository class",
+    "should_trigger": false
+  },
+  {
+    "query": "delete the old migration files in migrations/2024/ — we don't need them anymore since we squash merged",
+    "should_trigger": false
+  },
+  {
+    "query": "translate the README from English to Chinese. keep the code blocks and links unchanged",
+    "should_trigger": false
+  },
+  {
+    "query": "set up a new CLAUDE.md for this project — document the architecture, coding conventions, and deployment process",
+    "should_trigger": false
+  },
+  {
+    "query": "this file has some inline comments in Chinese that need to be converted to English for the international team",
+    "should_trigger": false
+  },
+  {
+    "query": "run the linter on all .ts files in src/ and fix any warnings about unused imports and missing semicolons",
+    "should_trigger": false
+  },
+  {
+    "query": "generate API documentation from the OpenAPI spec in docs/api.yaml — I want a markdown reference doc with all endpoints, params, and examples",
+    "should_trigger": false
+  }
+]

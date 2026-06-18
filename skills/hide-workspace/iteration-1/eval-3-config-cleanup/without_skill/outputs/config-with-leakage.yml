@@ -1,0 +1,32 @@
+app:
+  name: order-service
+  version: 1.2.0
+
+database:
+  host: db-primary.internal.example.com
+  port: 5432
+  name: orders
+  pool:
+    min: 5
+    max: 20
+
+redis:
+  host: redis-cluster.internal.example.com
+  port: 6379
+
+external_services:
+  payment_gateway:
+    endpoint: https://api.stripe.com/v1
+
+  email_service:
+    from_address: noreply@example.com
+
+monitoring:
+  enabled: true
+  dashboard_url: https://grafana.internal.example.com/d/order-service
+  alert_endpoint: https://pagerduty.internal.example.com/webhook
+
+features:
+  new_checkout_flow: true
+  beta_recommendations: false
+  advanced_analytics: false

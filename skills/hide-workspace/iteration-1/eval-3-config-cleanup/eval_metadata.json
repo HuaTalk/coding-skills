@@ -1,0 +1,16 @@
+{
+  "eval_id": 3,
+  "eval_name": "config-cleanup",
+  "prompt": "Clean up the YAML config file using /hide - strip leakage comments and sensitive data",
+  "assertions": [
+    "App name 'order-service' and version '1.2.0' are preserved",
+    "Database host, port, and name values are preserved",
+    "All API keys, tokens, passwords, and connection strings are removed",
+    "All 'Following the convention', 'Per the team standard' comments are removed",
+    "All 'I recall from the docs', 'codebase follows a pattern' comments are removed",
+    "All TODO/FIXME/HACK markers are removed",
+    "Feature flag values (true/false) are preserved",
+    "The YAML structure remains valid",
+    "No 'file cleaned' or '/hide applied' text is added"
+  ]
+}
