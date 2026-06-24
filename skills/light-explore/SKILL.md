@@ -1,41 +1,41 @@
 ---
 name: light-explore
-description: Lightweight dialogue before small-to-medium changes — when requirements are mostly clear with only 1-2 details to settle. Typical phrases: "add an X field", "tweak Y logic", "extend to support Z type", "add a feature flag", "add a metric/log line", "add a dimension to the dedup key", "add an early return", "I know this area but unsure about X", "small change, just one thing unclear", "let's chat first / align first". One or two rounds to clarify, propose, and decide — no design doc. Not for vague requirements needing full exploration, not for unfamiliar legacy code, not for single-line bugs or config changes. 中文触发：小改动、加个字段、微调逻辑、先聊一下、对齐一下、确认一下、改动不大。
+description: 小到中等改动开工前的轻量对话——需求大体清楚、只剩 1-2 个细节没拍板时使用。典型说法："加一个 X 字段"、"调一下 Y 的逻辑"、"扩展支持 Z 类型"、"加个开关"、"加一行 metric/log"、"把 dedup key 加一个维度"、"加个早返回"、"我对这块比较熟，就是不确定要不要 X"、"改动不大就是某某拿不准"、"先聊一下 / 先对一下 / 先讨论一下"。一两轮内问清楚 + 给方案 + 拍板，不写设计文档。不适用于需求模糊需完整探索、不熟的老代码、单点 bug/配置/常量修改。
 ---
 
-# Light Explore
+# Light Explore：轻量探讨
 
-**When:** Requirements are ~80% clear, only 1-2 points need confirmation; or the user has a vague request but it's a small-to-medium change (not worth full exploration).
+**适用场景：** 需求大体明确，只剩 1-2 个点需要确认；或者用户给了模糊请求但只是小到中等改动（不值得走完整探索）。
 
-**Core action:** One or two rounds → no artifacts → decide and go.
+**核心动作：** 一两轮对话内完成 → 不落盘 → 拍板即开干。
 
-## When to Use
+## 何时用
 
-- Change is 30-200 lines, touches 1-2 files/classes
-- Minor unknowns remain (variable semantics, edge cases, backward compatibility, etc.)
-- Requests like "add an X field", "tweak Y logic" — intent is clear but details are ambiguous
+- 改动 30-200 行，影响 1-2 个文件/类
+- 需求里有少量不明（变量含义、边界条件、是否兼容旧行为等）
+- 用户的请求像"加一个 X 字段"、"调一下 Y 的逻辑"——意图清楚但细节有歧义
 
-## When NOT to Use
+## 何时不用
 
-- **Vague requirements**: New features, new modules, cross-file refactors, changes affecting production behavior — needs full exploration with design artifacts, not a quick chat
-- **Just do it**: Single-line bugs, config/constant changes, obvious patches
-- **Formal process needed**: Changes needing formal documentation and team review — escalate to a structured change proposal process
+- **需求模糊**：新功能、新模块、跨多个文件的重构、影响线上行为的改动——需要完整探索流程和设计产物，不是快速聊一下就能定的
+- **直接动手**：单点 bug、配置/常量修改、明确到行的 patch
+- **需要正式流程**：需要正式归档、需要团队 review 的变更——升级到结构化变更提案流程
 
-## Flow
+## 流程
 
-1. **Restate the ask in one sentence** + list 1-2 clarification points (max 2; more means escalate to full exploration)
-2. After user answers: directly give **one proposal** (small changes don't need 2-3 options), clearly stating **which files, key change points, risks**
-3. User approves → go. User disagrees or more ambiguity emerges → escalate to full exploration with design artifacts
+1. **一句话复述需求** + 列出 1-2 个待澄清点（最多 2 个，多了改用完整探索流程）
+2. 用户回答后：直接给**一个方案**（小改动不需要 2-3 个备选），说清楚**碰哪些文件、关键改动点、风险**
+3. 用户认可即开干；用户不认可或牵出更多歧义 → 升级到完整探索流程（需设计产物）
 
-## Anti-patterns
+## 反模式
 
-- ❌ Running a full 9-step design process — this is a quick chat, not a structured exploration
-- ❌ Writing a design doc (light exploration leaves no artifacts)
-- ❌ Asking 3+ questions at once (signal to escalate to full exploration)
-- ❌ Suggesting "while we're at it, also fix X" unprompted
+- ❌ 走完整 9 步流程（轻量探讨不是结构化探索）
+- ❌ 落盘 design doc（轻量探讨不留痕）
+- ❌ 一次问 3 个以上问题（说明该升级到完整探索）
+- ❌ 在用户没要求的情况下提"顺手再改一下 X"
 
-## Scope Boundaries
+## 适用边界
 
-- **Lighter than full exploration**: No design docs, single proposal not 2-3 options — one or two rounds to clarify and decide
-- **More deliberate than direct action**: At least one round of "restate + clarify + propose" before making changes
-- **Trigger heuristic**: **Number of unknowns** — 0 = just do it, 1-2 = this skill, 3+ = needs full exploration with design artifacts
+- **比完整探索轻量**：不写文档、不强求 2-3 方案——一两轮内澄清并拍板
+- **比直接动手谨慎**：至少有一轮"复述 + 澄清 + 方案"的对齐
+- **触发的判断标准**：**问题点数量** —— 0 个直接做、1-2 个用本 skill、3+ 个需要完整探索流程和设计产物

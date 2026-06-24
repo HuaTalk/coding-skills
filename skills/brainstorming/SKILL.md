@@ -1,63 +1,63 @@
 ---
 name: brainstorming
-description: "Before implementing a new feature, refactoring a module, or fixing a bug with unclear impact, use dialogue to clarify requirements, current state, constraints, and success criteria first — then propose solutions for the user to decide. Skip for well-defined small changes (single-line bugs, config tweaks, localized changes under 30 lines). 中文触发：方案讨论、需求不明确、评估方案、设计评审、技术选型、你先评估一下。"
+description: "在动手实现新功能、改造模块、修复影响面不清的 bug 之前，用对话先把需求/现状/约束/成功标准问清楚，再给方案让用户拍板。明确的小改动（单点 bug、配置调整、< 30 行的局部改动）跳过本 skill。"
 metadata:
   upstream: "https://github.com/obra/superpowers"
-  upstream-note: "Derived from upstream. Changes: (1) 9-step checklist → 3-step flow (Explore / Present / Build); (2) removed: HARD-GATE, Visual Companion, self-review checklist, process diagram; (3) design doc path: docs/superpowers/specs/ → openspec/changes/; (4) added: skip conditions for trivial changes."
+  upstream-note: "派生自 upstream。变更：(1) 9 步清单 → 3 步流程（探明需求 / 给方案 / 动手）；(2) 移除 HARD-GATE、Visual Companion、self-review checklist、流程图；(3) 设计文档路径 docs/superpowers/specs/ → openspec/changes/；(4) 新增小改动跳过条件。"
 ---
 
-# Brainstorming: Ask Before You Build
+# Brainstorming：动手前先把问题问清楚
 
-Turn vague ideas into implementable designs. **Core: ask first, propose options, let the user decide, then build.**
+把模糊的想法变成可落地的设计。**核心：先问清楚，再给方案，让用户拍板，再动手。**
 
-## When to Use / When to Skip
+## 何时用 / 何时跳过
 
-**Use this skill:**
-- New features, modules, or components
-- Bugs or performance issues with unclear impact/root cause
-- Changes touching multiple files/modules
-- User's description has ambiguity, missing constraints, or no success criteria
+**用本 skill：**
+- 新功能、新模块、新组件
+- 影响面/根因不清的 bug、性能问题
+- 涉及多个文件/多个模块的改动
+- 用户的描述里有歧义、缺约束、缺成功标准
 
-**Skip this skill, just do it:**
-- Single-line bug fix (already pinpointed to a specific line)
-- Config/copy/constant adjustments
-- Localized change under 30 lines with clear intent
-- User already provided a clear spec or specific patch
+**跳过本 skill，直接做：**
+- 单点 bug 修复（已定位到具体行）
+- 配置/文案/常量调整
+- < 30 行的局部改动且意图明确
+- 用户已经给了清晰的 spec 或具体 patch 要求
 
-When unsure, **align with one sentence**: "This looks straightforward — want to brainstorm first or just do it?" Let the user decide.
+判断不准时，**用一句话和用户对齐**："这个看起来直接改就行，要不要先 brainstorm？"——让用户决定走哪条路。
 
-## Flow (3 Steps)
+## 流程（3 步）
 
-### 1. Explore Requirements
+### 1. 探明需求
 
-- First, understand the current state: relevant files, recent commits, existing docs
-- Ask one question at a time, prefer multiple-choice, covering: **purpose / constraints / success criteria / blast radius**
-- If the ask spans multiple independent subsystems, help the user decompose and brainstorm each separately
-- In existing codebases, understand actual current behavior before proposing changes — don't design from assumptions
+- 先看现状：相关文件、最近 commit、已有文档
+- 一次只问一个问题，优先选择题，覆盖：**目的 / 约束 / 成功标准 / 影响面**
+- 如果需求横跨多个独立子系统，先帮用户拆，每个子系统单独 brainstorm
+- 已经在历史代码项目里时，先理清当前代码的实际行为再提改动建议——不要基于猜测设计
 
-### 2. Present 2-3 Options + Recommendation
+### 2. 给 2-3 个方案 + 推荐
 
-- List options, state tradeoffs, give recommendation with rationale
-- Don't give only one option; don't exceed 3 (choice paralysis)
-- Options must be concrete (which files, what to introduce, how it fits with existing code), not abstract descriptions
+- 列方案、说权衡、给推荐和理由
+- 不要只给一个方案；也不要超过 3 个，否则用户选不动
+- 方案要落到具体动作（碰哪些文件、引入什么、和现有代码怎么衔接），不要停留在抽象描述
 
-### 3. User Decides → Build / Capture
+### 3. 用户拍板 → 动手 / 落盘
 
-- After user approves: **simple changes → implement directly**
-- Larger changes (multi-module, new module, production-impacting): capture the design to `openspec/changes/<change-id>/proposal.md` via the OpenSpec workflow
-- Design docs should include: background/goals, current state, proposal, impact, rollback toggle (if applicable)
+- 用户认可方案后，**简单改动直接动手**
+- 改动较大（多模块、新模块、影响线上行为）时，把设计落盘到 `openspec/changes/<change-id>/proposal.md`，走 OpenSpec 工作流（参见 `openspec-new-change` skill）
+- 设计文档要包含：背景/目标、现状、方案、影响面、回滚开关（如有）
 
-## Anti-patterns
+## 反模式
 
-- ❌ **Proposing solutions before understanding** — designing from guesses leads to rework
-- ❌ **Only one option** — no choice = no tradeoff analysis
-- ❌ **Options stuck at abstraction level like "refactor module X"** — must be concrete enough to visualize in code
-- ❌ **Running full process for trivial changes** — this skill has built-in skip conditions; don't process-worship
-- ❌ **"You're absolutely right!" social validation** — respond with technical substance, not social agreement
+- ❌ **没问清楚就给方案**——基于猜测设计，往往返工
+- ❌ **方案只有一个**——用户没得选 = 没经过权衡
+- ❌ **方案停留在"重构 X 模块"这种抽象层**——必须能让人想象出落到代码上是什么样
+- ❌ **小改动也走完整流程**——本 skill 自带跳过条件，别为了流程而流程
+- ❌ **"You're absolutely right!"式认同**——用户的反馈要技术性回应，不是社交性附和
 
-## Key Principles
+## 关键原则
 
-- One question at a time, prefer multiple-choice
-- YAGNI: cut non-essential features from the design
-- In existing codebases, follow existing patterns; only improve incidentally related things if directly relevant to the task
-- Designs should decompose into clear-boundary units (one file, one responsibility) for readability and maintainability
+- 一次一个问题，优先选择题
+- YAGNI：从设计里砍掉非必要功能
+- 在已有代码里改造时，遵循现有模式；只在和当前任务相关时顺手改进，不要做无关重构
+- 设计要能拆成边界清晰的单元（一个文件一个职责），便于后续阅读和修改

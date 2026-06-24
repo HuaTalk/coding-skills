@@ -1,6 +1,6 @@
 ---
 name: domain-context
-description: Persist domain understanding from a session into `knowledge/domain/<module>.md`. Triggers: persist, capture, organize context, update domain docs, add/update domain context. 中文触发：沉淀领域知识、记录上下文、更新 domain 文档、整理经验、归档领域规则。
+description: 把 session 沉淀的领域理解固化进 `knowledge/domain/<module>.md`。触发：沉淀、固化、整理上下文、更新领域文档、add/update domain context。
 metadata:
   author: HuaTalk
   version: "2.0.0"
@@ -8,152 +8,152 @@ metadata:
   status: stable
 ---
 
-# Persist Domain Understanding into the Knowledge Base
+# 把领域理解固化进知识库
 
-This skill is the **write side** of domain knowledge. The read side handles on-demand loading; the write side ensures new/changed domain rules land correctly in a single source of truth.
+本 skill 是领域知识的**写入端**。读取端负责按需加载，写入端负责把新增/变更的领域规则正确落进单一真值源。
 
-## Core Principle: Heavy Architecture, Light Details (Answer Before Writing)
+## 核心原则：重架构、轻细节（写之前先回答）
 
-Module files are split into two layers by **drift velocity**:
+模块文件按**漂移速度**分两层：
 
-- **Architecture layer** (long-lived, grep can't replace): system skeleton, cache models, responsibility chains/extension points, cross-cutting concerns (feature flags / AB / canary / metrics / degradation), design intent, implicit conventions, historical pitfalls.
-- **Domain layer** (drifts quickly, grep can mostly replace): judgment logic for specific business rules.
+- **架构层**（长寿、grep 替代不了）：系统骨架、缓存模型、责任链/扩展点、切面（开关 / AB / 灰度 / metric / 降级）、设计意图、隐式约定、历史踩坑。
+- **领域层**（易漂移、grep 大多能替代）：具体业务规则的判定逻辑。
 
-**The test for whether a rule deserves to be persisted (must ask before writing)**:
+**判别一条规则该不该沉淀（写之前必问）**：
 
-> "If I deleted this, could a reader reconstruct it by reading the source once?" → reconstructable = **don't write**; not reconstructable = write.
+> "如果删掉这条，读者读一次源码就能复原它吗？" → 能复原 = **不写**；不能复原 = 写。
 
-**Typical anti-examples (reject on sight)**:
-- "`FooService.bar()` takes 3 params, returns `Set<Integer>`" — obvious from the signature, don't write.
-- "This enum has 7 values: …" — one Read makes it clear, don't write.
-- "At line X it does Y" — line numbers drift daily, don't write; rewrite as "`FooService#bar` does Y" as a grep anchor.
+**典型反例（看到就拒绝写入）**：
+- "`FooService.bar()` 接受 3 个参数，返回 Set<Integer>" — 看签名就知道，不写。
+- "这个枚举有 7 个值分别是 …" — Read 一次就清楚，不写。
+- "在第 X 行做了 Y" — 行号天天漂，不写；改写为"`FooService#bar` 处做 Y"作 grep 锚点。
 
-**Worth writing (even if it seems trivial)**:
-- "Config changes take 30 minutes to propagate" — implicit convention; missing this introduces bugs.
-- "`candidates.get(0)` is the project's default convention" — implicit contract in collection context.
-- "type=4 ⇒ status is always ACTIVE_*, so this path skips isValid check" — design intent, essential for understanding the whole chain.
+**值得写的（即便看上去琐碎）**：
+- "配置变更有 30 分钟生效延迟" — 隐式约定，不读这条会埋 bug。
+- "`candidates.get(0)` 是工程默认约定" — 集合上下文里的隐式契约。
+- "type=4 ⇒ status 一定是 ACTIVE_*，所以这条链路跳过 isValid 判定" — 设计意图，理解整条链路必需。
 
-**Architecture-first**: When material fits both architecture and domain layers, default to architecture. Architecture modules have the broadest coverage and highest ROI; creating a new domain module is the last resort.
+**架构优先**：素材里既能归架构又能归领域时，优先沉到架构层。架构模块覆盖面广、ROI 最高，新建领域模块是最后选项。
 
-## When to Trigger
+## 何时触发
 
-- User says "persist what we just discussed" / "organize as context" / "write it up as docs."
-- User provides a handoff / research notes / PR description and says "add this to our context system."
-- You discover a domain rule during investigation that **holds across sessions** and is worth persisting.
+- 用户说"把刚才的研究/结论沉淀下来" / "整理成上下文" / "写成文档"。
+- 用户给一份 handoff / 调研笔记 / PR 描述，让你"加进我们的上下文系统"。
+- 你自己在排查中发现一条**跨会话仍然成立**的领域规则，值得沉淀。
 
-Do NOT trigger:
-- Debugging process for a one-off bug fix.
-- Facts already written in code comments / Javadoc that one Read would reveal.
-- Temporary state meaningful only within the current task's context.
+不触发：
+- 一次性 bug fix 的调试过程。
+- 已经写在代码注释 / Javadoc 里、Read 一下就知道的事实。
+- 仅在当前任务上下文中有意义的临时状态。
 
-## Execution Protocol
+## 执行协议
 
-### Step 1 — Gather Material
+### Step 1 — 收集素材
 
-Two entry points, mutually exclusive:
+两种入口，互斥执行：
 
-**Entry A: Reflect on current session context**
-- Do not read external files; only organize domain conclusions already reached in this session.
-- Draft rule entries (one sentence each + grep anchor `Class#method` as evidence) for "what I learned this session that holds across sessions."
-- Exclude: pure task progress, personal preferences, content already in CLAUDE.md or existing module files.
-- **Detail filter**: Run each draft through the "can you reconstruct it by reading the source once?" test from the Core Principle above. Discard reconstructable items.
+**入口 A：反思当前 session 上下文**
+- 不读取外部文件，只整理这次会话里已经达成的领域结论。
+- 把"我在这次会话里学到的、跨会话仍然成立的规则"列成草稿条目（每条一句话 + grep 锚点 `Class#method` 作证据）。
+- 排除：纯任务进度、个人偏好、已写在 CLAUDE.md / 已有模块文件里的内容。
+- **细节过滤**：每条草稿过一遍上文【核心原则】的"读一次源码就能复原"测试，能复原的直接丢弃。
 
-**Entry B: User-specified files**
-- Use Read to load all file paths the user provides (handoffs, research notes, PR diffs, source snippets, etc.).
-- Similarly extract into "rule entry + evidence" drafts.
-- **Same detail filter**: only extract why, constraints, and pitfalls.
+**入口 B：用户指定文件**
+- 用 Read 加载用户给的所有文件路径（handoff、调研笔记、PR diff、源码片段等）。
+- 同样抽取成"规则条目 + 证据"草稿。
+- **细节过滤同上**：只抽取 why、约束、陷阱。
 
-### Step 2 — Match Modules (Architecture First, Then Domain)
+### Step 2 — 匹配模块（先架构、后领域）
 
-Against the project's `knowledge/` directory structure, tag each rule **in this priority order**:
+对照项目 `knowledge/` 目录结构，**按以下优先级**给每条规则打标签：
 
-1. **First ask: can this go into the architecture layer?** Anything involving cache windows, responsibility chain stages, extension points, feature flags, canary, monitoring, degradation, or design intent → **default to architecture layer**.
-2. If architecture layer can't absorb it, then consider domain layer.
+1. **先问能不能归到架构层**。涉及缓存窗口、责任链阶段、扩展点、开关、灰度、监控、降级、设计意图的，**默认归架构层**。
+2. 架构层装不下，再考虑领域层。
 
-| Candidate Rule Home | Action |
+| 候选规则归属 | 处理方式 |
 |---|---|
-| Hits an existing architecture module | Go to Step 3, prepare to **update** that architecture module |
-| Hits an existing domain module | Go to Step 3, prepare to **update** that domain module; also check whether the "why / cache / cross-cutting" parts should be lifted to architecture layer |
-| Fits no existing module | Use AskUserQuestion first: confirm whether to create a new module, its name, and whether it's architecture or domain layer |
+| 命中已有架构模块 | 进入 Step 3，准备**更新**该架构模块 |
+| 命中已有领域模块 | 进入 Step 3，准备**更新**该领域模块；同时检查是否应该把"why / 缓存 / 切面"部分上抽到架构层 |
+| 不属于任何现有模块 | 先用 AskUserQuestion 让用户确认是否要开新模块、模块名是什么、归架构层还是领域层 |
 
-> **Don't create new domain modules lightly.** Before creating one, ask: can this rule be split into "architecture skeleton + one or two domain pitfalls (into an existing domain module)"? If yes, split it.
+> **不要轻易新建领域模块**。新建前先问自己：这条规则能不能拆成"架构骨架 + 一两条领域陷阱（进已有领域模块）"？如果可以，就拆。
 
-### Step 3 — Load Current State and Detect Conflicts
+### Step 3 — 加载现状并检测冲突
 
-For each existing module file that's been matched, Read it in full, then compare candidate rules **one by one** against the existing content. Conflict types:
+对每个被命中的现有模块文件，用 Read 完整加载，然后把候选规则**逐条**与现有内容比对。冲突类型：
 
-1. **Direct contradiction**: Candidate rule says "A is X", existing module says "A is Y".
-2. **Unclear coverage relationship**: Candidate rule adds a branch or exception, but existing rules don't say whether it's exclusive or supplementary.
-3. **Semantic overlap**: Candidate rule and existing §N cover the same thing with different wording.
-4. **Implied obsolescence**: Candidate rule implies an old rule is outdated.
-5. **Naming trap collision**: Candidate rule mentions a new name that "looks like" an existing concept — clarify whether it's a new concept or a synonym.
+1. **直接矛盾**：候选规则说"A 是 X"，现有模块说"A 是 Y"。
+2. **覆盖关系不清**：候选规则补充了一个分支或例外，但现有规则没说排他还是补充。
+3. **语义重叠**：候选规则和现有 §N 内容讲同一件事，措辞不同。
+4. **隐含失效**：候选规则暗示某个旧规则已过时。
+5. **命名陷阱碰撞**：候选规则提到一个"看起来像"现有概念的新名字，要明确是新概念还是同义词。
 
-For every conflict or suspected conflict, **do not decide unilaterally** — go to Step 4.
+每发现一条冲突或疑似冲突，**不要自行决断**，进入 Step 4。
 
-### Step 4 — Human-in-the-Loop Adjudication
+### Step 4 — Human-in-the-loop 裁决
 
-Use **AskUserQuestion** to surface conflicts, one question per conflict. Each question must include at minimum:
+用 **AskUserQuestion** 把冲突列出，每个冲突一个问题。每个问题至少包含：
 
-- Brief conflict description ("Existing §N says X, new material says Y").
-- Options (max 4, first is your recommendation):
-  - "Overwrite old rule with new rule"
-  - "Add new rule as supplement/exception to old rule"
-  - "Keep old rule, discard new rule"
-  - "Keep both, need to reorganize sections"
-- TL;DR line-level conflicts must be explicitly asked; **never** silently overwrite TL;DR.
+- 简述冲突点（"现有 §N 说 X，新素材说 Y"）。
+- 给出可选项（最多 4 个，第一个是你的推荐）：
+  - "用新规则覆盖旧规则"
+  - "把新规则作为旧规则的补充/例外"
+  - "保留旧规则，丢弃新规则"
+  - "保留两者，需要重新分章节组织"
+- 如果是 TL;DR 行级冲突，必须显式问，**不要**默认覆盖 TL;DR。
 
-The only cases where you can **skip** human confirmation and merge directly:
-- Pure additive supplement: the candidate rule covers something entirely absent from the existing file, and contradicts nothing.
-- Typo / broken link fixes only (must still report these in the final summary).
+只有以下情况可以**跳过**人工确认直接合并：
+- 纯增量补充：候选规则讲的事情在现有文件里完全没出现，且和任何已有规则都不矛盾。
+- 仅修复笔误 / 链接失效（这类必须在最终回执里告诉用户）。
 
-### Step 5 — Write
+### Step 5 — 写入
 
-#### 5a. Domain-layer files: use template as skeleton
+#### 5a. 领域层文件：用模板作骨架
 
-When creating a new domain module, you **must** copy `skills/domain-context/templates/domain-module-template.md` to `knowledge/domain/<module>.md` as the starting point. The template locks in a fixed section structure; if a section doesn't apply, write `N/A — <reason>`. **Do not delete sections.**
+新建领域模块时，**必须**复制 `skills/domain-context/templates/domain-module-template.md` 到 `knowledge/domain/<module>.md` 作为起点。模板锁定了固定的节结构，不适用时写 `N/A — <理由>`，**不要删节**。
 
-#### 5b. Architecture-layer files: keep existing free structure
+#### 5b. 架构层文件：沿用现有自由结构
 
-Architecture modules vary widely; the domain template is **not required**.
+架构层模块间差异大，**不强制**用领域层模板。
 
-#### 5c. Writing requirements (universal)
+#### 5c. 写入要求（通用）
 
-1. **Write Why, not What**. After every sentence, ask: "Could a reader reconstruct this from the source?" If yes → delete it.
-2. **Architecture layer: no line numbers**. Line numbers signal leaked implementation details; rewrite.
-3. **Domain layer: grep anchors only**. Write `UserService#findById`, not `UserService.java:560-566`.
-4. **TL;DR: constraints and pitfalls only**. Max 30 chars per entry. Never restate API shapes.
-5. **Single source of truth**: One rule lives in exactly one module. Cross-module references use `[[link]]`. When architecture and domain layers overlap: **architecture keeps why, domain keeps judgment**.
-6. **Never write domain details into CLAUDE.md** — CLAUDE.md only gets a one-line pointer.
-7. File size limits: architecture layer ≤ 8KB; domain layer ≤ 5KB. Exceeding means details weren't filtered enough.
+1. **写 Why，不写 What**。每写完一句话回头问："读者读源码能复原吗？" 能复原 = 删掉。
+2. **架构层禁带行号**。带行号说明混入了实现细节，必须重写。
+3. **领域层只用 grep 锚点**。写 `UserService#findById` 而非 `UserService.java:560-566`。
+4. **TL;DR 只写约束和陷阱**。30 字以内一条，禁止复述 API 形状。
+5. **单一真值源**：同一规则只在一个模块里写，跨模块用 `[[link]]`。架构层与领域层重叠时，**架构层留 why、领域层留判定**。
+6. **不要把领域细节写进 CLAUDE.md** —— CLAUDE.md 只能加一行指针。
+7. 文件大小：架构层 ≤ 8KB；领域层 ≤ 5KB。超出说明细节没过滤干净。
 
-### Step 6 — Sync Index
+### Step 6 — 同步索引
 
-If this was a **new module** or a **module TL;DR changed**, update the project's knowledge index file (if it exists).
+如果是**新建模块**或**模块 TL;DR 有变化**，更新项目中的知识索引文件（如果存在）。
 
-### Step 7 — Report
+### Step 7 — 回执
 
-Brief summary (not a document):
-1. Which files were created/updated.
-2. Which conflicts, how they were adjudicated.
-3. Whether the index was synced.
-4. Any material "not persisted but worth revisiting" for next time.
+简短回执（不写文档）：
+1. 新建/更新了哪些文件。
+2. 哪些冲突，怎么裁决的。
+3. 索引是否同步更新。
+4. 如果有"未沉淀但值得后续处理"的素材，列出来供下次决定。
 
-Do not git commit unless the user explicitly asks.
+不要 git commit，除非用户明确要求。
 
-## Anti-patterns
+## 反模式
 
-- ❌ When reflecting on a session, writing "task progress / user preferences / what I did" as module rules. Module files hold only **domain knowledge**.
-- ❌ **Transcribing source snippets, field tables, and line numbers verbatim into module files**. Anything reconstructable from source is never persisted.
-- ❌ **Architecture-layer files containing `:line_number` or concrete source blocks**. Architecture layer only describes stages, contracts, and extension points.
-- ❌ **Creating a new domain module as the first move for new rules**. Try architecture layer first, then existing domain modules; new domain modules are the last option.
-- ❌ Silently merging conflicts. Even if you're "very sure", TL;DR line-level changes must go through AskUserQuestion.
-- ❌ Writing domain details into SKILL.md / CLAUDE.md. They can only be **routers** and **global specs**.
-- ❌ Creating multiple new modules at once. Max 1 new module per session to avoid index bloat.
-- ❌ Writing the same rule into multiple modules simultaneously. Cross-module reuse always uses `[[link]]`.
-- ❌ Saving "code snapshots from the moment of writing" as long-term facts.
-- ❌ **Deleting core section headings** in domain modules. If not applicable, write `N/A — <reason>`; keep the heading.
+- ❌ 反思 session 时把"任务进度 / 用户偏好 / 我做了什么"写成模块规则。模块文件只放**领域知识**。
+- ❌ **把源码片段、字段表、行号细节原样誊抄进模块文件**。读源码能复原的内容一律不沉淀。
+- ❌ **架构层文件出现 `:行号` 或具体源码块**。架构层只描述阶段、契约、扩展点。
+- ❌ **新规则一上来就开新领域模块**。先尝试归到架构层，再考虑落到已有领域模块，新建领域模块是最后选项。
+- ❌ 静默 merge 冲突。即使你"很确定"，TL;DR 行级变更必走 AskUserQuestion。
+- ❌ 在 SKILL.md / CLAUDE.md 里写领域细节。它们只能是**路由器**和**全局规范**。
+- ❌ 一次开多个新模块。新模块每次最多 1 个，避免索引膨胀。
+- ❌ 把同一规则同时写进多个模块。跨模块复用一律用 `[[link]]`。
+- ❌ 把"撰写时的代码快照"当成长期事实保存。
+- ❌ 领域模块**删除核心节标题**。不适用就写 `N/A — <理由>`，标题保留。
 
-## Scope Boundaries
+## 适用边界
 
-- **Transient vs persistent**: This skill handles **permanently valid domain rules** that hold across sessions. Transient session context (task progress, current findings for the next agent) is a separate concern — both can coexist.
-- **Interactive vs autonomous**: This skill's conflict adjudication relies on interactive confirmation (AskUserQuestion). When operating in zero-interaction mode, skip the confirmation step and route conflicts to an external pending-confirmation artifact instead.
+- **临时态 vs 持久态**：本 skill 处理**跨会话永久成立的领域规则**。临时会话上下文（任务进度、给下一个 agent 的当前发现）是独立关注点——两者可以共存。
+- **交互式 vs 自主式**：本 skill 的冲突裁决依赖交互确认（AskUserQuestion）。在零交互模式下，跳过确认步骤，将冲突路由到外部待确认产物。

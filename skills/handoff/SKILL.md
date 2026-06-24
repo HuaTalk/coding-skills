@@ -1,6 +1,6 @@
 ---
 name: handoff
-description: Compact the current session into a handoff document for the next agent. Use when handing off context or switching sessions.
+description: 把当前会话压缩为 handoff 文档供下一个 agent 接手。需要交接上下文、切换 session 时使用。
 argument-hint: "What to compact & what will the next session be used for?"
 metadata:
   author: HuaTalk
@@ -9,10 +9,10 @@ metadata:
   status: stable
 ---
 
-Write a handoff document summarising the current conversation so a fresh agent can continue the work. Save to the temporary directory of the user's OS — not the current workspace.
+将会话摘要写成 handoff 文档，让新 agent 能接手继续工作。保存到用户操作系统的临时目录，不写入当前工作区。
 
-Include a "suggested skills" section in the document, which suggests skills that the agent should invoke.
+文档中需包含"suggested skills"章节，建议下一个 agent 应调用的 skill。
 
-Do not duplicate content already captured in other artifacts (PRDs, plans, ADRs, issues, commits, diffs). Reference them by path or URL instead.
+不要重复其他产物（PRD、计划、ADR、issue、commit、diff）中已有的内容，用路径或 URL 引用它们。
 
-If the user passed arguments, treat them as a description of what to compact and what the next session will focus on and tailor the doc accordingly.
+如果用户传了参数，将其视为"要压缩什么 + 下一个会话关注什么"的说明，据此定制文档。
