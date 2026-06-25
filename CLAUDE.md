@@ -56,6 +56,7 @@ ln -sf ~/path/to/skill/.mcp.json  /path/to/project/.mcp.json
 
 When adding a skill or command:
 1. Write the definition in `skills/<name>/SKILL.md` or `commands/<name>.md`
-2. Notify consumers to run `/plugin update skill@skill` + restart Claude Code
+2. **Always update both English and Chinese versions together** — any change to `SKILL.md` must be mirrored in `SKILL-zh.md`, and any change to `*.md` must be mirrored in `*-zh.md`. Same applies to `CLAUDE.md`/`CLAUDE-zh.md`, `README.md`/`README-zh.md`, and `ROADMAP.md`/`ROADMAP-zh.md`.
+3. Notify consumers to run `/plugin update skill@skill` + restart Claude Code
 
 See `ROADMAP.md` for planned improvements.

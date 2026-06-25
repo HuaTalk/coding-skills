@@ -60,6 +60,7 @@ ln -s ~/path/to/skill/.mcp.json /path/to/your-project/.mcp.json
 
 新增 skill / command 时：
 1. 在 `skills/<name>/SKILL.md` 或 `commands/<name>.md` 写定义
-2. 通知使用方运行 `/plugin update skill@skill` + 重启 Claude Code
+2. **任何修改必须同时更新英文版和中文版**——`SKILL.md` 的变更必须同步到 `SKILL-zh.md`，`*.md` 的变更必须同步到 `*-zh.md`。同样适用于 `CLAUDE.md`/`CLAUDE-zh.md`、`README.md`/`README-zh.md`、`ROADMAP.md`/`ROADMAP-zh.md`。
+3. 通知使用方运行 `/plugin update skill@skill` + 重启 Claude Code
 
 后续改进路线见 `ROADMAP.md`。
