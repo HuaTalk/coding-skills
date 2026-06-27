@@ -36,7 +36,8 @@ Upgrade: `/plugin update skill@skill` + restart.
 │   ├── light-explore/          # Lightweight exploration
 │   ├── openspec-explore/       # OpenSpec free exploration
 │   ├── skill-simplifier/       # Skill review and simplification
-│   └── unknown-unknowns/       # Blind-spot detection
+│   ├── unknown-unknowns/       # Blind-spot detection
+│   └── verification-harness/   # Post-implementation adversarial verification
 ├── .mcp.json               # MCP servers (intellij-index)
 ├── .claude/
 │   └── settings.json       # Self-use permissions (not distributed with plugin)
@@ -91,6 +92,7 @@ This repo's `.claude/settings.json` is self-use permission defaults (not distrib
 | Question already implies a solution, but might be misaligned | `unknown-unknowns` |
 | Ambiguous task, user wants autonomous execution | `best-effort-delivery` |
 | Domain rule capture | `domain-context` |
+| Post-implementation verification (tests + review) | `verification-harness` |
 | Single bug / config change / < 30 lines of clear change | Skip skills, just do it |
 
 ## Maintenance
