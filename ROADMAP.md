@@ -4,12 +4,11 @@
 
 ## #1 — CI 校验 + pre-commit
 
-**问题**：plugin 给别人用，路径错误、frontmatter 缺失（`name` / `description` 必填）、JSON 格式非法、SKILL-zh.md 缺漏等问题当前无自动化检查。
+**问题**：plugin 给别人用，路径错误、frontmatter 缺失（`name` / `description` 必填）、JSON 格式非法等问题当前无自动化检查。
 
 **落地动作**：
 - `scripts/check.sh`：
   - 校验 `skills/*/SKILL.md` frontmatter（`name` / `description` 必填，`metadata.status` 在允许值范围内）
-  - 校验 `skills/*/SKILL-zh.md` 与 SKILL.md 一一对应（i18n 完整性）
   - 校验 `.claude-plugin/*.json` JSON 合法性
   - 凭证泄露扫描（`ghp_`、`sk-` 等模式）
 - GitHub Actions（或等效 CI）：PR 触发自动跑 `check.sh`
@@ -52,7 +51,7 @@
 
 ## 已完成
 
-- ~~英文 README + 国际化~~：README.md 英文化、全部 9 个 skill 中英双版本、CLAUDE.md/commands 双版本、install.sh --lang、i18n-switch.sh —— 全部完成于 2026-06-11
+- ~~i18n 双版本~~：最初支持中英双版本（SKILL-zh.md、CLAUDE-zh.md 等），2026-07-01 决定改为仅维护英文版，所有中文文件已删除
 - ~~cross-skill 一致性审查~~：通过原子化重构消除所有 19 个跨 skill 引用（`f8da7d7`），不再需要独立脚本
 - ~~skill 创建模板~~：新 skill 创建频率接近零，不单独维护模板文件；写作规范并入 CONTRIBUTING.md 即可
 - ~~install.sh 健壮性~~：安装路径统一为 plugin marketplace + 英文。install.sh 保留但不再作为推荐路径，以后需要选语言/选 skill 时再加强

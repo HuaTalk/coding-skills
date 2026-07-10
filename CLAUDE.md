@@ -19,16 +19,6 @@ No source code, no build, no tests.
 2. **Upstream-adapted**: `brainstorming` (from [obra/superpowers](https://github.com/obra/superpowers)). Adapted from upstream with modifications — see skill frontmatter for details.
 3. **Consumer-installed**: `lark-*`, `meegle`, `planning-with-files`, and other vendor/community skills are installed by users in their own Claude Code environments. Not shipped here.
 
-## Internationalization (i18n)
-
-All skills are distributed in English, with Chinese variants available as `SKILL-zh.md`.
-
-Convention:
-- `SKILL.md` — English (loaded by the dispatcher)
-- `SKILL-zh.md` — Chinese variant (for contributors to test locally)
-
-Same pattern applies to `CLAUDE.md` (`CLAUDE-zh.md`), `README.md` (`README-zh.md`), and `commands/*.md` (`*-zh.md`). Per-skill language switching is not supported for consumers — this repo ships English only via the plugin marketplace.
-
 ## Domain Knowledge Capture
 
 The `domain-context` skill provides a general-purpose domain knowledge management protocol: distill rules surfaced in conversation into structured knowledge files following the "heavy on architecture, light on details" principle. Consumers build their own `knowledge/` directory structure as needed.
@@ -56,7 +46,6 @@ ln -sf ~/path/to/skill/.mcp.json  /path/to/project/.mcp.json
 
 When adding a skill or command:
 1. Write the definition in `skills/<name>/SKILL.md` or `commands/<name>.md`
-2. **Always update both English and Chinese versions together** — any change to `SKILL.md` must be mirrored in `SKILL-zh.md`, and any change to `*.md` must be mirrored in `*-zh.md`. Same applies to `CLAUDE.md`/`CLAUDE-zh.md`, `README.md`/`README-zh.md`, and `ROADMAP.md`/`ROADMAP-zh.md`.
-3. Notify consumers to run `/plugin update skill@skill` + restart Claude Code
+2. Notify consumers to run `/plugin update skill@skill` + restart Claude Code
 
 See `ROADMAP.md` for planned improvements.

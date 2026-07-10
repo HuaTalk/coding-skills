@@ -5,18 +5,15 @@ set -euo pipefail
 #
 # Usage:
 #   ./install.sh --target /path/to/project
-#   ./install.sh --target /path/to/project --lang zh
 #   ./install.sh --target /path/to/project --skills handoff,domain-context
-#   ./install.sh --target /path/to/project --skills handoff --lang zh
 
 usage() {
   cat <<'EOF'
-Usage: install.sh --target <path> [--skills <list>] [--lang <en|zh>]
+Usage: install.sh --target <path> [--skills <list>]
 
 Options:
   --target <path>   Target project directory (required)
   --skills <list>   Comma-separated skill names (default: all)
-  --lang <en|zh>    Language for skill content (default: en)
   --help            Show this message
 
 Available skills (auto-discovered from skills/ directory):
@@ -28,13 +25,11 @@ EOF
 # Parse arguments
 TARGET=""
 SKILLS=""
-LANG="en"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --target) TARGET="$2"; shift 2 ;;
     --skills) SKILLS="$2"; shift 2 ;;
-    --lang)   LANG="$2"; shift 2 ;;
     --help)   usage ;;
     *) echo "Unknown option: $1"; usage ;;
   esac
@@ -43,11 +38,6 @@ done
 if [[ -z "$TARGET" ]]; then
   echo "Error: --target is required"
   usage
-fi
-
-if [[ "$LANG" != "en" && "$LANG" != "zh" ]]; then
-  echo "Error: --lang must be 'en' or 'zh'"
-  exit 1
 fi
 
 # Resolve repo root (where this script lives)
@@ -82,7 +72,6 @@ mkdir -p "$TARGET/.claude/commands"
 
 echo "Installing to: $TARGET"
 echo "Skills: ${SELECTED[*]}"
-echo "Language: $LANG"
 echo ""
 
 # Symlink selected skills (per-skill symlink for selective install)
@@ -96,12 +85,6 @@ for skill in "${SELECTED[@]}"; do
   else
     ln -s "$src" "$dst"
     echo "  [ok]   $skill"
-  fi
-
-  # Apply language variant
-  if [[ "$LANG" == "zh" && -f "$src/SKILL-zh.md" ]]; then
-    cp "$src/SKILL-zh.md" "$src/SKILL.md"
-    echo "         -> switched to zh"
   fi
 done
 

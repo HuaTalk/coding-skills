@@ -1,7 +1,5 @@
 # Skill
 
-[中文](./README-zh.md)
-
 A reusable Claude Code plugin framework — package your team's conventions for commands, skills, and MCP configurations so they work across every repo.
 
 Built on the **"Rules Are for You"** philosophy: rules serve the AI's decision-making, never leak into output. A good skill acts like a senior engineer doing the work, not one reading a manual out loud.
@@ -42,19 +40,15 @@ Upgrade: `/plugin update skill@skill` + restart.
 ├── .mcp.json               # MCP servers (intellij-index)
 ├── .claude/
 │   └── settings.json       # Self-use permissions (not distributed with plugin)
-├── CLAUDE.md               # Project instructions (English)
-├── CLAUDE-zh.md            # Project instructions (Chinese)
-├── README.md               # This file (English)
-├── README-zh.md            # Chinese README
+├── CLAUDE.md               # Project instructions
+├── README.md               # This file
 ├── ROADMAP.md
-└── blog-rules-are-for-you.md  # Design philosophy
+└── docs/
+    └── blog/
+        └── blog-rules-are-for-you.md  # Design philosophy
 ```
 
 > Claude Code plugin spec requires `commands/` and `skills/` at repo root — they can't live under `.claude/`. `.claude/settings.json` is this repo's self-use config and is NOT distributed via `/plugin install`.
-
-## Internationalization (i18n)
-
-All skills are distributed in English. Chinese variants (`SKILL-zh.md`) are included in the repo for contributors to test locally but are not exposed via the plugin marketplace. See [CLAUDE.md](./CLAUDE.md#internationalization-i18n) for details.
 
 ## Setup Guide
 
