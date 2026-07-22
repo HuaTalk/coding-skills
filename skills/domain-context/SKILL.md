@@ -3,8 +3,8 @@ name: domain-context
 description: 把 session 沉淀的领域理解固化进 `knowledge/domain/<module>.md`。触发：沉淀、固化、整理上下文、更新领域文档、add/update domain context。
 metadata:
   author: HuaTalk
-  version: "2.0.0"
-  category: methodology
+  version: "2.0.1"
+  category: workflow
   status: stable
 ---
 

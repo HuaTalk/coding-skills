@@ -5,8 +5,8 @@ license: MIT
 compatibility: Requires openspec CLI.
 metadata:
   author: HuaTalk
-  version: "1.0.0"
-  category: workflow
+  version: "1.0.1"
+  category: methodology
   status: stable
   requires: openspec CLI
   generatedBy: openspec@1.1.1

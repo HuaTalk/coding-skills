@@ -5,7 +5,7 @@ set -euo pipefail
 #
 # Usage:
 #   ./install.sh --target /path/to/project
-#   ./install.sh --target /path/to/project --skills handoff,domain-context
+#   ./install.sh --target /path/to/project --skills domain-context,verification-harness
 
 usage() {
   cat <<'EOF'
@@ -68,7 +68,6 @@ fi
 
 # Create target directories
 mkdir -p "$TARGET/.claude/skills"
-mkdir -p "$TARGET/.claude/commands"
 
 echo "Installing to: $TARGET"
 echo "Skills: ${SELECTED[*]}"
@@ -87,19 +86,6 @@ for skill in "${SELECTED[@]}"; do
     echo "  [ok]   $skill"
   fi
 done
-
-# Symlink commands (only if not already linked)
-if [[ -L "$TARGET/.claude/commands" ]]; then
-  echo "  [skip] commands (already linked)"
-else
-  # If commands dir is a symlink to our commands, skip. Otherwise create per-file symlinks
-  if [[ ! -d "$TARGET/.claude/commands" ]] || [[ -z "$(ls -A "$TARGET/.claude/commands" 2>/dev/null)" ]]; then
-    ln -s "$REPO_ROOT/commands" "$TARGET/.claude/commands"
-    echo "  [ok]   commands"
-  else
-    echo "  [skip] commands (directory not empty)"
-  fi
-fi
 
 # Symlink .mcp.json
 if [[ -L "$TARGET/.mcp.json" ]]; then

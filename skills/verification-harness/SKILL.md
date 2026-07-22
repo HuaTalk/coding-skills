@@ -3,8 +3,8 @@ name: verification-harness
 description: 全局验收机制。实现后自动触发：subagent 对抗性 review（bug + 功能漂移）→ 跑测试（单元/集成/e2e）→ linter/type-check → 架构测试 → 结构化 VERDICT 输出。触发：验收、verify、review、检查改动、跑测试、验证、验收流程、acceptance、check changes。
 metadata:
   author: HuaTalk
-  version: "1.0.0"
-  category: methodology
+  version: "1.0.1"
+  category: workflow
   status: stable
 ---
 

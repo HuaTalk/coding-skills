@@ -1,6 +1,11 @@
 ---
 name: light-explore
 description: 小到中等改动开工前的轻量对话——需求大体清楚、只剩 1-2 个细节没拍板时使用。典型说法："加一个 X 字段"、"调一下 Y 的逻辑"、"扩展支持 Z 类型"、"加个开关"、"加一行 metric/log"、"把 dedup key 加一个维度"、"加个早返回"、"我对这块比较熟，就是不确定要不要 X"、"改动不大就是某某拿不准"、"先聊一下 / 先对一下 / 先讨论一下"。一两轮内问清楚 + 给方案 + 拍板，不写设计文档。不适用于需求模糊需完整探索、不熟的老代码、单点 bug/配置/常量修改。
+metadata:
+  author: HuaTalk
+  version: "1.0.0"
+  category: workflow
+  status: stable
 ---
 
 # Light Explore：轻量探讨

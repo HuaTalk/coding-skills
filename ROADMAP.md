@@ -14,13 +14,12 @@
 - GitHub Actions（或等效 CI）：PR 触发自动跑 `check.sh`
 - pre-commit hook：本地提交前跑，拦截低级错误
 
-## #2 — 版本发布与 Changelog
+## #2 — 发布流程自动化
 
-**问题**：plugin 消费者通过 `/plugin update` 升级，但没有 changelog 告知改了什么、是否 breaking。`plugin.json` 版本号停留在 0.1.0，未跟随实际变更迭代。
+**现状**：`CHANGELOG.md` 和语义化版本已从 0.2.0 开始维护，但版本、git tag 和发布通知仍依赖人工同步。
 
 **落地动作**：
-- `CHANGELOG.md`：语义化版本，每个 release 列出 Added / Changed / Removed / Fixed
-- `plugin.json` 版本号与 git tag 同步
+- 自动校验 `plugin.json` 版本号与 git tag 一致
 - release 流程文档（打 tag → 写 changelog → 通知消费者）
 
 ## #3 — 社区贡献指南

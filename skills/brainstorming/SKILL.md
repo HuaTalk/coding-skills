@@ -2,6 +2,10 @@
 name: brainstorming
 description: "在动手实现新功能、改造模块、修复影响面不清的 bug 之前，用对话先把需求/现状/约束/成功标准问清楚，再给方案让用户拍板。明确的小改动（单点 bug、配置调整、< 30 行的局部改动）跳过本 skill。"
 metadata:
+  author: HuaTalk
+  version: "1.0.0"
+  category: workflow
+  status: stable
   upstream: "https://github.com/obra/superpowers"
   upstream-note: "派生自 upstream。变更：(1) 9 步清单 → 3 步流程（探明需求 / 给方案 / 动手）；(2) 移除 HARD-GATE、Visual Companion、self-review checklist、流程图；(3) 设计文档路径 docs/superpowers/specs/ → openspec/changes/；(4) 新增小改动跳过条件。"
 ---

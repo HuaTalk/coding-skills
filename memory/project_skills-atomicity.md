@@ -2,6 +2,8 @@
 
 Last updated: 2026-06-24
 
+> Historical snapshot. The listed skills and file counts reflect the 2026-06 refactor, not the current plugin inventory.
+
 ## Overview
 
 All team-maintained skills have been refactored to be fully self-contained with zero cross-references. This enables independent skill evolution without cascading updates.

@@ -3,8 +3,9 @@ name: best-effort-delivery
 description: 面对模糊或大范围任务时不打断提问，按"高置信度直接落地 + 低置信度归集到交互式 HTML 待确认文档"二分法推进。触发：尽最大努力交付、不要问我、best effort、自主推进、无人值守。
 metadata:
   author: HuaTalk
-  version: "1.0.0"
-  category: methodology
+  version: "1.0.1"
+  category: workflow
+  status: stable
 ---
 
 # 尽最大努力交付

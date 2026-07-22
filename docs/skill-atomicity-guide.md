@@ -1,5 +1,7 @@
 # Skill 原子化改造指南
 
+> Historical snapshot from the 2026-06 atomicity refactor. Skill names below describe the inventory at that time and are not the current shipped-skill list.
+
 ## 现状：引用关系拓扑
 
 ```

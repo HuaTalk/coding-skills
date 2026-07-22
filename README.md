@@ -1,6 +1,6 @@
 # Skill
 
-A reusable Claude Code plugin framework — package your team's conventions for commands, skills, and MCP configurations so they work across every repo.
+A reusable Claude Code plugin framework — package your team's conventions as skills and MCP configurations so they work across every repo.
 
 Built on the **"Rules Are for You"** philosophy: rules serve the AI's decision-making, never leak into output. A good skill acts like a senior engineer doing the work, not one reading a manual out loud.
 
@@ -15,7 +15,7 @@ In any Claude Code project:
 /plugin install skill@skill
 ```
 
-Restart Claude Code. All commands, skills, and `.mcp.json` are now available.
+Restart Claude Code. All skills and `.mcp.json` are now available.
 
 Upgrade: `/plugin update skill@skill` + restart.
 
@@ -26,22 +26,19 @@ Upgrade: `/plugin update skill@skill` + restart.
 ├── .claude-plugin/
 │   ├── plugin.json         # Plugin manifest
 │   └── marketplace.json    # Marketplace manifest
-├── commands/               # Slash commands (auto-discovered at plugin root)
 ├── skills/                 # Skills (auto-discovered at plugin root)
 │   ├── best-effort-delivery/   # Best-effort delivery for ambiguous tasks
 │   ├── brainstorming/          # Needs clarification before building (from obra/superpowers)
 │   ├── domain-context/         # Domain knowledge capture protocol
 │   ├── explore-legacy/         # Legacy code exploration
-│   ├── handoff/                # Session handoff
 │   ├── light-explore/          # Lightweight exploration
 │   ├── openspec-explore/       # OpenSpec free exploration
 │   ├── skill-simplifier/       # Skill review and simplification
 │   ├── unknown-unknowns/       # Blind-spot detection
 │   └── verification-harness/   # Post-implementation adversarial verification
 ├── .mcp.json               # MCP servers (intellij-index)
-├── .claude/
-│   └── settings.json       # Self-use permissions (not distributed with plugin)
 ├── CLAUDE.md               # Project instructions
+├── CHANGELOG.md            # Release history
 ├── README.md               # This file
 ├── ROADMAP.md
 └── docs/
@@ -49,7 +46,7 @@ Upgrade: `/plugin update skill@skill` + restart.
         └── blog-rules-are-for-you.md  # Design philosophy
 ```
 
-> Claude Code plugin spec requires `commands/` and `skills/` at repo root — they can't live under `.claude/`. `.claude/settings.json` is this repo's self-use config and is NOT distributed via `/plugin install`.
+> Claude Code discovers plugin skills from the root-level `skills/` directory; they cannot live under `.claude/`.
 
 ## Setup Guide
 
@@ -60,7 +57,7 @@ Upgrade: `/plugin update skill@skill` + restart.
 /plugin install skill@skill
 ```
 
-Restart Claude Code. All skills, commands, and MCP configurations are loaded.
+Restart Claude Code. All skills and MCP configurations are loaded.
 
 ### MCP Server
 
@@ -73,14 +70,9 @@ Verify: `lsof -i :29170` shows an `idea` process listening.
 ### Manual Symlink (Fallback)
 
 ```bash
-ln -sf ~/path/to/skill/commands  /path/to/project/.claude/commands
 ln -sf ~/path/to/skill/skills    /path/to/project/.claude/skills
 ln -sf ~/path/to/skill/.mcp.json /path/to/project/.mcp.json
 ```
-
-### Personal Settings
-
-This repo's `.claude/settings.json` is self-use permission defaults (not distributed with the plugin). Write personal preferences to `.claude/settings.local.json` in your project (gitignored).
 
 ## Skill Selection Guide
 
@@ -97,8 +89,8 @@ This repo's `.claude/settings.json` is self-use permission defaults (not distrib
 
 ## Maintenance
 
-Adding a new skill or command:
-1. Write the definition in `skills/<name>/SKILL.md` or `commands/<name>.md`
+Adding a new skill:
+1. Write the definition in `skills/<name>/SKILL.md`
 2. Notify consumers to run `/plugin update skill@skill` + restart
 
 See [ROADMAP.md](./ROADMAP.md) for planned improvements.

@@ -1,6 +1,11 @@
 ---
 name: skill-simplifier
 description: 精简、瘦身、压缩既有 Claude Code skill 的 SKILL.md（含 references/ knowledge/）。识别冗余、AI 套话、复述式 What、过长示例、可下沉的领域细节，按"先量级、后分类、再删改、HITL 拍板"推进；只动既有 skill 的形态，不创建新 skill（那是 skill-writer 的事）。触发关键词：精简 skill、瘦身 skill、压缩 skill、SKILL.md 太长、skill 冗余、refactor skill、shrink skill、condense skill、simplify skill。
+metadata:
+  author: HuaTalk
+  version: "1.0.0"
+  category: workflow
+  status: stable
 ---
 
 # skill-simplifier
