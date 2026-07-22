@@ -42,6 +42,7 @@ Upgrade: `/plugin update skill@skill` + restart.
 ├── .pre-commit-config.yaml # Optional local commit hook
 ├── CLAUDE.md               # Project instructions
 ├── CHANGELOG.md            # Release history
+├── CONTRIBUTING.md         # Contribution and release workflow
 ├── scripts/                # Repository checks and trigger fixtures
 │   ├── check.sh
 │   └── test-skill-triggers.sh
@@ -109,3 +110,4 @@ The checks require Bash, Git, and `jq`. On macOS, install the JSON tool with `br
 For a release, update `plugin.json` and `CHANGELOG.md`, then create a `v<version>` tag. The tag workflow rejects a tag that does not match the plugin version.
 
 See [ROADMAP.md](./ROADMAP.md) for planned improvements.
+See [CONTRIBUTING.md](./CONTRIBUTING.md) before opening a change.
