@@ -91,6 +91,9 @@ ln -sf ~/path/to/skill/.mcp.json /path/to/project/.mcp.json
 
 Adding a new skill:
 1. Write the definition in `skills/<name>/SKILL.md`
-2. Notify consumers to run `/plugin update skill@skill` + restart
+2. Run `./scripts/check.sh`
+3. Notify consumers to run `/plugin update skill@skill` + restart
+
+Install the optional local commit hook with `pre-commit install`. Pull requests and pushes to `main` run the same checks in GitHub Actions.
 
 See [ROADMAP.md](./ROADMAP.md) for planned improvements.

@@ -112,6 +112,7 @@ The `domain-context` skill provides a general-purpose domain knowledge managemen
 When adding a skill:
 1. Write the definition in `skills/<name>/SKILL.md`
 2. Ensure frontmatter has required fields (`name`, `description`)
-3. Notify consumers to run `/plugin update skill@skill` + restart Claude Code
+3. Run `./scripts/check.sh`
+4. Notify consumers to run `/plugin update skill@skill` + restart Claude Code
 
 See `ROADMAP.md` for planned improvements.
