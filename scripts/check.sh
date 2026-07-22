@@ -155,6 +155,9 @@ main() {
 
   check_manifests
   check_skills
+  if ! bash "$ROOT/scripts/test-skill-triggers.sh"; then
+    fail "skill trigger phrases"
+  fi
   check_release_metadata
   check_secrets
   check_installer

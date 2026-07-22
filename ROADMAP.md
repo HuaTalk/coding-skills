@@ -29,16 +29,16 @@
 
 ## #4 — skill 触发匹配验证
 
-**问题**：skill 的 `description` 字段是 dispatcher 的唯一匹配面。缩减关键词后可能丢召回，但当前无法自动化验证。
+**现状**：`scripts/test-skill-triggers.sh` 为每个 skill 固定高频触发词，并由 `scripts/check.sh` 在 CI 和 pre-commit 中强制校验。它验证 dispatcher 输入面是否发生意外删词，不模拟模型召回率。
 
-**落地动作**：
-- `scripts/test-skill-triggers.sh`：对每个 skill 列出预设触发句，模拟匹配（grep/模糊），报告未命中
-- 不追求 100% 覆盖率，重点覆盖高频触发词
-- 作为 #1 CI 流程的可选步骤（允许部分未命中，不阻塞 PR）
+**后续动作**：
+- 随真实使用反馈补充高频触发词
+- 需要更真实的召回评估时，再引入独立的 dispatcher 测试环境
 
 ## 已完成
 
 - ~~CI 校验 + pre-commit~~：`scripts/check.sh` 统一校验 manifest、skill frontmatter、库存文档、版本/changelog、凭证模式和安装器；GitHub Actions 与 pre-commit 复用同一脚本
+- ~~skill 触发匹配验证~~：`scripts/test-skill-triggers.sh` 固定 11 个高频触发词，由统一检查脚本强制运行
 - ~~i18n 双版本~~：最初支持中英双版本（SKILL-zh.md、CLAUDE-zh.md 等），2026-07-01 决定改为仅维护英文版，所有中文文件已删除
 - ~~cross-skill 一致性审查~~：通过原子化重构消除所有 19 个跨 skill 引用（`f8da7d7`），不再需要独立脚本
 - ~~skill 创建模板~~：新 skill 创建频率接近零，不单独维护模板文件；写作规范并入 CONTRIBUTING.md 即可
