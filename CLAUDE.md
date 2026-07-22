@@ -117,4 +117,6 @@ When adding a skill:
 
 The checks require Bash, Git, and `jq`; on macOS, install `jq` with `brew install jq` when needed.
 
+For a release, update `.claude-plugin/plugin.json` and `CHANGELOG.md`, then create a `v<version>` tag. The tag workflow rejects a mismatched version.
+
 See `ROADMAP.md` for planned improvements.

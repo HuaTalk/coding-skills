@@ -111,6 +111,22 @@ check_release_metadata() {
   pass "release metadata for $version"
 }
 
+check_release_tag() {
+  local ref=${GITHUB_REF:-}
+  local tag version
+
+  [[ $ref == refs/tags/* ]] || return 0
+  tag=${ref#refs/tags/}
+  version=$(jq -r '.version' "$ROOT/.claude-plugin/plugin.json")
+
+  if [[ $tag != "v$version" ]]; then
+    fail "release tag $tag does not match plugin version $version (expected v$version)"
+    return 0
+  fi
+
+  pass "release tag $tag"
+}
+
 check_secrets() {
   local file matches found=0
   local secret_pattern='ghp_''[[:alnum:]]{20,}|sk-''[[:alnum:]_-]{20,}'
@@ -159,6 +175,7 @@ main() {
     fail "skill trigger phrases"
   fi
   check_release_metadata
+  check_release_tag
   check_secrets
   check_installer
 

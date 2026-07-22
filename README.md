@@ -104,4 +104,6 @@ Install the optional local commit hook with `pre-commit install`. Pull requests 
 
 The checks require Bash, Git, and `jq`. On macOS, install the JSON tool with `brew install jq` if it is not already available.
 
+For a release, update `plugin.json` and `CHANGELOG.md`, then create a `v<version>` tag. The tag workflow rejects a tag that does not match the plugin version.
+
 See [ROADMAP.md](./ROADMAP.md) for planned improvements.
