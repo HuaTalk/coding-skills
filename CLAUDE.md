@@ -57,6 +57,8 @@ metadata:
 
 The `description` field is the dispatcher's sole matching surface. It doubles as the trigger keyword set — typically includes both Chinese and English keywords.
 
+Each skill has one canonical `SKILL.md`; do not add parallel language variants such as `SKILL-zh.md`. Keep the canonical content in the language(s) that best match the team's users.
+
 ## Skill Sources
 
 1. **Team-maintained** (edit in this repo): `best-effort-delivery`, `domain-context`, `explore-legacy`, `light-explore`, `openspec-explore`, `skill-simplifier`, `unknown-unknowns`, `verification-harness`

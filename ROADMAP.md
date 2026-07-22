@@ -32,7 +32,7 @@
 - ~~CI 校验 + pre-commit~~：`scripts/check.sh` 统一校验 manifest、skill frontmatter、库存文档、版本/changelog、凭证模式和安装器；GitHub Actions 与 pre-commit 复用同一脚本
 - ~~发布流程自动化~~：release 文档约定 `v<version>` tag，tag workflow 校验 tag 与 `plugin.json` 版本一致
 - ~~skill 触发匹配验证~~：`scripts/test-skill-triggers.sh` 固定 11 个高频触发词，由统一检查脚本强制运行
-- ~~i18n 双版本~~：最初支持中英双版本（SKILL-zh.md、CLAUDE-zh.md 等），2026-07-01 决定改为仅维护英文版，所有中文文件已删除
+- ~~i18n 双版本~~：最初支持中英双版本（SKILL-zh.md、CLAUDE-zh.md 等），现改为每个 skill 只维护一个 canonical 文件；canonical 内容可按团队用户使用中文、英文或混用
 - ~~cross-skill 一致性审查~~：通过原子化重构消除所有 19 个跨 skill 引用（`f8da7d7`），不再需要独立脚本
 - ~~skill 创建模板~~：新 skill 创建频率接近零，不单独维护模板文件；写作规范并入 CONTRIBUTING.md 即可
-- ~~install.sh 健壮性~~：安装路径统一为 plugin marketplace + 英文。install.sh 保留但不再作为推荐路径，以后需要选语言/选 skill 时再加强
+- ~~install.sh 健壮性~~：安装路径统一为 plugin marketplace。install.sh 保留但不再作为推荐路径，以后需要选 skill 时再加强

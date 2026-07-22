@@ -54,6 +54,8 @@ Upgrade: `/plugin update skill@skill` + restart.
 
 > Claude Code discovers plugin skills from the root-level `skills/` directory; they cannot live under `.claude/`.
 
+Each skill has one canonical `SKILL.md`; the repository does not maintain parallel `*-zh.md` variants. Skill content and trigger phrases may use Chinese, English, or both.
+
 ## Setup Guide
 
 ### Install via Plugin Marketplace

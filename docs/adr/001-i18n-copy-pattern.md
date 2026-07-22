@@ -2,7 +2,7 @@
 
 ## Status
 
-**Superseded** (2026-07-01). The project no longer maintains Chinese variants. All `SKILL-zh.md`, `CLAUDE-zh.md`, `README-zh.md`, `ROADMAP-zh.md`, and `i18n-switch.sh` have been removed. English is the sole maintained language. This ADR is retained for historical reference.
+**Superseded** (2026-07-01). The project no longer maintains parallel language variants. All `SKILL-zh.md`, `CLAUDE-zh.md`, `README-zh.md`, `ROADMAP-zh.md`, and `i18n-switch.sh` have been removed. Each skill now has one canonical `SKILL.md`; its content may use the team's working language(s). This ADR is retained for historical reference.
 
 *Original status: Accepted (2026-06-09)*
 
