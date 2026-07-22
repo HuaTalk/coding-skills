@@ -112,14 +112,21 @@ check_release_metadata() {
 }
 
 check_secrets() {
-  local matches
+  local file matches found=0
   local secret_pattern='ghp_''[[:alnum:]]{20,}|sk-''[[:alnum:]_-]{20,}'
 
-  if matches=$(git -C "$ROOT" grep -nEI "$secret_pattern" -- .); then
-    printf '%s\n' "$matches" >&2
-    fail "possible credential found in tracked files"
-  else
+  while IFS= read -r -d '' file; do
+    [[ -f "$ROOT/$file" ]] || continue
+    if matches=$(grep -nEI "$secret_pattern" "$ROOT/$file"); then
+      printf '%s:%s\n' "$file" "$matches" >&2
+      found=1
+    fi
+  done < <(git -C "$ROOT" ls-files --cached --others --exclude-standard -z)
+
+  if ((found == 0)); then
     pass "credential patterns"
+  else
+    fail "possible credential found in tracked or untracked files"
   fi
 }
 
