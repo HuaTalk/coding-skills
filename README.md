@@ -26,6 +26,8 @@ Upgrade: `/plugin update skill@skill` + restart.
 ├── .claude-plugin/
 │   ├── plugin.json         # Plugin manifest
 │   └── marketplace.json    # Marketplace manifest
+├── .github/
+│   └── workflows/check.yml # CI repository checks
 ├── skills/                 # Skills (auto-discovered at plugin root)
 │   ├── best-effort-delivery/   # Best-effort delivery for ambiguous tasks
 │   ├── brainstorming/          # Needs clarification before building (from obra/superpowers)
@@ -37,8 +39,12 @@ Upgrade: `/plugin update skill@skill` + restart.
 │   ├── unknown-unknowns/       # Blind-spot detection
 │   └── verification-harness/   # Post-implementation adversarial verification
 ├── .mcp.json               # MCP servers (intellij-index)
+├── .pre-commit-config.yaml # Optional local commit hook
 ├── CLAUDE.md               # Project instructions
 ├── CHANGELOG.md            # Release history
+├── scripts/                # Repository checks and trigger fixtures
+│   ├── check.sh
+│   └── test-skill-triggers.sh
 ├── README.md               # This file
 ├── ROADMAP.md
 └── docs/
@@ -95,5 +101,7 @@ Adding a new skill:
 3. Notify consumers to run `/plugin update skill@skill` + restart
 
 Install the optional local commit hook with `pre-commit install`. Pull requests and pushes to `main` run the same checks in GitHub Actions.
+
+The checks require Bash, Git, and `jq`. On macOS, install the JSON tool with `brew install jq` if it is not already available.
 
 See [ROADMAP.md](./ROADMAP.md) for planned improvements.

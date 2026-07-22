@@ -115,4 +115,6 @@ When adding a skill:
 3. Run `./scripts/check.sh`
 4. Notify consumers to run `/plugin update skill@skill` + restart Claude Code
 
+The checks require Bash, Git, and `jq`; on macOS, install `jq` with `brew install jq` when needed.
+
 See `ROADMAP.md` for planned improvements.
