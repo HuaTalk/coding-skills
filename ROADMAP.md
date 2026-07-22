@@ -11,7 +11,7 @@
 - fallback 到 `skills/domain-context/templates/domain-module-template.md`
 - 模板节标题可覆盖，但不能删除核心语义（输入/输出/不输出）
 
-## #3 — skill 触发匹配验证
+## #2 — skill 触发匹配验证
 
 **现状**：`scripts/test-skill-triggers.sh` 为每个 skill 固定高频触发词，并由 `scripts/check.sh` 在 CI 和 pre-commit 中强制校验。它验证 dispatcher 输入面是否发生意外删词，不模拟模型召回率。
 
