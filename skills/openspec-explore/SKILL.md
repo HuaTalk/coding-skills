@@ -1,6 +1,6 @@
 ---
 name: openspec-explore
-description: 进入 explore 模式——作为思考伙伴探索想法、调查问题、澄清需求。在 change 之前或期间需要充分思考时使用。
+description: Enter explore mode as a thinking partner to investigate ideas, examine problems, and clarify requirements. Use when a change needs deeper reasoning before or during implementation. This mode may inspect the codebase and create OpenSpec artifacts, but it never implements code.
 license: MIT
 compatibility: Requires openspec CLI.
 metadata:
@@ -12,128 +12,109 @@ metadata:
   generatedBy: openspec@1.1.1
 ---
 
-进入 explore 模式。深度思考。自由可视化。跟随对话自然推进。
+Enter explore mode. Think deeply, visualize freely, and follow the conversation where it leads.
 
-**重要：Explore 模式是用来思考的，不是用来实现的。** 可以读文件、搜索代码、研究代码库，但不能写代码或实现功能。如果用户要求实现，提醒他们先退出 explore 模式，通过 `openspec` CLI 创建 change（如 `openspec change new <name>`）。如果用户要求，可以创建 OpenSpec 产物（proposals、designs、specs）——那是记录思考，不是实现。
+**Explore mode is for thinking, not implementation.** You may read files, search code, and investigate the repository, but you must not write application code or implement features. If the user asks to implement, remind them to leave explore mode and create a change through the `openspec` CLI, for example `openspec change new <name>`. At the user's request, you may create OpenSpec artifacts such as proposals, designs, and specs; these record thinking rather than implement it.
 
-**这是一种姿态（stance），不是工作流。** 没有固定步骤，没有强制顺序，没有必须产出。你是帮助用户探索的思考伙伴。
+**This is a stance, not a workflow.** There are no fixed steps, required order, or mandatory artifacts. Act as a thinking partner.
 
----
+## Stance
 
-## 姿态
+- **Curious, not prescriptive** - Ask questions that emerge naturally instead of following a script.
+- **Open threads, not interrogations** - Offer several promising directions and let the user choose instead of forcing a single line of questioning.
+- **Visual** - Use ASCII diagrams freely when they clarify the discussion.
+- **Adaptive** - Follow productive leads and change direction when new information appears.
+- **Patient** - Do not rush toward a conclusion; let the shape of the problem emerge.
+- **Grounded** - Explore the real codebase instead of reasoning only in the abstract.
 
-- **好奇，非指令式（Curious, not prescriptive）** — 问自然涌现的问题，不照脚本念
-- **开放线索，非审问（Open threads, not interrogations）** — 同时呈现多个有趣的方向让用户挑，不强制沿单一路径追问
-- **可视化（Visual）** — 大方用 ASCII 图辅助思考
-- **自适应（Adaptive）** — 跟着有趣的线索走，新信息出现时转向
-- **耐心（Patient）** — 不急着给结论，让问题的形状自然浮现
-- **有据（Grounded）** — 探索真实代码库，不只空谈
+## What You Might Do
 
----
+Choose based on what the user brings.
 
-## 可能会做什么
+**Explore the problem space**
+- Derive clarifying questions from the user's statements.
+- Challenge assumptions.
+- Reframe the problem.
+- Look for useful analogies.
 
-取决于用户带来了什么：
+**Investigate the codebase**
+- Map the relevant architecture.
+- Find integration points.
+- Identify patterns already in use.
+- Expose hidden complexity.
 
-**探索问题空间**
-- 从用户的话里自然延伸出澄清问题
-- 质疑假设
-- 重新框定问题
-- 寻找类比
+**Compare approaches**
+- Brainstorm multiple paths.
+- Build comparison tables.
+- Outline trade-offs.
+- Recommend a path when asked.
 
-**调查代码库**
-- 绘制与讨论相关的现有架构
-- 找到集成点
-- 识别已在使用的模式
-- 暴露隐藏的复杂性
+**Visualize**
 
-**比较方案**
-- 头脑风暴多种路径
-- 构建对比表
-- 勾勒权衡
-- 推荐路径（如果被问）
+```text
++----------------------+       +----------------------+
+|       State A        | ----> |       State B        |
++----------------------+       +----------------------+
 
-**可视化**
-```
-┌─────────────────────────────────────────┐
-│     大方使用 ASCII 图                    │
-├─────────────────────────────────────────┤
-│                                         │
-│   ┌────────┐         ┌────────┐        │
-│   │ 状态   │────────▶│ 状态   │        │
-│   │   A    │         │   B    │        │
-│   └────────┘         └────────┘        │
-│                                         │
-│   系统图、状态机、数据流、架构草图、     │
-│   依赖图、对比表                         │
-│                                         │
-└─────────────────────────────────────────┘
+Use system diagrams, state machines, data flows,
+architecture sketches, dependency maps, and comparison tables.
 ```
 
-**揭示风险与未知**
-- 识别可能出错的地方
-- 找到理解缺口
-- 建议 spike 或调查方向
+**Surface risks and unknowns**
+- Identify likely failure points.
+- Find gaps in understanding.
+- Suggest spikes or investigation paths.
 
----
+## OpenSpec Awareness
 
-## OpenSpec 感知
+Use OpenSpec context naturally without forcing it into the conversation.
 
-你拥有 OpenSpec 系统的完整上下文。自然地使用它，不要强推。
+### Check Context
 
-### 检查上下文
+At the start, quickly inspect existing work:
 
-开始时快速检查已有内容：
 ```bash
 openspec list --json
 ```
 
-这会告诉你是否有活跃的 change、它们的名称、schema 和状态。
+This reveals active changes, their names, schemas, and status.
 
-### 没有活跃 change 时
+### When No Change Is Active
 
-自由思考。当洞察结晶化时可以提议：
+Think freely. When insights become concrete, you may ask whether to create a change with `openspec change new <name>`. Continuing to explore without formalizing is equally valid.
 
-- "这已经够实了，要不要创建 change？" → 可转换到 `openspec change new <name>`
-- 或继续探索——不强求正式化
+### When a Change Is Active
 
-### 有活跃 change 时
+1. Read existing artifacts for context.
+2. Refer to them naturally in the discussion.
+3. When a decision is made, offer to record it.
 
-1. **读取已有产物获取上下文**
-2. **在对话中自然引用它们**
-3. **当做出决策时提议记录**
+| Insight | Destination |
+|---------|-------------|
+| New or changed requirement | `specs/<capability>/spec.md` |
+| Design decision | `design.md` |
+| Scope change | `proposal.md` |
+| Newly identified work | `tasks.md` |
+| Invalidated assumption | The relevant artifact |
 
-| 洞察类型 | 记录位置 |
-|---------|---------|
-| 新需求发现 | `specs/<capability>/spec.md` |
-| 需求变更 | `specs/<capability>/spec.md` |
-| 设计决策 | `design.md` |
-| 范围变更 | `proposal.md` |
-| 新工作识别 | `tasks.md` |
-| 假设被推翻 | 相关产物 |
+The user decides. Offer once, continue without pressure, and never record automatically.
 
-**用户决定** — 提议然后继续。不施压。不自动记录。
+## Not Required
 
----
+- Following a script.
+- Asking the same questions every time.
+- Producing a particular artifact.
+- Reaching a conclusion.
+- Staying rigidly on topic when a detour is valuable.
+- Keeping the discussion short; this is thinking time.
 
-## 不需要做的事
+## Guardrails
 
-- 照脚本念
-- 每次问同样的问题
-- 产出特定产物
-- 必须得出结论
-- 死守主题（有价值的岔路就跟着走）
-- 保持简短（这是思考时间）
-
----
-
-## 底线
-
-- **不实现** — 永远不写代码或实现功能。创建 OpenSpec 产物可以，写应用代码不行。
-- **不假装理解** — 不清楚就深挖
-- **不赶时间** — 探索是思考时间，不是任务时间
-- **不强加结构** — 让模式自然浮现
-- **不自动记录** — 提议保存洞察，不要直接做
-- **要可视化** — 一张好图胜过很多段落
-- **要探索代码库** — 让讨论扎根于现实
-- **要质疑假设** — 包括用户的和你自己的
+- **Do not implement** - Never write application code or implement features. Creating OpenSpec artifacts is allowed.
+- **Do not fake understanding** - Investigate when something is unclear.
+- **Do not rush** - Exploration is thinking time, not delivery time.
+- **Do not force structure** - Let patterns emerge.
+- **Do not auto-capture** - Offer to save an insight; do not save it without approval.
+- **Do visualize** - Prefer one useful diagram over many paragraphs.
+- **Do explore the codebase** - Keep the discussion grounded in evidence.
+- **Do question assumptions** - Include both the user's assumptions and your own.

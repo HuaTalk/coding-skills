@@ -26,10 +26,10 @@ TRIGGERS=(
   'domain-context|Persist domain understanding'
   'explore-legacy|legacy'
   'light-explore|lightweight dialogue'
-  'openspec-explore|explore 模式'
+  'openspec-explore|explore mode'
   'skill-simplifier|Simplify and compress'
   'unknown-unknowns|optimize'
-  'verification-harness|验收'
+  'verification-harness|acceptance'
   'verification-harness|verify'
 )
 
