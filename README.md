@@ -55,7 +55,7 @@ Upgrade: `/plugin update skill@skill` + restart.
 
 > Claude Code discovers plugin skills from the root-level `skills/` directory; they cannot live under `.claude/`.
 
-Each skill has one canonical `SKILL.md`; the repository does not maintain parallel `*-zh.md` variants. Skill content and trigger phrases may use Chinese, English, or both.
+English is the only maintained language. Each skill has one canonical `SKILL.md`; translated variants are not maintained. The last Chinese sources remain available only through the frozen archive documented in [`docs/archive/chinese-snapshot.md`](./docs/archive/chinese-snapshot.md).
 
 ## Setup Guide
 

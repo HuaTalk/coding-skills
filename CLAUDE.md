@@ -55,9 +55,9 @@ metadata:
 ---
 ```
 
-The `description` field is the dispatcher's sole matching surface. It doubles as the trigger keyword set — typically includes both Chinese and English keywords.
+The `description` field is the dispatcher's sole matching surface. It doubles as the English trigger keyword set.
 
-Each skill has one canonical `SKILL.md`; do not add parallel language variants such as `SKILL-zh.md`. Keep the canonical content in the language(s) that best match the team's users.
+English is the only maintained language. Each skill has one canonical `SKILL.md`; do not add translated variants such as `SKILL-zh.md`. Historical Chinese sources are frozen in Git history and must not be synchronized with current files.
 
 ## Skill Sources
 
@@ -69,7 +69,7 @@ Each skill has one canonical `SKILL.md`; do not add parallel language variants s
 
 ### plugin.json (identity)
 
-Declares the plugin name, version, supported languages, keywords, and repository URL. The `name` field is the plugin identifier used in `skill@skill` install syntax.
+Declares the plugin name, version, supported language, keywords, and repository URL. The `name` field is the plugin identifier used in `skill@skill` install syntax.
 
 ### marketplace.json (self-distribution)
 

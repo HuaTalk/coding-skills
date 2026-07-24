@@ -13,7 +13,8 @@ All notable changes to this project are documented in this file.
 
 - Aligned the plugin documentation and installer with the tracked skills-only layout.
 - Standardized metadata across all shipped skills, including stance/workflow categories.
-- Clarified the single-canonical-file language policy and documented the `v<version>` release convention.
+- Made English the sole maintained language, archived the previous Chinese sources, and documented the `v<version>` release convention.
+- Translated all shipped skills and streamlined the verification harness through progressive disclosure.
 
 ### Removed
 

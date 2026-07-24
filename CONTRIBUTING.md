@@ -14,7 +14,7 @@ This repository packages Claude Code skills. Contributions should stay focused o
 2. Keep the directory name and frontmatter `name` identical.
 3. Include a clear `description` with both the capability and realistic trigger phrases.
 4. Keep `metadata.author`, quoted semver `version`, `category`, and `status` current.
-5. Do not add parallel `SKILL-zh.md` files. The canonical file may use the team's working language(s).
+5. Write maintained content in English. Do not add translated variants such as `SKILL-zh.md`; the historical Chinese snapshot is frozen and does not receive updates.
 6. Update the human-facing inventory in `README.md` and `CLAUDE.md` when the shipped inventory changes.
 
 For long examples, templates, or reference material, use a directly linked `references/` or `templates/` file instead of inflating the main skill prompt. Avoid cross-skill name dependencies unless the dependency is a real runtime requirement.
