@@ -1,91 +1,90 @@
 ---
 name: explore-legacy
-description: 不熟悉的老代码探路。典型说法："对这块完全不熟"、"原作者离职了"、"注释和实现对不上"、"git log 几年没改"、"deprecated 但生产还在用"、"刚接手这块"、"老模块根因排查"、"跨链路调研"、"javadoc 写的和代码不一致"、"feature flag 永远 true"、"配置中心僵尸 key"。提供 8 条 stance（探索姿态）帮 agent 识别可疑真值源、并行调查、显式标注不确定性，而不是按 checklist 跑流程。触发：历史代码、legacy、遗留代码、老代码、不熟的模块、deprecated、dead code、跨链路调研、注释和实现不一致、原作者离职、僵尸配置、特性开关。
+description: Explore unfamiliar legacy code when the original author is gone, comments conflict with implementation, old paths remain in production, or truth sources are suspect. Uses eight investigation stances to compare evidence, pursue parallel leads, and label uncertainty instead of following a rigid checklist. Triggers: legacy code, historical code, unfamiliar module, deprecated path, dead code, cross-system investigation, comment mismatch, departed author, stale config, feature flag.
 metadata:
   author: HuaTalk
   version: "1.1.0"
   category: methodology
   status: stable
 ---
+# Explore Legacy: Navigating Historical Code
 
-# Explore Legacy：在历史代码里探路
-
-**这是一组姿态（stance），不是工作流（workflow）。** 没有固定步骤，没有强制产物。你是用户的思考伙伴，帮他在一份"真值源已死"的代码库里识别"哪条线索值得追"、"哪份注释不能信"、"哪个分支早就跑不到了"。
-
----
-
-## 何时启用本 skill
-
-- 用户提到："历史代码 / legacy / 遗留代码 / 老代码 / 不熟 / 完全没碰过 / 这块谁写的"
-- 老模块根因排查、跨链路调研，调用图复杂、断点不容易找
-- grep 出 deprecated 类、dead branch、长期未改的 feature flag、看起来"僵尸"的配置中心 key
-- 注释 / JavaDoc / 接口签名 / 测试用例和实际代码看起来不一致
-
-## 何时**不**用本 skill
-
-| 场景 | 用什么 |
-|---|---|
-| 新功能、新模块、跨多文件重构 | 完整探索流程加设计产物 |
-| 需求大体清楚、剩 1-2 个澄清点 | 轻量对话式澄清 |
-| 单点 bug、配置/常量、明确到行的 patch | 直接动手 |
-| 不可逆操作（force push、删生产配置、发布全量） | 必须走 workflow，不是 stance |
-| 已经定义清楚、要把动作做对（commit/部署/archive） | 切回 workflow |
-
-> 历史代码探索完成、问题定义清楚之后，**立刻切回 workflow** 把动作做对。stance 只在收敛阶段用。
+**This is a set of stances, not a workflow.** No fixed steps, no mandatory outputs. You are the user's thinking partner, helping them identify "which clues are worth chasing", "which comments can't be trusted", and "which branches stopped running years ago" in a codebase where the sources of truth have died.
 
 ---
+## When to Use This Skill
 
-## 核心认识：真值源已死
+- User mentions: "legacy code / historical code / unfamiliar / never touched this / who wrote this"
+- Root-cause investigation in old modules, cross-chain research with complex call graphs
+- Grep finds deprecated classes, dead branches, long-untouched feature flags, zombie config keys
+- Comments / JavaDoc / interface signatures / test cases appear inconsistent with actual code
 
-健康代码库里 `code is the truth`，注释/测试/文档只是这份真理的不同视角。
+## When NOT to Use
 
-历史代码里这个约定塌了——代码、注释、上线 runbook、老工程师脑子里的记忆**各自记录的是不同时刻的真**，没有任何一份是完整的。agent 默认信任它读到的东西，但在历史代码里它读到的恰好都是已经死了的真值源。
-
-所以遇到下面这些东西，要**默认重新定性**：
-
-| 看到的东西 | 默认重新定性为 |
+| Scenario | What to Use |
 |---|---|
-| 注释 / JavaDoc | "某个过去时刻的事实候选" |
-| 接口签名 | "曾经的契约候选" |
-| 测试用例 | "曾经被认为重要的行为候选" |
-| 当前代码 | "实际跑着的行为，不一定是应该跑的行为" |
-| 配置 key（Etcd、Apollo、Nacos 等配置中心） | "可能五年没人读了" |
-| Feature flag | "可能永远 true / 永远 false，另一条分支早就死了" |
+| New features, new modules, cross-file refactors | Full exploration with design artifacts |
+| Requirements mostly clear, 1-2 clarification points remain | Lightweight dialogue-based clarification |
+| Single-line bugs, config/constants, obvious patches | Just do it |
+| Irreversible operations (force push, delete production config, full rollout) | Must use workflow, not stance |
+| Problem well-defined, need to execute correctly (commit/deploy/archive) | Switch back to workflow |
 
-每条这种东西都要默认问一句："**这条今天还成立吗？**"
+> After legacy exploration is complete and the problem is well-defined, **switch back to workflow immediately** to execute correctly. Stances are only for the convergence phase.
 
-### 思想坟墓：每一层都是某个过去的截面
+---
+## Core Insight: The Sources of Truth Are Dead
+
+In a healthy codebase, `code is the truth` — comments, tests, and docs are just different perspectives on that truth.
+
+In legacy code, this compact collapses. Code, comments, production runbooks, and the memories in senior engineers' heads **each record the truth at a different moment in time**. No single source is complete. An agent defaults to trusting what it reads, but in legacy code, what it reads are precisely dead sources of truth.
+
+So when you encounter the following, **re-qualify them by default**:
+
+| What you see | Re-qualify as |
+|---|---|
+| Comments / JavaDoc | "A candidate fact from some past moment" |
+| Interface signatures | "A candidate contract from some past moment" |
+| Test cases | "A candidate behavior once considered important" |
+| Current code | "What actually runs — not necessarily what should run" |
+| Config keys (Etcd, Apollo, Nacos, etc.) | "Probably unread for five years" |
+| Feature flags | "Probably permanently true / false, the other branch died long ago" |
+
+For each of these, ask by default: "**Does this still hold today?**"
+
+### The Thought Cemetery: Every Layer Is a Cross-Section of Some Past
 
 ```
-   ┌────────────────────────────────────────────────┐  ← 现在的代码
-   │  实际运行的逻辑（多数没注释、没文档）           │
-   ├────────────────────────────────────────────────┤  ← 上一次大改之前
-   │  仍能编译但不再被调用的接口 / 死分支            │
-   ├────────────────────────────────────────────────┤  ← 三年前的灰度
-   │  永远 true 的 feature flag、配置僵尸 key       │
-   ├────────────────────────────────────────────────┤  ← 五年前的抽象
-   │  现在已被绕过的某个基类 / 抽象接口             │
-   ├────────────────────────────────────────────────┤  ← 项目最初
-   │  最早一版注释、最早一版命名、最早一版 README   │
+   ┌────────────────────────────────────────────────┐  ← Today's code
+   │  Logic that actually runs (mostly uncommented,  │
+   │  undocumented)                                  │
+   ├────────────────────────────────────────────────┤  ← Before the last big change
+   │  Interfaces that still compile but are never    │
+   │  called / dead branches                         │
+   ├────────────────────────────────────────────────┤  ← A canary from 3 years ago
+   │  Permanently-true feature flags, zombie config  │
+   │  keys                                           │
+   ├────────────────────────────────────────────────┤  ← Abstractions from 5 years ago
+   │  A base class / abstract interface now bypassed │
+   ├────────────────────────────────────────────────┤  ← Project origins
+   │  Earliest comments, names, README               │
    └────────────────────────────────────────────────┘
 ```
 
-每一层都自称是真值源。它们不可能都对。最值钱的那份——老工程师脑子里的——往往是**未文档化的**，agent 读不到。
+Each layer claims to be a source of truth. They can't all be right. The most valuable one — what's in the senior engineer's head — is often **undocumented** and inaccessible to the agent.
 
 ---
-
-## 8 条 Stance（用 X, not Y 句式）
+## 8 Stances (X, not Y)
 
 ### 1. Curious, not prescriptive
-跟着代码里冒出来的问题走，**不照着 checklist 把"目的/约束/成功标准"问完**。历史代码里冒出来的问题（"这个 A 服务为啥被 B 解析器调用了？这俩看名字应该没关系啊"）往往不在任何脚本里，但常常是真主路。
+Follow questions that emerge from the code itself. **Don't run through a checklist of "purpose/constraints/success criteria."** Questions that emerge from legacy code ("Why is service A called by parser B? Their names suggest they're unrelated") are often not in any script — but they're often the real critical path.
 
 ### 2. Open threads, not interrogations
-**一次抛多个角度让用户挑**，不沿一条路径单线追问。历史代码里一段代码经常同时和三个模块有关，强行选一条线深入会错过另外两条线里的关键信号。
+**Surface multiple angles at once and let the user choose.** Don't funnel them down a single line of questioning. In legacy code, a single piece of code often relates to three modules simultaneously; forcing one line of inquiry misses critical signals in the other two.
 
-> 例："这个 `entityType` 字段我看到三个值得追的方向：(1) 在 `RuleResolver` 里被当 enum 用，(2) 在某个旧接口里是字符串，(3) 在某个配置中心被作为黑名单 key——你想从哪条先看？"
+> Example: "I see three threads worth chasing for this `entityType` field: (1) It's used as an enum in `RuleResolver`, (2) It's a string in some old interface, (3) It's used as a blacklist key in a config center — which do you want to follow first?"
 
 ### 3. Visual
-**大量用 ASCII 图**。类继承、调用链、状态机、配置生效路径——看图比读文字快十倍。文字描述每多一层嵌套理解成本指数上升，图是平面的。
+**Use ASCII diagrams liberally.** Class hierarchies, call chains, state machines, config propagation paths — a diagram is ten times faster to read than prose. Text comprehension cost rises exponentially with each nesting layer; a diagram is flat.
 
 ```
         Request
@@ -97,175 +96,168 @@ metadata:
           │
    ┌──────┴──────┐
    ▼             ▼
-正常路径       特殊路径
-(Resolver)    (?? 还没看清)
+Normal path   Special path
+(Resolver)    (?? still unclear)
 ```
 
-每段对话画一张图，胜过五段文字。
+One diagram per exchange beats five paragraphs of text.
 
 ### 4. Adaptive
-**跟着有趣的线索走**。grep 出来的某个 deprecated 类如果被 30 个地方引用，那才是真主路；别拘泥于"用户最初的请求"。
+**Follow interesting leads.** If a deprecated class you grepped is referenced in 30 places, that's the real critical path. Don't get trapped by "the user's original request."
 
-> 例：用户问"X 怎么算"，你 grep 找到 `XCalculator`，但发现它被 `LegacyAdapter` 包着、且这个 Adapter 在 17 处被调用——先停下来问用户："要不要先看 Adapter？它可能才是关键。"
+> Example: User asks "how is X calculated", you grep and find `XCalculator`, but notice it's wrapped by `LegacyAdapter` which is called in 17 places — stop and ask: "Want to look at the Adapter first? It might be the key."
 
 ### 5. Patient
-**不急着给方案**。历史代码探索的成本主要在前期看错方向，多花 10 分钟摸清现状能省后面 10 小时返工。
+**Don't rush to solutions.** The cost of legacy exploration is mostly in looking in the wrong direction early on. Spending 10 extra minutes understanding the current state saves 10 hours of rework later.
 
-LLM 默认行为是急着给结论（RLHF 的 helpful 倾向），但历史代码里**过早给方案是负贡献**。明确封堵：`Don't rush to conclusions, let the shape of the problem emerge`。
+An LLM's default behavior is to rush to conclusions (RLHF's helpfulness bias), but in legacy code, **premature solutions are negative contribution**. Explicit block: `Don't rush to conclusions, let the shape of the problem emerge.`
 
 ### 6. Grounded
-**真去 grep / 真去 read**。不基于训练数据里的通用知识脑补"Spring 项目应该长这样"、"这种命名约定一般意味着 X"。
+**Actually grep. Actually read.** Don't fill gaps with training-data general knowledge ("a Spring project should look like this", "this naming convention usually means X").
 
-历史代码里框架经常被改得它妈都不认识——`@Service` 可能是团队同名注解、`ApplicationContext` 可能是 static 单例、`@Component` 可能只是装饰没注入语义。先 grep 实例化方式，再下结论。
+In legacy code, frameworks are often warped beyond recognition — `@Service` might be a team-custom annotation, `ApplicationContext` might be a static singleton, `@Component` might be decorative with no DI semantics. Grep the instantiation pattern first, then draw conclusions.
 
 ### 7. Skeptical of comments
-注释、JavaDoc、README **全部当作"过去某一刻的观点"**，不当真值。每个看起来重要的注释验证一次："这个注释说 X，代码现在还做 X 吗？"
+Comments, JavaDoc, READMEs — **treat all as "opinions from some past moment,"** not as truth. For every important-looking comment, verify once: "This comment says X — does the code still do X?"
 
-历史代码里的注释三种状态：
-- (a) 写对过、现在已不对
-- (b) 一开始就写错
-- (c) 描述的是被删掉的某个特性
+Comments in legacy code exist in three states:
+- (a) Was once correct, now wrong
+- (b) Was wrong from the start
+- (c) Describes a feature that was deleted
 
-三类都会主动误导。`// 仅 X 类型走此分支` 这种必须 grep 确认——很可能是几年前写的，现在还有一个新加的子类型也走这里。
+All three actively mislead. A comment like `// Only type X enters this branch` must be grep-confirmed — it was likely written years ago, and a newly added subtype may also flow through here now.
 
 ### 8. Verify before recommending
-**任何让用户动手的建议（"改这一行就行"）都要先验证一次**。历史代码里"看起来对"和"测过了"之间是 5 个生产事故的距离。
+**Any recommendation that asks the user to take action ("just change this one line") must be verified first.** In legacy code, the distance between "looks right" and "tested" is 5 production incidents.
 
-如果没法跑，至少要把"我没验证过、可能漏掉 XX 分支"显式说出来。让不确定性外化成可被用户检查的清单。
+If you can't run it, at minimum explicitly state: "I haven't verified this — it might miss branch XX." Externalize uncertainty into a checklist the user can inspect.
 
 ---
+## Checks and Balances Between the 8
 
-## 8 条之间的制衡
+This isn't an independent list — it's a **self-balancing network of stances.** Any single tendency pushed to its extreme causes problems; adjacent stances pull it back:
 
-这不是独立列表，是**自带制衡的姿态网络**。任何单一倾向被推到极端都会出问题，相邻的态度负责把它拉回来：
-
-| 倾向被推到极端 | 由哪条拉回来 |
+| Tendency pushed to extreme | Pulled back by |
 |---|---|
-| **Adaptive** 跑偏，跟着各种线索发散 | **Grounded** 强制读真代码，回到当前文件 |
-| **Patient** 拖太久不收敛 | **Curious** 主动好奇推进对话节奏 |
-| **Skeptical of comments** 退化成"啥都不信、所有事都得 grep 一遍" | **Verify before recommending** 给可执行的验证标准（**只在让用户动手前验证**，纯讨论阶段允许带不确定性） |
-| **Open threads** 发散收不回来 | **Visual** 用一张图把多条线压到平面让用户挑 |
+| **Adaptive** running wild, chasing every lead | **Grounded** forces reading real code, returning to the current file |
+| **Patient** dragging on without convergence | **Curious** proactively drives conversation rhythm |
+| **Skeptical of comments** devolving into "trust nothing, grep everything" | **Verify before recommending** gives actionable verification criteria (only verify before asking user to act; pure discussion allows uncertainty) |
+| **Open threads** diverging uncontrollably | **Visual** compresses multiple threads onto a flat diagram for the user to choose |
 
 ---
+## What You Might Do (menu, not steps)
 
-## What you might do（菜单，不是步骤）
+Freely combine based on the current conversation state. **Don't run from 1 to N:**
 
-按当前对话状态自由组合，**不要从 1 跑到 N**：
+**Map the domain shape**
+- Concurrently grep multiple related keywords, summarize hit distribution (hot paths vs cold paths)
+- Draw a possibly-inaccurate high-level structure diagram for the user to validate
+- Surface 2-3 threads and let the user pick which to follow first
 
-**摸领域形状**
-- 并发 grep 多个相关关键词，汇总命中分布（哪些是热路径、哪些是冷路径）
-- 画一张可能不准的高层结构图给用户检验
-- 抛 2-3 条 thread 让用户挑要先看哪条
+**Identify suspect truth sources**
+- Comments vs implementation: find one inconsistency and explicitly ask "which one is authoritative?"
+- Interface vs callers: grep all callers, label hot paths vs cold paths
+- Feature flags / config keys: check last modified time, current value, commit message
+- Deprecated classes: grep callers, check if truly dead
 
-**识别可疑真值源**
-- 注释 vs 实现：找一处不一致就显式提出"以哪个为准？"
-- 接口 vs 调用方：grep 出所有 caller，标出热路径 vs 冷路径
-- Feature flag / 配置 key：查最后修改时间、当前值、commit message
-- Deprecated 类：grep 调用方，看是不是真 dead
+**Dispatch subagents for parallel investigation**
 
-**派 subagent 并行调查**
+When sub-task context is heavy (reading 2000-line classes, grepping hundreds of hits), dispatch it out. The main conversation keeps only distilled summaries. Example:
 
-子任务上下文重时（读两千行类、grep 几百个 hit）派出去，主对话只留 distilled summary。例：
+- Subagent A: grep all callers of class X, check if it's dead code
+- Subagent B: search all related config keys, note last-modified time and current value
 
-- subagent A：把 X 类的所有 caller grep 出来，看是不是 dead code
-- subagent B：去配置中心搜所有相关 key，标出最后修改时间和当前 value
+The main conversation doesn't do this itself — save context for critical-path reads.
 
-主对话不亲自做，留给关键路径的 read。
+**Triangulate truth sources**
 
-**Triangulate 真值源**
+Cross-reference comments, interfaces, tests, actual code, and oral memory — four independent sources. No single source is sufficient alone; at least two must agree to build confidence. When the four disagree, **explicitly surface the truth-source dispute** for the user to decide, rather than defaulting to trusting any one.
 
-注释、接口、测试、实际代码、口述记忆——四份独立来源互相对照。任何一条单独存在都不够，至少两份对得上才更可信。当四份不一致时，**显式提出真值源争议**让用户决策，而不是默认信哪一边。
-
-**给候选方案 + 显式不确定性**
-- 列假设清单（A/B/C 各自要成立）
-- 列没验证的事（要写测试、要在测试环境跑、要找熟悉这块的人）
-- 写明"任何一个不成立都要重新评估"
-
----
-
-## What you don't have to do（逃生通道）
-
-- **不需要**问完一整套需求 checklist
-- **不需要**最后给一个 summary 来"完成任务"——思考本身就是产物
-- **不需要**沿一条线追到底，发散更值钱
-- **不需要**装作什么都懂，遇到不熟的字段直接问用户或派 subagent
-- **不需要**写设计文档（除非用户明确要求）
+**Provide candidate approaches + explicit uncertainty**
+- List the assumption chain (A/B/C must each hold)
+- List what hasn't been verified (needs tests, needs staging run, needs someone familiar with this area)
+- State clearly: "If any assumption fails, reassess everything"
 
 ---
+## What You Don't Have To Do (escape hatches)
 
-## Guardrails（硬底线，stance 风格里唯一允许写硬规则的地方）
-
-- **不实现**：本 skill 是探索阶段，不写生产代码。如果用户让动手，提醒他先切换到规划或实现方案
-- **不替用户决策**：能不能下掉某个配置 key、要不要删某个 deprecated 类——agent 给建议，决策必须人做
-- **不基于训练数据脑补**：所有"框架/语言应该长这样"的先验都要先 grep 确认
-- **不假装有结论**：没验证过的就显式说"我没验证过"
+- **No need** to run through a full requirements checklist
+- **No need** to produce a summary to "complete the task" — the thinking itself is the product
+- **No need** to follow one thread to its end — divergence is more valuable
+- **No need** to pretend you know everything — if you encounter an unfamiliar field, ask the user or dispatch a subagent
+- **No need** to write a design doc (unless the user explicitly asks)
 
 ---
+## Guardrails (hard boundaries — the only place hard rules are allowed in stance style)
 
-## 一段示例对话
+- **Don't implement**: This skill is for exploration. Don't write production code. If the user asks you to build, remind them to switch to a planning or implementation approach first.
+- **Don't decide for the user**: Whether to remove a config key, whether to delete a deprecated class — the agent advises, the human decides.
+- **Don't fill gaps with training data**: All "frameworks/languages should look like this" priors must be grep-confirmed first.
+- **Don't pretend to have conclusions**: If you haven't verified it, explicitly say "I haven't verified this."
 
-> **用户**：接到一个任务，老模块 X 在某场景下展示错了，但我对这块完全不熟。先帮我摸下这块大概是什么形状。
+---
+## An Example Dialogue
 
-> **Agent**（Curious + Grounded）：好。我先 grep 几个关键词看入口在哪，再画个高层结构图。
+> **User**: Got a task — old module X is displaying incorrectly in a certain scenario, but I'm completely unfamiliar with this area. Help me map out roughly what shape this thing is.
+
+> **Agent** (Curious + Grounded): OK. Let me grep a few keywords to find the entry point, then draw a high-level structure diagram.
 >
-> （grep 后）命中比较散，先画一张可能不准的形状：
+> (after grepping) The hits are scattered. Here's a possibly-inaccurate shape:
 > ```
 >     Request → FacadeImpl → ModuleRouter
 >                              │
 >                       ┌──────┴──────┐
 >                       ▼             ▼
->                    正常路径      ?? 这条线没看清
+>                   Normal path   ?? This branch is unclear
 > ```
-> 我看到三条值得追的真值源（**Open threads**），你想先看哪个？
-> - `SpecialCaseService`：名字最对，但 grep 调用方只有 4 处，怀疑不是主路
-> - `RuleResolver`：所有路径好像都收敛到这里
-> - `Context`：所有权判定看起来在这里分叉
+> I see three truth-source threads worth chasing (**Open threads**). Which do you want to follow first?
+> - `SpecialCaseService`: Name fits best, but only 4 callers — suspect it's not the main path
+> - `RuleResolver`: Everything seems to converge here
+> - `Context`: Ownership decisions appear to fork here
 
-> **用户**：先看 RuleResolver。
+> **User**: Start with RuleResolver.
 
-> **Agent**（Skeptical of comments）：进 `RuleResolver` 主方法。这个方法的 javadoc 说"优先 A、其次回退 B"，但代码里实际逻辑是先判 `entityType`，是 PRIMARY 直接走主分支、不走"A/B 回退"那段——而且 javadoc 描述的回退顺序和代码里反过来。
+> **Agent** (Skeptical of comments): Entering `RuleResolver`'s main method. Its javadoc says "prefer A, fall back to B", but the actual code checks `entityType` first — if PRIMARY, it goes straight to the main branch, skipping the "A/B fallback" section entirely. And the fallback order in javadoc is the reverse of the code.
 >
-> **注释和实现不一致**。建议以代码为准，但你最好确认下原作者的意图。git blame 显示 2019 年原作者已离职，2021 年和 2023 年各有一次小修改但没改 javadoc。组里现在有谁对这块比较熟？
+> **Comment and implementation disagree.** I'd suggest trusting the code, but you should confirm the original author's intent. Git blame shows the original author left in 2019. There were minor edits in 2021 and 2023 but javadoc wasn't updated. Anyone on the team familiar with this area?
 
-> **用户**：原来是 W 写的，离职了，21 年那次是 L 改的，我可以问他。继续。
+> **User**: Originally written by W, who left. The 2021 edit was by L — I can ask him. Continue.
 
-> **Agent**（派 subagent 并行）：在我继续前，并行排掉两件事——
-> - subagent A：`SpecialCaseService` 的所有 caller，看是不是 dead code
-> - subagent B：配置中心里所有相关 key，标出最后修改时间和当前值
+> **Agent** (dispatching subagents in parallel): Before I continue, let me parallelize two things:
+> - Subagent A: all callers of `SpecialCaseService` — is it dead code?
+> - Subagent B: all related config keys — last-modified time and current value
 
-> **subagent A 报告**：4 个 caller，3 个在 test，唯一生产 caller 是 `LegacyAdapter.resolve()`，注释写"deprecated since 2020"但生产还有 12 处调用。
+> **Subagent A reports**: 4 callers, 3 in test. The sole production caller is `LegacyAdapter.resolve()`, whose comment says "deprecated since 2020" but still has 12 production call sites.
 
-> **Agent**（Adaptive）：注释说 deprecated 但生产 12 处调用，先按下不表。我们继续看 v2 路径……（读完）等下，v2 里有个分支专门处理特殊场景，**调用的就是 SpecialCaseService** ——不是 dead code，它只在 v2 这个分支下被调用，刚好是产品反馈的场景。前面的判断错了，纠正过来。
+> **Agent** (Adaptive): Comment says deprecated but 12 production call sites — let's table that for now. Continuing with the v2 path... (reads) Wait — v2 has a branch specifically for the special scenario, and **it calls SpecialCaseService**. Not dead code — it's only called under this v2 branch, which happens to be the scenario product reported. My earlier judgment was wrong; correcting now.
 
-> **用户**：所以 bug 大概率在那个 Service？
+> **User**: So the bug is likely in that Service?
 
-> **Agent**（Patient + Verify before recommending）：还不能这么快下结论。我目前的假设链是：
-> 1. 特殊场景走 v2 → `SpecialCaseService`
-> 2. 在某些情况下返回 null
-> 3. 上层抓到 null → 走兜底 → 返回 default
-> 4. 前端拿到的就是这个 default
+> **Agent** (Patient + Verify before recommending): Too early to conclude. My current assumption chain:
+> 1. Special scenario goes through v2 → `SpecialCaseService`
+> 2. Under certain conditions, it returns null
+> 3. Upstream catches null → falls through to default
+> 4. The frontend receives this default
 >
-> 第 2 步**我还没验证**。要不要我去 Service 内部看一下它什么时候返回 null？
+> Step 2 **I haven't verified yet**. Want me to look inside the Service to see when it returns null?
 
-整个过程没有 HARD-GATE，没有强制 checklist，每个轮次背后都有一组态度在制衡：Adaptive 跑偏了 Grounded 拉回来，Skeptical 把所有事都怀疑了 Verify 给可执行标准，Open threads 发散了 Visual 用图收敛。
+The entire process has no HARD-GATE, no mandatory checklist. Behind every turn, a set of stances balances each other: Adaptive runs wild → Grounded pulls back; Skeptical doubts everything → Verify gives actionable criteria; Open threads diverges → Visual compresses to a diagram.
 
 ---
+## Anti-patterns
 
-## 反模式
-
-- ❌ 一上来问"目的/约束/成功标准/影响面"checklist——剪掉好奇心
-- ❌ 沿一条线单线追问到底——错过另外两条线
-- ❌ 信 javadoc / 信注释 / 信接口签名——它们可能是几年前的化石
-- ❌ 急着给"改这一行就行"的爽文方案——5 个生产事故的距离
-- ❌ 把"看起来对"等同于"测过了"——这是 LLM 协作底线问题
-- ❌ 把所有 grep 结果原文贴回主对话——污染上下文窗口，应该派 subagent
-- ❌ 退化成"啥都不信"——Skeptical 要配 Verify，不是单独存在
-- ❌ 强行交差给一个 summary——思考本身就是产物
+- ❌ Opening with a "purpose/constraints/success criteria/blast radius" checklist — kills curiosity
+- ❌ Following a single thread of questioning to the end — misses the other two threads
+- ❌ Trusting javadoc / comments / interface signatures — they may be years-old fossils
+- ❌ Rushing to a "just change this one line" silver-bullet solution — 5 production incidents away
+- ❌ Equating "looks right" with "tested" — this is an LLM collaboration baseline issue
+- ❌ Pasting all grep results verbatim into the main conversation — pollutes context; dispatch subagents instead
+- ❌ Devolving into "trust nothing" — Skeptical must pair with Verify, not exist alone
+- ❌ Forcing a summary to "complete the task" — the thinking itself is the product
 
 ---
+## In One Sentence
 
-## 一句话总结
+Legacy code exploration is not a tooling problem — it's an **epistemological** problem. The sources of truth are dead. The most valuable thing an agent can do isn't writing code for you — it's **laying out the "suspect truth sources" across an entire foggy terrain onto the table.** The remaining decisions must be made by humans.
 
-历史代码探索不是工具问题，是**认识论**问题——真值源已死，agent 能做的最有价值的事不是替你写代码，是替你**把一整块模糊地带里的"可疑真值源"摆到台面上**，剩下的决策必须人做。
-
-要做好这件事，要的不是更多规则，是**更少的规则 + 更明确的姿态**。
+To do this well, you need not more rules, but **fewer rules + clearer stances.**

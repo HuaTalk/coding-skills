@@ -20,15 +20,15 @@ frontmatter_description() {
 # Keep these phrases representative and stable. This is a regression guard for
 # the dispatch surface, not a simulation of the host model's matching logic.
 TRIGGERS=(
-  'best-effort-delivery|尽最大努力'
   'best-effort-delivery|best effort'
-  'brainstorming|动手实现新功能'
-  'domain-context|沉淀'
+  'best-effort-delivery|best effort'
+  'brainstorming|implementing a new feature'
+  'domain-context|Persist domain understanding'
   'explore-legacy|legacy'
-  'light-explore|轻量对话'
+  'light-explore|lightweight dialogue'
   'openspec-explore|explore 模式'
-  'skill-simplifier|精简 skill'
-  'unknown-unknowns|优化'
+  'skill-simplifier|Simplify and compress'
+  'unknown-unknowns|optimize'
   'verification-harness|验收'
   'verification-harness|verify'
 )

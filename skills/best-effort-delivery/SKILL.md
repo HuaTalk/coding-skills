@@ -1,113 +1,112 @@
 ---
 name: best-effort-delivery
-description: 面对模糊或大范围任务时不打断提问，按"高置信度直接落地 + 低置信度归集到交互式 HTML 待确认文档"二分法推进。触发：尽最大努力交付、不要问我、best effort、自主推进、无人值守。
+description: For ambiguous or broad tasks, proceed without interrupting the user: implement high-confidence items directly and collect low-confidence decisions in an interactive HTML document for later confirmation. Triggers: best effort, don't ask me, proceed autonomously, unattended, just do what you can.
 metadata:
   author: HuaTalk
   version: "1.0.1"
   category: workflow
   status: stable
 ---
+# Best-Effort Delivery
 
-# 尽最大努力交付
+## When to Use
 
-## 何时使用
+The user explicitly signals:
+- "Don't ask me", "don't ask if unsure", "autonomous", "do what you can first".
+- Task scope is large but they want a single push (unwilling to be interrupted by multiple AskUserQuestion rounds).
+- User is away / async, wants to review once at the end.
 
-用户明确表达：
-- "不要问我"、"不确定的不要问"、"自主推进"、"先做能做的"。
-- 任务范围大但要求一次推进（不愿意被多轮 AskUserQuestion 打断）。
-- 用户离场 / 异步、只想最后审一次。
+Not applicable:
+- Destructive operations (delete data, force-push to master, send messages, close PRs) — these always require confirmation.
+- Tiny tasks answerable in 1-2 questions — asking directly is faster than running this protocol.
 
-不适用：
-- 涉及破坏性操作（删数据、推 master、发消息、关 PR）——这类无论是否"尽最大努力"都必须先确认。
-- 任务很小、一两个问题就能问清楚——直接问比走本流程更快。
+## Core Contract: The Bifurcation
 
-## 核心契约：二分法
+All output is forcibly split into exactly two tiers — no third option:
 
-把所有产出按**置信度**强行二分，没有第三档：
+| Tier | Landing Form | Criteria |
+|------|-------------|----------|
+| **High-confidence** | Edit / Write directly into source-of-truth files | 1) Clear evidence from code/docs/existing rules; 2) Even if wrong, can be quickly caught and reverted next round |
+| **Low-confidence** | Append to **interactive HTML pending-confirmation doc** | 1) Requires business judgment; 2) Multiple reasonable interpretations exist; 3) Changes to TL;DR / API contracts / naming conventions (hard to revert) |
 
-| 档位 | 落地形式 | 判别标准 |
-|------|---------|---------|
-| **高置信** | 直接 Edit / Write 进真值文件 | 1) 有代码 / 文档 / 已有规则的明确证据；2) 即便错也能在下一轮被快速发现并回滚 |
-| **低置信** | 追加到**交互式 HTML 待确认文档** | 1) 需要业务口径裁决；2) 多种合理解读并存；3) 改的是 TL;DR / API 契约 / 命名约定这种"错了不易回滚"的位置 |
+**Judgment principle**:
+- When unsure, **default to low-confidence**. This skill's goal is to avoid bothering the user, not to take risks on their behalf.
+- Every high-confidence edit must survive a one-sentence test: "Why am I certain this is correct?" Can't answer → low-confidence.
 
-**判别原则**：
-- 拿不准时**默认归低置信**。本 skill 的目标是不打扰用户，不是替用户冒险。
-- 高置信里的每一处改动都要在内心可以一句话回答"为什么我确定这是对的"。回答不出 → 低置信。
+## Execution Protocol
 
-## 执行协议
+### Step 1 — Decompose
+Break the user's goal into the smallest units that can independently have confidence assessed. One unit per line, tagged `[H]` / `[L]` as a preliminary assessment.
 
-### Step 1 — 拆解任务
-把用户的目标拆成可独立判断置信度的最小单元。每个单元一行，标 `[H]` / `[L]` 预判档位。
+### Step 2 — Gather Evidence (subagent-friendly)
+For each unit, decide the evidence-gathering method:
+- Cross-file search / broad grep → **dispatch Explore subagents** in parallel.
+- Single-point confirmation → direct grep/Read.
+- User-provided materials → Read and archive into evidence list.
 
-### Step 2 — 收集证据（subagent 友好）
-对每个单元，决定取证手段：
-- 跨文件搜索 / 大范围 grep → **派 Explore subagent** 并行做。
-- 单点确认 → 直接 grep/Read。
-- 用户给的素材 → Read 后归档到证据列表。
+When dispatching subagents in parallel, use multiple Agent calls in one message with self-contained prompts.
 
-并行派 subagent 时，一次消息里多个 Agent 调用，prompt 必须自包含。
+### Step 3 — Land by Tier
 
-### Step 3 — 分档落地
+**High-confidence units**:
+- Edit / Write directly into source-of-truth files.
+- Follow the target file's existing writing discipline (e.g., for domain knowledge files: write why not what, architecture over details — anything reconstructable from source code doesn't need to be persisted).
+- For each edit, mentally note "evidence is X" and report in the final summary.
 
-**高置信单元**：
-- 直接 Edit / Write 真值文件。
-- 写入时遵循目标文件原有的写作纪律（例如领域知识文件：写 why 不写 what，架构优先细节从简——读源码能复原的内容一律不写）。
-- 每处改动在心里留一句"证据是 X"，最后回执时一并报告。
+**Low-confidence units**:
+- Append to an HTML file in the OS temp directory (**never inside the repo**, to avoid git tracking):
+  - macOS / Linux: `$TMPDIR/pending-confirm-<topic>-<YYYYMMDD>.html`
+  - Fallback: `mktemp -t pending-confirm-<topic>` for the full path
+  - Output is transient inter-session media, not version-controlled — the temp file can be handed off to the next session or person
+- HTML must be **interactive** (see format below). Use `references/sample.html` as a structural starting point, but rewrite evidence/candidate wording per task.
+- Never leave half-finished work / TODOs / placeholders in source-of-truth files. Half-finished goes only into HTML.
 
-**低置信单元**：
-- 追加到 OS 临时目录的 HTML 文件（**不要写仓库内**，避免被 git 跟踪）：
-  - macOS / Linux：`$TMPDIR/pending-confirm-<topic>-<YYYYMMDD>.html`（macOS 上 `$TMPDIR` 形如 `/var/folders/.../T/`）
-  - 兜底：`mktemp -t pending-confirm-<topic>` 拿到完整路径
-  - 产出物是会话间的临时介质，不进仓库——可交接给下一会话或其他人继续裁决
-- HTML 必须是**交互式**的（见下文格式）。直接抄 `references/sample.html` 结构，按当次任务替换问题/候选/evidence。
-- 不在真值文件里留半成品 / TODO / 占位。半成品只能进 HTML。
-
-### Step 4 — 回执
-回执用以下最小模板，不要自由发挥、不要复述 HTML 里已有内容：
+### Step 4 — Report
+Use this minimal template — no free-form elaboration, no restating what's already in the HTML:
 
 ```
-✅ 高置信已落地（N 处）：
-- <file:§段落> — <一句证据，如 grep 锚点>
+✅ High-confidence landed (N items):
+- <file:§section> — <one-line evidence, e.g., grep anchor>
 - ...
 
-⏸ 低置信待确认（M 项）：
-→ <绝对路径到 HTML>
+⏸ Low-confidence pending (M items):
+→ <absolute path to HTML>
 
-⚠ 死结（k 项）：<仅当 k>0 时填，并解释为何无法落地也无法归 HTML——通常说明 Step 1 拆解不到位，需要重做>
+⚠ Deadlocks (k items): <only fill if k>0, explain why neither landed nor went to HTML — usually signals Step 1 decomposition failure, needs redo>
 ```
 
-死结理论上应为 0；出现就是拆解失败的信号。
+Deadlocks should theoretically be 0; any occurrence signals a decomposition failure.
 
-## 交互式 HTML 待确认文档格式
+## Interactive HTML Pending-Confirmation Doc Format
 
-只规定**契约**，不规定 CSS / DOM 模板——具体页面 Claude 临场写。可参考 `references/sample.html` 作为起点（结构稳定、契约对齐），但 evidence / 候选措辞必须按当次任务重写。
+Only the **contract** is specified, not CSS / DOM templates — Claude writes the page ad-hoc. Use `references/sample.html` as a starting point (stable structure, contract-aligned), but rewrite evidence/candidate wording per task.
 
-### 必须满足
-- 每项是**单选题**，不是按钮组。给 2-4 个**具体候选措辞 / 方案** + "其它（自填）"兜底。
-- 每项**第一个**候选标为**推荐**（视觉上能一眼识别），并在页面加载时**默认选中**——用户秒级"全采纳"。
-- 候选措辞**自带语义**：读完候选不用读 evidence 就能权衡 trade-off。禁止抽象动词（"调整"、"重新组织"、"改写"）—— 必须是可直接落地的具体表述。
-- 每项自带 evidence 区（grep 锚点 + 摘录），用户不必翻仓库。
-- 顶部"导出"按钮一键复制 JSON 到剪贴板。JSON 每项至少含 `id` / `target`（文件+§编号）/ `choice` / `choiceLabel` / `other`（自填内容）。
-- 顶部进度计数（已决策 N / 总 M），让用户知道还剩多少。
+### Must Satisfy
+- Each item is a **single-choice question**, not a button group. 2-4 **concrete candidate wordings/solutions** + "Other (write-in)" fallback.
+- The **first** candidate per item is marked as **recommended** (visually distinguishable) and **pre-selected** on page load — enabling sub-second "accept all".
+- Candidate wordings are **self-contained semantically**: reading the candidate alone should convey the trade-off without referencing evidence. Banned: abstract verbs ("adjust", "reorganize", "rewrite") — must be directly actionable concrete phrasing.
+- Each item has its own evidence section (grep anchor + excerpt); user shouldn't need to consult the repo.
+- Top "Export" button copies JSON to clipboard in one click. JSON per item includes at minimum `id` / `target` (file+§number) / `choice` / `choiceLabel` / `other` (write-in content).
+- Top progress counter (decided N / total M) so the user knows what's left.
 
-### 禁止
-- ❌ 旧版"采纳 / 拒绝 / 改写"三按钮——粗粒度决策把工作甩回用户。
-- ❌ 没有推荐项 / 没有默认选中——失去"秒级拍板"的核心价值。
-- ❌ 候选超过 4 个（不含"其它"）——选项过载会让用户跳过不读。超过 4 个 = 拆成两道题。
-- ❌ 候选项里出现"改写"这种空动词而不写出新措辞。
-- ❌ 把"破坏性 / 不可逆"候选放在推荐位（如"删除整段"默认推荐）。
+### Forbidden
+- ❌ Legacy "Accept / Reject / Rewrite" three-button pattern — coarse-grained decisions push work back to the user.
+- ❌ No recommended item / no default selection — loses the core "sub-second decision" value.
+- ❌ More than 4 candidates (excluding "Other") — choice overload causes users to skip. More than 4 = split into two questions.
+- ❌ Empty verbs like "rewrite" in candidates without providing the new wording.
+- ❌ Placing "destructive / irreversible" candidates in the recommended slot (e.g., default-recommending "delete the entire section").
 
-## 反模式
+## Anti-patterns
 
-- ❌ "我不确定，我改一半留个 TODO 在真值文件里" —— 半成品永远不进真值文件，只进 HTML。
-- ❌ "我不确定，我都堆到 HTML 里好了" —— 高置信项不入真值文件等于没做。二分法两边都要硬着头皮判。
-- ❌ HTML 里只列问题不给证据 —— 那是把工作甩给用户。每项必须自带 `grep 锚点 + 摘录`。
-- ❌ 用 AskUserQuestion 中断流程 —— 本 skill 的核心契约就是不打断；要确认全部归 HTML。
-- ❌ 一次任务里 subagent 串行派 —— 跨文件搜索类工作必须并行，节省墙钟时间。
-- ❌ 把"破坏性 / 不可逆操作"算进高置信。删除、重命名、覆盖大段已有内容 = 默认低置信。
+- ❌ "I'm unsure, I'll change half and leave a TODO in the source file" — half-finished work never goes into source files, only HTML.
+- ❌ "I'm unsure, I'll dump everything into HTML" — high-confidence items not landed in source files = not done. Both sides of the bifurcation require judgment.
+- ❌ HTML lists questions without evidence — that's pushing work to the user. Every item must carry `grep anchor + excerpt`.
+- ❌ Using AskUserQuestion mid-flow — this skill's core contract is no interruptions; all confirmations go to HTML.
+- ❌ Serial subagent dispatch within a single task — cross-file searches must be parallel to save wall-clock time.
+- ❌ Classifying "destructive / irreversible operations" as high-confidence. Deletion, renaming, overwriting large existing sections = default low-confidence.
 
-## 适用边界
+## Scope Boundaries
 
-- **沉淀场景**：遵循"写 why 不写 what、架构优先细节从简"纪律——读源码能复原的内容一律不沉淀。跳过交互确认步骤，冲突归到 HTML。
-- **对话澄清**：本 skill 为零交互交付设计。当用户愿意接受澄清提问时，对话式方案更合适——本 skill 仅在用户明确表达"别问我"时激活。
-- **产出物**：HTML 待确认文档是会话间临时介质，可交接给下一会话或其他人继续裁决。
+- **Capture scenarios**: Follow the "write why not what, architecture over details" discipline — anything reconstructable from source code doesn't need to be persisted. Skip interactive confirmation steps; route conflicts to HTML instead.
+- **Dialogue-based clarification**: This skill is designed for zero-interaction delivery. When the user is open to clarifying questions, dialogue-based approaches are more appropriate — this skill activates only when the user explicitly signals "don't ask me."
+- **Output artifact**: The HTML pending-confirmation doc is transient inter-session media. It can be shared with the next session or person for continued adjudication.

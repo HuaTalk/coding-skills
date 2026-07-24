@@ -1,123 +1,122 @@
 ---
 name: skill-simplifier
-description: 精简、瘦身、压缩既有 Claude Code skill 的 SKILL.md（含 references/ knowledge/）。识别冗余、AI 套话、复述式 What、过长示例、可下沉的领域细节，按"先量级、后分类、再删改、HITL 拍板"推进；只动既有 skill 的形态，不创建新 skill（那是 skill-writer 的事）。触发关键词：精简 skill、瘦身 skill、压缩 skill、SKILL.md 太长、skill 冗余、refactor skill、shrink skill、condense skill、simplify skill。
+description: Simplify and compress an existing Claude Code skill, including its references and knowledge files. Identify redundancy, filler, repeated explanations, oversized examples, and details that belong in supporting files; measure first, classify candidates, obtain human approval, then edit. Do not create new skills. Triggers: simplify skill, shrink skill, compress skill, SKILL.md is too long, skill is redundant, refactor skill, condense skill.
 metadata:
   author: HuaTalk
   version: "1.0.0"
   category: workflow
   status: stable
 ---
-
 # skill-simplifier
 
-SKILL.md 是给 LLM 看的 prompt，不是文档。多写一句 = 每次匹配多烧一次 token。把臃肿的 SKILL.md 压回到"够用就停"。
+SKILL.md is a prompt read by an LLM, not a document. Every extra sentence = extra tokens burned on every match. Compress bloated SKILL.md files back to "good enough, then stop."
 
-## 何时用
+## When to Use
 
-- 用户说"这个 skill 太长了 / 精简一下 / 瘦身 / 压缩 / shrink / condense"。
-- 你读到一份 SKILL.md > 200 行、或重复率明显偏高时，主动建议。
-- 维护既有 skill 时顺手做：新增 §N 后总字数膨胀，回头压一遍。
+- User says "this skill is too long / simplify / shrink / compress / condense."
+- You read a SKILL.md > 200 lines or with noticeably high redundancy — proactively suggest.
+- Routine maintenance: after adding a new §N, total word count balloons — compress it back.
 
-不用：创建新 skill（独立关注点，走创建流程）；语义/流程写错了直接改不走本 skill；< 80 行 / < 4KB 的短 skill 默认不动，先过 Step 1。
+Skip: creating new skills (separate concern); semantic/flow errors → fix directly, not via this skill; skills < 80 lines / < 4KB → default to skip, run Step 1 first.
 
-## 三类 skill，三种压法
+## Three Skill Types, Three Compression Strategies
 
-判断目标属于哪一类，错配会把 skill 压坏：
+Identify which category the target falls into — mismatching will damage the skill:
 
-| 类型 | 例子 | 应有形态 | 压缩方向 |
+| Type | Examples | Expected Shape | Compression Direction |
 |---|---|---|---|
-| 路由器 | 路由层 skill | frontmatter + 加载协议 + 模块索引 | 正文 → `knowledge/`；SKILL.md 留路由表 |
-| 协议 | 步骤化流程 skill | 步骤化流程 + 反模式 | 删 What 复述、合并重复反模式、长示例下沉 `references/` |
-| 能力描述 | 场景+流程 skill | 适用场景 + 流程 + 反模式 | 删装饰段落，保留判断标准与边界 |
+| Router | A routing-layer skill | frontmatter + loading protocol + module index | Body → `knowledge/`; SKILL.md keeps the routing table |
+| Protocol | A step-by-step workflow skill | Step-by-step flow + anti-patterns | Delete What restatements, merge duplicate anti-patterns, push long examples to `references/` |
+| Capability | A when-to-use + flow skill | When-to-use + flow + anti-patterns | Delete decorative paragraphs, preserve judgment criteria and boundaries |
 
-不要把协议型压成路由器型（步骤是本体，不是细节）；不要把能力型压成 frontmatter only（流程描述是 LLM 决策依据）。
+Don't compress a protocol into a router (steps are the body, not details). Don't compress a capability into frontmatter-only (flow descriptions are LLM decision inputs).
 
-## 协议
+## Protocol
 
-### Step 1 — 量级判断
+### Step 1 — Size Assessment
 
-`wc -lc` 量目标 SKILL.md，看是否有 `references/` `knowledge/` 子目录及体量，给目标分类。阈值参考（不绝对）：
+`wc -lc` the target SKILL.md. Check for `references/` / `knowledge/` subdirectories and their sizes. Classify the target. Thresholds (not absolute):
 
-- 路由器型 > 100 行 / > 5KB → 大概率正文没下沉。
-- 协议型 > 250 行 / > 10KB → 大概率有 What 复述或长示例。
-- 能力型 > 150 行 / > 6KB → 大概率有装饰段落。
+- Router type > 100 lines / > 5KB → body likely not pushed down.
+- Protocol type > 250 lines / > 10KB → likely has What restatements or long examples.
+- Capability type > 150 lines / > 6KB → likely has decorative paragraphs.
 
-不达阈值且未读出明显冗余 → 告诉用户"已经够紧凑了，不建议精简"，结束。**精简过头比不精简更糟**。
+If below thresholds and no obvious redundancy detected → tell the user "already compact enough, not worth simplifying" and stop. **Over-simplification is worse than no simplification.**
 
-### Step 2 — 列候选删改项（review，不动手）
+### Step 2 — List Candidate Cuts (review only, don't touch)
 
-逐节扫一遍，对照下表打标签：
+Scan section by section, tag against this table:
 
-| 信号 | 处理 |
+| Signal | Action |
 |---|---|
-| 同一规则换三种说法重复 | 留最锋利的一种 |
-| 复述"这个 skill 是做什么的"（What） | 删——frontmatter `description` 已经说过 |
-| 长代码 / DSL 示例 > 15 行 | 移至 `references/<topic>.md`，留一句话指针 |
-| 领域知识（业务规则、字段表、枚举值） | 移至 `references/` 或 `knowledge/`；SKILL.md 不承载 |
-| 装饰性反问、三段排比、过渡词堆叠（"首先...其次...最后"、"不仅...而且..."、"换句话说"） | 删 |
-| em-dash / 破折号链 > 2 处 | 改短句 |
-| 反模式列表 > 7 条 | 合并语义重叠项；通常能压到 4-5 条 |
-| §N 正文 < 3 行 | 合并到上级 § 或删 |
-| "为了让你更好地理解，让我们..." 类元叙述 | 全删 |
-| 已经在 [[other-skill]] 里讲过的概念 | 用 link 替代复述 |
-| 列出 skill "设计来源 / 参考了哪些 skill" 的元章节 | 删——理解后内化进协议本身，读者不需要知道你怎么想出来的 |
+| Same rule repeated three ways | Keep the sharpest one |
+| Restates "what this skill does" (What) | Delete — frontmatter `description` already says it |
+| Long code / DSL example > 15 lines | Move to `references/<topic>.md`, leave one-line pointer |
+| Domain knowledge (business rules, field tables, enum values) | Move to `references/` or `knowledge/`; SKILL.md doesn't carry these |
+| Decorative rhetoric, triads, transition-stacking ("first... second... finally", "not only... but also...", "in other words") | Delete |
+| em-dash chains > 2 | Rewrite as short sentences |
+| Anti-pattern list > 7 items | Merge semantically overlapping ones; usually compressible to 4-5 |
+| §N body < 3 lines | Merge into parent § or delete |
+| "To help you understand better, let's..." style meta-narration | Delete all |
+| Concepts already covered in [[other-skill]] | Replace with link |
+| Meta-sections listing "design sources / skills referenced" | Delete — internalize into the protocol itself; the reader doesn't need to know how you arrived at it |
 
-**Red-line（不能动）**：
+**Red lines (do not touch)**:
 
-1. frontmatter `name` —— 改名等于换 skill。
-2. frontmatter `description` 中的触发关键词集合 —— dispatcher 靠它匹配，关键词丢了 = 召回不到。可缩短描述，但触发词（中英文同义词）必须保留。
-3. 跨 skill 引用 `[[other-skill]]` —— 除非对方也改名。
-4. 协议型 skill 的 Step 1→N 语义顺序 —— LLM 的执行依据，不能为缩字合并。
-5. HITL / 安全强约束（"必须 AskUserQuestion / 不得静默覆盖 / 不要自动 commit"）—— 可缩写不可删。
+1. frontmatter `name` — renaming equals replacing the skill.
+2. Trigger keyword set in frontmatter `description` — the dispatcher matches on this; losing keywords = lost recall. Can shorten the description, but trigger words (synonyms in all supported languages) must stay.
+3. Cross-skill references `[[other-skill]]` — unless that skill was also renamed.
+4. Protocol-type skill's Step 1→N semantic order — the LLM's execution basis; can't merge to save characters.
+5. HITL / safety hard constraints ("must AskUserQuestion / never silently overwrite / don't auto-commit") — can abbreviate, cannot delete.
 
-### Step 3 — HITL 拍板
+### Step 3 — HITL Decision
 
-下列变更逐项用 **AskUserQuestion** 问用户，不打包：
+The following changes are asked one-by-one via **AskUserQuestion**, never batched:
 
-- frontmatter `description` 重写：现状 / 拟改字面对照，问"是否接受"。
-- 整段删除某 §N：列出内容摘要，问"删 / 保留 / 改写"。
-- 新增 `references/<file>.md` 下沉内容：列文件名 + 移走的内容范围，问"接受拆分 / 全留 / 拆到别处"。
-- 跨 skill link 替代复述：列原段落 + 拟引用的 `[[skill]]`，问是否接受。
+- frontmatter `description` rewrite: show current vs proposed side-by-side, ask "accept?"
+- Deleting an entire §N: list content summary, ask "delete / keep / rewrite."
+- New `references/<file>.md` to push content down: list filename + scope of moved content, ask "accept split / keep all / split elsewhere."
+- Cross-skill link replacing restatement: list original paragraph + proposed `[[skill]]` reference, ask whether to accept.
 
-可跳过 HITL：纯删装饰套话、纯合并语义重叠的反模式条目、纯压冗长 prose 不改语义。这类在 Step 6 回执里告知。
+Skippable HITL: pure deletion of decorative filler, pure merging of semantically-overlapping anti-patterns, pure compression of verbose prose without semantic change. Report these in Step 6.
 
-### Step 4 — 执行
+### Step 4 — Execute
 
-- Edit 改 SKILL.md，必要时 Write 新建 `references/<topic>.md`。
-- 不重排既有 §N 编号（破坏外部 anchor）；如必须重排，回执里列旧→新映射。
-- 不动 `.claude-plugin/` 与 README——本 skill 不负责索引同步。
+- Edit SKILL.md. Write new `references/<topic>.md` when needed.
+- Don't renumber existing §N (breaks external anchors). If renumbering is unavoidable, list old→new mapping in the report.
+- Don't touch `.claude-plugin/` or README — this skill doesn't manage index sync.
 
-### Step 5 — 验证
+### Step 5 — Verify
 
-- `wc -lc` 重测，记 before / after。
-- grep 确认 frontmatter `description` 触发关键词集合没丢（中英文同义词都在）。
-- grep 确认 `[[other-skill]]` 没指向不存在的 skill。
-- 把改后 SKILL.md 整段 Read 一遍——人读起来不绊脚 = 没压过头。
+- `wc -lc` re-measure, note before/after.
+- Grep to confirm frontmatter `description` trigger keyword set is intact (synonyms in all supported languages present).
+- Grep to confirm `[[other-skill]]` doesn't point to nonexistent skills.
+- Read the entire revised SKILL.md — if a human reads it without stumbling = not over-compressed.
 
-### Step 6 — 回执
+### Step 6 — Report
 
-简短回执（不写文档）：
-1. 改了哪些文件、新增哪些 references、删了什么。
-2. before/after 行数 + 字节数。
-3. HITL 问过哪些点、用户怎么裁决的。
-4. 跳过 HITL 直接合并的项类目。
-5. 提醒：plugin 缓存需要 `/plugin update skill@skill` + 重启 Claude Code 才生效。
+Brief summary (not a document):
+1. Which files changed, new references created, what was deleted.
+2. Before/after line count + byte count.
+3. HITL points asked, user's decisions.
+4. Items merged without HITL, by category.
+5. Reminder: plugin cache requires `/plugin update skill@skill` + restart Claude Code to take effect.
 
-不要 git commit，除非用户明确要求。
+Do not git commit unless the user explicitly asks.
 
-## 反模式
+## Anti-patterns
 
-- ❌ 不分类直接压。协议压成 frontmatter only 会让流程步骤丢失，召回时 LLM 没 protocol 可遵循。
-- ❌ 删触发关键词换简洁。`description` 是 dispatcher 的匹配面，删一个关键词 = 失一类召回，省的 token 完全不值。
-- ❌ 以"AI 痕迹"为名删强约束。"必须 AskUserQuestion / 不得静默覆盖"语气强烈但是必要约束，不是套话。
-- ❌ 静默重写 `description`。frontmatter 描述对外可见、影响匹配，必走 HITL。
-- ❌ 追求字数下限。压到读起来"跳跃 / 不知道在干嘛"就是过头了，回滚。
-- ❌ 顺手改语义。本 skill 只压形态。发现规则写错了，单独提示用户改正，不夹带。
-- ❌ 一轮里精简多个 skill。一次一个，避免 HITL 决策疲劳和回滚噪声。
+- ❌ Compressing without classifying. Compressing a protocol to frontmatter-only loses flow steps; on recall, the LLM has no protocol to follow.
+- ❌ Deleting trigger keywords for brevity. `description` is the dispatcher's matching surface; losing one keyword = losing one recall class. The token savings are never worth it.
+- ❌ Deleting hard constraints under the banner of "AI filler." "Must AskUserQuestion / never silently overwrite" may sound forceful but are necessary constraints, not filler.
+- ❌ Silently rewriting `description`. Frontmatter description is externally visible and affects matching — must go through HITL.
+- ❌ Chasing a character-count floor. If the compressed result reads as "jumpy / unclear what's happening," you've gone too far — roll back.
+- ❌ Incidentally changing semantics. This skill only compresses form. If you find a rule that's factually wrong, flag it separately; don't smuggle fixes.
+- ❌ Simplifying multiple skills in one round. One at a time, to avoid HITL decision fatigue and rollback noise.
 
 ## Boundaries
 
-- **创建 skill**：创建新 skill 是独立关注点。本 skill 只编辑既有 skill。
-- **代码审查**：简化源代码（代码质量、复用）是不同关注点——不同受众、不同优化目标（prompt 信噪比和触发关键词覆盖，而非代码复用）。
-- **拟人化润色**：为人类读者消除 AI 写作痕迹是独立关注点。Step 2 已内化其装饰用语清单，不要全量套用——SKILL.md 是给机器读的，不需要"像人写的"。
-- **领域知识写入**：SKILL.md 泄漏领域细节时，落点是领域知识文件。本 skill 只标记泄漏并留指针，不负责写入知识文件。
+- **Skill creation**: Creating new skills is a separate concern. This skill only edits existing ones.
+- **Source code review**: Simplifying source code (code quality, reuse) is a different concern — different audience, different optimization target (prompt signal-to-noise and trigger-keyword coverage, not code reuse).
+- **Human-facing polish**: Removing AI-writing tells for human readers is a separate concern. Step 2 already internalizes its decorative-phrase checklist; do not apply it wholesale — SKILL.md is read by a machine and is not required to "sound human."
+- **Domain knowledge writing**: When a SKILL.md leaks domain details, the sink is domain knowledge files. This skill only flags the leak and leaves a clean pointer; it does not write the knowledge file.
