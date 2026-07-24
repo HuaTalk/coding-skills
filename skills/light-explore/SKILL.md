@@ -1,8 +1,12 @@
 ---
 name: light-explore
-description: Lightweight dialogue before small-to-medium changes — when requirements are mostly clear with only 1-2 details to settle. Typical phrases: "add an X field", "tweak Y logic", "extend to support Z type", "add a feature flag", "add a metric/log line", "add a dimension to the dedup key", "add an early return", "I know this area but unsure about X", "small change, just one thing unclear", "let's chat first / align first". One or two rounds to clarify, propose, and decide — no design doc. Not for vague requirements needing full exploration, not for unfamiliar legacy code, not for single-line bugs or config changes. 中文触发：小改动、加个字段、微调逻辑、先聊一下、对齐一下、确认一下、改动不大。
+description: Use a lightweight dialogue before small-to-medium changes when requirements are mostly clear and only one or two details remain. Clarify, present options, and decide within one or two rounds without writing a design document. Skip vague work needing full exploration, unfamiliar legacy code, and obvious single-point fixes or configuration changes.
+metadata:
+  author: HuaTalk
+  version: "1.0.0"
+  category: workflow
+  status: stable
 ---
-
 # Light Explore
 
 **When:** Requirements are ~80% clear, only 1-2 points need confirmation; or the user has a vague request but it's a small-to-medium change (not worth full exploration).

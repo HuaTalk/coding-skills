@@ -1,11 +1,14 @@
 ---
 name: brainstorming
-description: "Before implementing a new feature, refactoring a module, or fixing a bug with unclear impact, use dialogue to clarify requirements, current state, constraints, and success criteria first — then propose solutions for the user to decide. Skip for well-defined small changes (single-line bugs, config tweaks, localized changes under 30 lines). 中文触发：方案讨论、需求不明确、评估方案、设计评审、技术选型、你先评估一下。"
+description: "Before implementing a new feature, refactoring a module, or fixing a bug with unclear impact, use dialogue to clarify requirements, current state, constraints, and success criteria, then present options for the user to decide. Skip well-defined small changes such as single-point bugs, configuration adjustments, or localized changes under 30 lines."
 metadata:
+  author: HuaTalk
+  version: "1.0.0"
+  category: workflow
+  status: stable
   upstream: "https://github.com/obra/superpowers"
-  upstream-note: "Derived from upstream. Changes: (1) 9-step checklist → 3-step flow (Explore / Present / Build); (2) removed: HARD-GATE, Visual Companion, self-review checklist, process diagram; (3) design doc path: docs/superpowers/specs/ → openspec/changes/; (4) added: skip conditions for trivial changes."
+  upstream-note: "Derived from upstream. Changes: (1) reduced the 9-step checklist to a 3-step flow (explore, present, build); (2) removed the HARD-GATE, Visual Companion, self-review checklist, and process diagram; (3) changed the design path from docs/superpowers/specs/ to openspec/changes/; (4) added skip conditions for trivial changes."
 ---
-
 # Brainstorming: Ask Before You Build
 
 Turn vague ideas into implementable designs. **Core: ask first, propose options, let the user decide, then build.**

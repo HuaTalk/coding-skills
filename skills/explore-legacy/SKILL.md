@@ -1,19 +1,17 @@
 ---
 name: explore-legacy
-description: Explore unfamiliar legacy code. Typical phrases: "I'm completely unfamiliar with this area", "the original author left", "comments don't match implementation", "git log untouched for years", "deprecated but still in production", "just inherited this", "root-cause investigation in old module", "cross-chain investigation", "javadoc contradicts code", "feature flag permanently true", "zombie config keys". Provides 8 stances to help the agent identify suspect truth sources, investigate in parallel, and explicitly label uncertainty — rather than following a checklist. Triggers: legacy code, historical code, unfamiliar module, deprecated, dead code, cross-chain investigation, comment-implementation mismatch, original author departed, zombie config, feature flags. 中文触发：遗留代码、祖传代码、历史代码、不熟悉的模块、废弃代码、死人代码、原开发已离职、注释和代码不一致、僵尸配置。
+description: Explore unfamiliar legacy code when the original author is gone, comments conflict with implementation, old paths remain in production, or truth sources are suspect. Uses eight investigation stances to compare evidence, pursue parallel leads, and label uncertainty instead of following a rigid checklist. Triggers: legacy code, historical code, unfamiliar module, deprecated path, dead code, cross-system investigation, comment mismatch, departed author, stale config, feature flag.
 metadata:
   author: HuaTalk
   version: "1.1.0"
   category: methodology
   status: stable
 ---
-
 # Explore Legacy: Navigating Historical Code
 
 **This is a set of stances, not a workflow.** No fixed steps, no mandatory outputs. You are the user's thinking partner, helping them identify "which clues are worth chasing", "which comments can't be trusted", and "which branches stopped running years ago" in a codebase where the sources of truth have died.
 
 ---
-
 ## When to Use This Skill
 
 - User mentions: "legacy code / historical code / unfamiliar / never touched this / who wrote this"
@@ -34,7 +32,6 @@ metadata:
 > After legacy exploration is complete and the problem is well-defined, **switch back to workflow immediately** to execute correctly. Stances are only for the convergence phase.
 
 ---
-
 ## Core Insight: The Sources of Truth Are Dead
 
 In a healthy codebase, `code is the truth` — comments, tests, and docs are just different perspectives on that truth.
@@ -76,7 +73,6 @@ For each of these, ask by default: "**Does this still hold today?**"
 Each layer claims to be a source of truth. They can't all be right. The most valuable one — what's in the senior engineer's head — is often **undocumented** and inaccessible to the agent.
 
 ---
-
 ## 8 Stances (X, not Y)
 
 ### 1. Curious, not prescriptive
@@ -137,7 +133,6 @@ All three actively mislead. A comment like `// Only type X enters this branch` m
 If you can't run it, at minimum explicitly state: "I haven't verified this — it might miss branch XX." Externalize uncertainty into a checklist the user can inspect.
 
 ---
-
 ## Checks and Balances Between the 8
 
 This isn't an independent list — it's a **self-balancing network of stances.** Any single tendency pushed to its extreme causes problems; adjacent stances pull it back:
@@ -150,7 +145,6 @@ This isn't an independent list — it's a **self-balancing network of stances.**
 | **Open threads** diverging uncontrollably | **Visual** compresses multiple threads onto a flat diagram for the user to choose |
 
 ---
-
 ## What You Might Do (menu, not steps)
 
 Freely combine based on the current conversation state. **Don't run from 1 to N:**
@@ -185,7 +179,6 @@ Cross-reference comments, interfaces, tests, actual code, and oral memory — fo
 - State clearly: "If any assumption fails, reassess everything"
 
 ---
-
 ## What You Don't Have To Do (escape hatches)
 
 - **No need** to run through a full requirements checklist
@@ -195,7 +188,6 @@ Cross-reference comments, interfaces, tests, actual code, and oral memory — fo
 - **No need** to write a design doc (unless the user explicitly asks)
 
 ---
-
 ## Guardrails (hard boundaries — the only place hard rules are allowed in stance style)
 
 - **Don't implement**: This skill is for exploration. Don't write production code. If the user asks you to build, remind them to switch to a planning or implementation approach first.
@@ -204,7 +196,6 @@ Cross-reference comments, interfaces, tests, actual code, and oral memory — fo
 - **Don't pretend to have conclusions**: If you haven't verified it, explicitly say "I haven't verified this."
 
 ---
-
 ## An Example Dialogue
 
 > **User**: Got a task — old module X is displaying incorrectly in a certain scenario, but I'm completely unfamiliar with this area. Help me map out roughly what shape this thing is.
@@ -253,7 +244,6 @@ Cross-reference comments, interfaces, tests, actual code, and oral memory — fo
 The entire process has no HARD-GATE, no mandatory checklist. Behind every turn, a set of stances balances each other: Adaptive runs wild → Grounded pulls back; Skeptical doubts everything → Verify gives actionable criteria; Open threads diverges → Visual compresses to a diagram.
 
 ---
-
 ## Anti-patterns
 
 - ❌ Opening with a "purpose/constraints/success criteria/blast radius" checklist — kills curiosity
@@ -266,7 +256,6 @@ The entire process has no HARD-GATE, no mandatory checklist. Behind every turn, 
 - ❌ Forcing a summary to "complete the task" — the thinking itself is the product
 
 ---
-
 ## In One Sentence
 
 Legacy code exploration is not a tooling problem — it's an **epistemological** problem. The sources of truth are dead. The most valuable thing an agent can do isn't writing code for you — it's **laying out the "suspect truth sources" across an entire foggy terrain onto the table.** The remaining decisions must be made by humans.

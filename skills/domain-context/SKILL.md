@@ -1,13 +1,12 @@
 ---
 name: domain-context
-description: Persist domain understanding from a session into `knowledge/domain/<module>.md`. Triggers: persist, capture, organize context, update domain docs, add/update domain context. 中文触发：沉淀领域知识、记录上下文、更新 domain 文档、整理经验、归档领域规则。
+description: Persist domain understanding from a session into `knowledge/domain/<module>.md`. Triggers: persist domain knowledge, capture context, organize session knowledge, update domain docs, add or update domain context.
 metadata:
   author: HuaTalk
-  version: "2.0.0"
-  category: methodology
+  version: "2.0.1"
+  category: workflow
   status: stable
 ---
-
 # Persist Domain Understanding into the Knowledge Base
 
 This skill is the **write side** of domain knowledge. The read side handles on-demand loading; the write side ensures new/changed domain rules land correctly in a single source of truth.

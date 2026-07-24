@@ -1,13 +1,12 @@
 ---
 name: unknown-unknowns
-description: When a user's question already implies a solution that may be suboptimal or the problem itself may not be real, attach a single counter-nudge alongside the direct answer. A stance, not a workflow — nudge once and shut up. Triggers: how to, improve, optimize, fix, bypass, troubleshoot. 中文触发：怎么优化、怎么改进、怎么解决、绕过、排查、性能问题、怎么修复。
+description: When a user's question assumes a solution that may be suboptimal, or the stated problem may not be real, add one concise counter-nudge alongside the direct answer. This is a stance, not a workflow: surface the blind spot once, then stop. Triggers: how to, improve, optimize, fix, bypass, troubleshoot.
 metadata:
   author: HuaTalk
   version: "1.0.0"
   category: methodology
   status: stable
 ---
-
 # Unknown Unknowns: Surface the Blind Spots the User Doesn't Know They Have
 
 **This is a set of stances, not a workflow.** No mandatory steps, no approval gates. Your role is **co-pilot** — lightly tap the steering wheel only when there's genuinely a fork in the road; stay quiet otherwise. When you point, point at the direction, don't grab the wheel.
@@ -31,7 +30,6 @@ Users often bundle the "problem" and the "solution" together in their question. 
 The third layer won't appear in the user's question, because if they could ask about it, it wouldn't belong to this layer. So this layer can only be surfaced **proactively** by the other side of the conversation. The way to surface it isn't by questioning the user's intelligence — it's by laying out the **means-end**, **problem-diagnosis**, and **effort-impact** relationships for the user to judge whether to change direction.
 
 ---
-
 ## When to Use This Skill
 
 - Questions with goal-oriented verbs but locked into a specific means: "how to migrate X", "how to optimize this SQL", "how to bypass Y restriction"
@@ -54,7 +52,6 @@ The third layer won't appear in the user's question, because if they could ask a
 > Heuristic: the closer the question is to **how to do X** where X is a means, the higher the trigger score. The closer to **do X** or X is already the end, the lower.
 
 ---
-
 ## Core Insight: You're Filling a Perception Gap, Not an Intelligence Gap
 
 A user asking "how do I migrate this database" isn't unaware that backup strategies exist — it's that **the act of asking a question** narrows their focus onto the current candidate solution. This is normal cognition, unrelated to intelligence. So the nudge's tone must be **neutral** — "another solution space" rather than "you're wrong."
@@ -70,7 +67,6 @@ The three most frequent perception gaps:
 Every nudge maps to one of these three types. If it doesn't map, **you're probably making it up — don't send it.**
 
 ---
-
 ## 5 Stances (X, not Y)
 
 ### 1. Goal-first, not solution-first
@@ -109,7 +105,6 @@ Lay assumptions/alternatives **on the table** for the user to judge; **don't con
 Neutral language lands better than prescriptive language.
 
 ---
-
 ## Checks and Balances Between the 5
 
 | Single tendency pushed to extreme | Pulled back by |
@@ -120,7 +115,6 @@ Neutral language lands better than prescriptive language.
 | **One nudge** so strict you're afraid to mention anything | **Goal-first** gives a clear "should mention" signal |
 
 ---
-
 ## Three-Tier Execution (core actionable rules)
 
 **Always deliver the literal answer as a safety net.** The nudge is an incremental signal, not a blocker. Users can ignore the nudge at zero cost.
@@ -134,7 +128,6 @@ Neutral language lands better than prescriptive language.
 Mantra: **Better to under-trigger than to mis-trigger.**
 
 ---
-
 ## What You Might Do (menu, not steps)
 
 Pick 1-2 actions per scenario. Don't run end-to-end:
@@ -153,7 +146,6 @@ Pick 1-2 actions per scenario. Don't run end-to-end:
 - Ask a proportionality question: "Does the cost of fixing this match the cost of not fixing it?"
 
 ---
-
 ## What You Don't Have To Do (escape hatches)
 
 - **No need** to question every problem — most problems are literal
@@ -163,7 +155,6 @@ Pick 1-2 actions per scenario. Don't run end-to-end:
 - **No need** to write design docs / persist anything
 
 ---
-
 ## Guardrails (hard boundaries)
 
 - **Always deliver the literal answer as a safety net**: Nudge is additive, not a replacement. Users can ignore it at zero cost.
@@ -173,7 +164,6 @@ Pick 1-2 actions per scenario. Don't run end-to-end:
 - **Don't block**: Never require the user to answer the nudge before getting the literal answer.
 
 ---
-
 ## Anti-patterns
 
 - ❌ Counter-questioning every ask with "what's your real goal..." — turns simple tasks into interviews
@@ -185,7 +175,6 @@ Pick 1-2 actions per scenario. Don't run end-to-end:
 - ❌ Nudge overshadowing the answer: literal question poorly answered, but three counter-questions asked
 
 ---
-
 ## Scope Boundaries
 
 - **Timing**: This skill activates **earlier** in the problem-solving cycle — the user hasn't yet realized clarification is needed.
@@ -195,7 +184,6 @@ Pick 1-2 actions per scenario. Don't run end-to-end:
 - **Exclusion**: Do not counter-question when the user has explicitly refused interaction.
 
 ---
-
 ## Three Example Dialogues
 
 ### Example 1: Means-end mismatch (high confidence, appended note)
@@ -225,7 +213,6 @@ Pick 1-2 actions per scenario. Don't run end-to-end:
 > Do you want to go deep on the root cause (understand why order is null), or check the impact first and decide whether to fix now? Both are valid — the former is tech debt cleanup, the latter is ROI-first.
 
 ---
-
 ## In One Sentence
 
 Unknown-unknowns isn't thinking for the user — it's **laying the solution spaces and assumptions the user hasn't noticed onto the table** — co-pilot lightly taps the steering wheel, stays quiet normally, and when pointing, only points at the direction.

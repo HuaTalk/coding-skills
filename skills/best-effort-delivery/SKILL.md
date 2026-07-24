@@ -1,12 +1,12 @@
 ---
 name: best-effort-delivery
-description: For ambiguous or broad-scope tasks, proceed without interrupting the user — bifurcate all output into high-confidence (land directly) vs low-confidence (append to interactive HTML pending-confirmation doc). Triggers: best effort, don't ask me, autonomous, unattended, just do what you can. 中文触发：尽最大努力交付、不要问我、自主推进、无人值守、直接做你能做的。
+description: For ambiguous or broad tasks, proceed without interrupting the user: implement high-confidence items directly and collect low-confidence decisions in an interactive HTML document for later confirmation. Triggers: best effort, don't ask me, proceed autonomously, unattended, just do what you can.
 metadata:
   author: HuaTalk
-  version: "1.0.0"
-  category: methodology
+  version: "1.0.1"
+  category: workflow
+  status: stable
 ---
-
 # Best-Effort Delivery
 
 ## When to Use

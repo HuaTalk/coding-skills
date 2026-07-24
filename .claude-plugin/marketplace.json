@@ -7,7 +7,7 @@
     {
       "name": "skill",
       "source": "./",
-      "description": "Reusable Claude Code plugin framework: commands, skills, and MCP configurations."
+      "description": "Reusable Claude Code plugin framework: skills and MCP configurations."
     }
   ]
 }

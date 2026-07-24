@@ -1,8 +1,12 @@
 ---
 name: skill-simplifier
-description: Simplify, shrink, and compress existing Claude Code skill SKILL.md files (including references/ and knowledge/). Identifies redundancy, AI filler phrases, "What" restatements, overly long examples, and domain details that can be pushed down. Follows "measure first, classify, then cut, HITL decides." Only edits existing skills; does not create new ones (that's skill-writer). Triggers: simplify skill, shrink skill, compress skill, SKILL.md too long, skill redundant, refactor skill, condense skill. 中文触发：简化 skill、压缩 skill、精简 SKILL.md、skill 太长了、skill 冗余、瘦身。
+description: Simplify and compress an existing Claude Code skill, including its references and knowledge files. Identify redundancy, filler, repeated explanations, oversized examples, and details that belong in supporting files; measure first, classify candidates, obtain human approval, then edit. Do not create new skills. Triggers: simplify skill, shrink skill, compress skill, SKILL.md is too long, skill is redundant, refactor skill, condense skill.
+metadata:
+  author: HuaTalk
+  version: "1.0.0"
+  category: workflow
+  status: stable
 ---
-
 # skill-simplifier
 
 SKILL.md is a prompt read by an LLM, not a document. Every extra sentence = extra tokens burned on every match. Compress bloated SKILL.md files back to "good enough, then stop."
