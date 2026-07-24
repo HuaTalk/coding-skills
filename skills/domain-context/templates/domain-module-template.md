@@ -1,269 +1,258 @@
 <!--
-================================================================================
-domain/<module>.md 标准模板（v2）
+Domain module template (v2)
 
-使用方法：
-  1. 复制本文件到 knowledge/domain/<module>.md
-  2. 把所有 <尖括号占位> 替换为实际内容
-  3. §2-§7 是核心节，必须填写实际内容；不适用就写"N/A — <一句理由>"，不要删节
-  4. §8-§11 是可选节，不写就保留标题 + 一行 "_暂未沉淀_"，不要删节
-  5. 删除所有 <!-- 撰写指引 --> 注释块（保留也行，渲染不显示，但会增加文件体积）
+Usage:
+1. Copy this file to knowledge/domain/<module>.md.
+2. Replace every <angle-bracket placeholder> with real content.
+3. Sections 2-7 are required. If one does not apply, write `N/A - <one-line reason>`; never delete the section.
+4. Sections 8-11 are optional. If empty, keep the heading and `_Not captured yet_`; never delete the section.
+5. Remove instructional comments after writing. Keeping them is valid but adds noise.
 
-设计原则（来自 [[domain-context]]）：
-  - 写 Why，不写 What。读源码能复原的内容不沉淀。
-  - 领域层只用 grep 锚点 `Class#method`，不写 `:行号`。
-  - TL;DR 只写约束和陷阱，30 字一条。
-  - §6 不输出逻辑 是排查频率最高的一节，必须独立成节。
-  - §7 Blast Radius 必须明确"写入响应的哪些字段 / 影响哪些下游"。
+Principles:
+- Record why, not what. Omit facts that source inspection can reconstruct.
+- Use stable `Class#method` grep anchors, never line numbers.
+- Keep TL;DR entries to constraints and traps, one short line each.
+- Keep exclusion logic in its own section because it is a frequent diagnostic entry point.
+- Blast Radius must name response fields and downstream consumers.
 
-阅读顺序（coding agent 视角）：
-  TL;DR (是什么) → 输入 (从哪来) → 契约 (长什么样) → 流水线位置 (在哪被处理)
-  → 输出逻辑 (怎么出) → 不输出逻辑 (为什么没出) → Blast Radius (改了炸到哪)
-  → 开关 / 测试 / WHY / 引用
-================================================================================
+Reading order:
+TL;DR -> Inputs -> Contracts -> Pipeline position -> Output logic -> Exclusion logic
+-> Blast radius -> Flags -> Tests -> Why -> References
 -->
 
-# <模块中文标题>
+# <Domain Module Title>
 
-> 模块: <module-name> · 层级: 领域
-> 架构依赖: [[architecture/<module>]] <!-- 至少链一个架构模块 -->
-> 上次更新: <YYYY-MM-DD> · 主真值源: <配置 key | 包路径 | 文档链接>
+> Module: <module-name> | Layer: Domain
+> Architecture dependency: [[architecture/<module>]]
+> Last updated: <YYYY-MM-DD> | Primary source of truth: <config key | package path | document URL>
 
 ## TL;DR
 
-<!-- 撰写指引：3-5 行，每行 ≤ 30 字。只写约束、陷阱、隐式约定。禁止复述 API 形状或字段表。 -->
+<!-- Write 3-5 short lines containing only constraints, traps, and implicit conventions. -->
 
-- <一句话定义这个领域是什么>
-- <最容易踩的陷阱 1>
-- <最容易踩的陷阱 2>
-- <一条隐式约定 / 缓存窗口 / 命名碰撞>
+- <One-line definition of the domain>
+- <Most common trap>
+- <Second common trap>
+- <Implicit convention, cache window, or naming collision>
 
-**高频场景**：<场景 1> | <场景 2> | <场景 3>
+**Common scenarios:** <scenario 1> | <scenario 2> | <scenario 3>
 
-**相关模块**：[[domain/xxx]] [[domain/yyy]]
-
----
-
-## 目录
-
-- §2 输入 / 数据来源
-- §3 数据契约 / 模型映射
-- §4 流水线位置
-- §5 输出逻辑（PK / 过滤 / 聚合 / 排序）
-- §6 ★ 不输出逻辑
-- §7 影响范围 / Blast Radius
-- §8 开关 & 可观测性
-- §9 测试要点
-- §10 WHY / 历史背景
-- §11 引用 / 跨模块链接
+**Related modules:** [[domain/example-a]] [[domain/example-b]]
 
 ---
 
-## §2 输入 / 数据来源
+## Contents
 
-<!-- 撰写指引：按"重要性 + 数据流上游性"排。每个来源必须答全四问：来源 / 缓存 / 失效 / 控制开关。 -->
-
-### 2.1 底层数据源
-
-| 数据源 | 关键字段 | 是否缓存 | 缓存层级 | 失效策略 |
-|---|---|---|---|---|
-| `<DB.table>` | `<col1>` / `<col2>` | 是 / 否 | <本地缓存 / 分布式缓存 / 无> | <配置 key + 默认值> |
-
-### 2.2 上游 API / 服务
-
-| 服务 | 接口 | 调用时机 | 契约 |
-|---|---|---|---|
-| `<service-name>` | `<method>` | <责任链哪一阶段> | <契约引用> |
-
-### 2.3 配置控制
-
-| 配置源 | key | 用途 | 默认值 | 灰度方式 |
-|---|---|---|---|---|
-| `<配置中心>` | `<config.key>` | <一句话> | `<default>` | <全量 / 白名单 / AB> |
-
-### 2.4 请求入参里的控制字段
-
-| 字段 | 来源 | 含义 | 影响 |
-|---|---|---|---|
-| `<requestField>` | <前端 / 上游服务> | <语义> | <进哪条分支> |
+- Section 2: Inputs and data sources
+- Section 3: Data contracts and model mapping
+- Section 4: Pipeline position
+- Section 5: Output logic
+- Section 6: Exclusion logic
+- Section 7: Blast radius
+- Section 8: Flags and observability
+- Section 9: Test focus
+- Section 10: Why and history
+- Section 11: References and cross-module links
 
 ---
 
-## §3 数据契约 / 模型映射
+## Section 2: Inputs and Data Sources
 
-<!-- 撰写指引：解决"业务概念 ↔ 代码 POJO"的同义词陷阱。 -->
+<!-- Order sources by importance and upstream position. Capture origin, cache, invalidation, and control flags. -->
 
-### 3.1 API 契约
+### 2.1 Underlying Data Sources
 
-- 服务: `<service>` · 接口: `<method>` · 关键 DTO: `<DTO 全路径>`
+| Data source | Key fields | Cached | Cache layer | Invalidation |
+|-------------|------------|--------|-------------|--------------|
+| `<database.table>` | `<column1>` / `<column2>` | yes / no | <local / distributed / none> | <config key and default> |
 
-### 3.2 代码 POJO ↔ 业务概念
+### 2.2 Upstream APIs and Services
 
-| 业务概念 | 代码类（grep 锚点） | 关键字段 |
-|---|---|---|
-| <概念> | `com.example.Entity` | `field1` / `field2` |
+| Service | Interface | Invocation point | Contract |
+|---------|-----------|------------------|----------|
+| `<service-name>` | `<method>` | <pipeline stage> | <contract reference> |
 
-### 3.3 关键枚举 / 常量
+### 2.3 Configuration Controls
 
-| 常量 | 值 | 业务含义 |
-|---|---|---|
-| `<EnumConst.NAME>` | `<value>` | <语义> |
+| Source | Key | Purpose | Default | Rollout |
+|--------|-----|---------|---------|---------|
+| `<configuration source>` | `<config.key>` | <one line> | `<default>` | <global / allowlist / experiment> |
+
+### 2.4 Request Control Fields
+
+| Field | Source | Meaning | Effect |
+|-------|--------|---------|--------|
+| `<requestField>` | <client / upstream service> | <semantics> | <selected branch> |
 
 ---
 
-## §4 流水线位置
+## Section 3: Data Contracts and Model Mapping
 
-<!-- 撰写指引：每个节点给 Class#method 锚点，不带行号。 -->
+<!-- Resolve synonym mismatches between business concepts and code models. -->
 
-### 4.1 加载入口
+### 3.1 API Contract
 
-- **触发点**: `<Class#method>`
-- **阶段**: <责任链 / 切面 / 缓存层>
+- Service: `<service>` | Interface: `<method>` | Key DTO: `<fully.qualified.DTO>`
 
-### 4.2 处理节点（按时序）
+### 3.2 Code Model to Business Concept
 
+| Business concept | Code class (grep anchor) | Key fields |
+|------------------|--------------------------|------------|
+| <concept> | `com.example.Entity` | `field1` / `field2` |
+
+### 3.3 Key Enums and Constants
+
+| Constant | Value | Business meaning |
+|----------|-------|------------------|
+| `<EnumConst.NAME>` | `<value>` | <semantics> |
+
+---
+
+## Section 4: Pipeline Position
+
+<!-- Give every node a stable Class#method anchor. -->
+
+### 4.1 Entry Point
+
+- **Trigger:** `<Class#method>`
+- **Stage:** <chain / interceptor / cache layer>
+
+### 4.2 Processing Nodes in Order
+
+```text
+<upstream load>
+  -> <processing node 1>
+    -> <processing node 2>
+      -> <output node>
 ```
-<上游加载>
-  → <处理节点 1>
-    → <处理节点 2>
-      → <输出节点>
-```
 
-| # | 节点 | grep 锚点 | 作用 |
-|---|---|---|---|
-| 1 | <加载> | `<Class#method>` | <一句话> |
-| 2 | <处理> | `<Class#method>` | <一句话> |
-| 3 | <输出> | `<Class#method>` | <一句话> |
+| # | Node | Grep anchor | Responsibility |
+|---|------|-------------|----------------|
+| 1 | <load> | `<Class#method>` | <one line> |
+| 2 | <process> | `<Class#method>` | <one line> |
+| 3 | <output> | `<Class#method>` | <one line> |
 
-### 4.3 输出节点
+### 4.3 Output Node
 
-- **写入位置**: `<Class#method>` → `<响应字段>`
-- **响应包装层**: <列出装配响应的最后一棒>
+- **Write location:** `<Class#method>` -> `<response field>`
+- **Response assembly:** <final response construction step>
 
 ---
 
-## §5 输出逻辑（正向：为什么会出）
+## Section 5: Output Logic
 
-<!-- 撰写指引：每个子节都要给"真值源"——是配置？字段值？硬编码？ -->
+<!-- Give every rule a source of truth: configuration, field value, or hard-coded behavior. -->
 
-### 5.1 PK / 去重键
+### 5.1 Primary or Deduplication Key
 
-- **去重键组成**: `<field1> + <field2> + ...`
-- **去重策略**: <留第一条 / 留最优 / 合并>
-- **真值源**: `<Class#method>`
+- **Key:** `<field1> + <field2> + ...`
+- **Strategy:** <first wins / highest score wins / merge>
+- **Source of truth:** `<Class#method>`
 
-### 5.2 过滤链（按顺序）
+### 5.2 Ordered Filter Chain
 
-| # | 过滤条件 | 触发逻辑 | 真值源 | 不通过的处理 |
-|---|---|---|---|---|
-| 1 | <条件> | <判断式> | <配置 / 字段> | <丢弃 / 降级> |
+| # | Condition | Trigger | Source of truth | Rejection behavior |
+|---|-----------|---------|-----------------|--------------------|
+| 1 | <condition> | <expression> | <config / field> | <discard / degrade> |
 
-### 5.3 聚合 / 合并
+### 5.3 Aggregation and Merge
 
-- **多条命中策略**: <谁赢 / 按什么排序>
-- **合并字段**: <哪些字段需要 merge，merge 规则>
+- **Multiple-match strategy:** <winner or ordering rule>
+- **Merged fields:** <fields and merge rules>
 
-### 5.4 排序 / Top-N / 兜底
+### 5.4 Sorting, Top-N, and Fallback
 
-- **排序键**: `<field>` ASC / DESC
-- **Top-N 限制**: <N 值 + 配置 key>
-- **兜底路径**: <空集 / 默认值 / 报错>
-
----
-
-## §6 ★ 不输出逻辑（反向：为什么没出）
-
-<!-- 排查频率最高的一节。从"高频被过滤" → "低频静默丢弃" → "开关/灰度关闭"三层组织。 -->
-
-### 6.1 显式过滤（按高频排）
-
-| # | 过滤原因 | 触发条件 | 日志关键字 | 怎么验证 |
-|---|---|---|---|---|
-| 1 | <原因> | <条件> | `<keyword>` | <grep / dashboard> |
-
-### 6.2 静默丢弃 / 边界情况
-
-| # | 场景 | 表现 | 排查方式 |
-|---|---|---|---|
-| 1 | <字段缺失 / 数据空 / 版本不匹配> | <直接消失，无日志> | <dump 中间态 / 加临时日志> |
-
-### 6.3 开关 / AB / 灰度关闭
-
-- **关键开关**: `<配置 key>` → 关闭时整条链路 <跳过 / 降级到 X>
-- **AB 维度**: <维度>，当前阶段 <灰度 % 或全量>
-- **怎么知道被关了**: <metric 名 / 日志关键字>
-
-### 6.4 排查模板
-
-> 没出 → 先看 `<A>`，再看 `<B>`，最后看 `<C>`。
+- **Sort key:** `<field>` ASC / DESC
+- **Top-N:** <value and config key>
+- **Fallback:** <empty set / default / error>
 
 ---
 
-## §7 影响范围 / Blast Radius
+## Section 6: Exclusion Logic
 
-<!-- 改之前要先知道炸到哪。 -->
+<!-- Order from frequent filtering to rare silent drops and disabled rollout paths. -->
 
-### 7.1 写入响应的字段
+### 6.1 Explicit Filters
 
-| 响应字段 | 含义 | 消费方 |
-|---|---|---|
-| `<resp.path.field>` | <含义> | <列表页 / 详情页 / 下游> |
+| # | Reason | Trigger | Log keyword | Verification |
+|---|--------|---------|-------------|--------------|
+| 1 | <reason> | <condition> | `<keyword>` | <grep / dashboard> |
 
-### 7.2 影响的下游系统
+### 6.2 Silent Drops and Boundaries
 
-| 下游 | 消费方式 | 影响面 |
-|---|---|---|
-| <订单 / 风控 / 监控> | <API / 消息 / 共享数据> | <一句话> |
+| # | Scenario | Symptom | Investigation |
+|---|----------|---------|---------------|
+| 1 | <missing field / empty data / version mismatch> | <disappears without a log> | <inspect intermediate state / temporary log> |
 
-### 7.3 被哪些领域模块消费
+### 6.3 Flags, Experiments, and Rollout
 
-- [[domain/xxx]] — <怎么用>
-- [[domain/yyy]] — <怎么用>
+- **Key flag:** `<config key>` -> when disabled, the path <skips / degrades to X>
+- **Experiment dimension:** <dimension and current rollout>
+- **How to detect disablement:** <metric or log keyword>
 
-### 7.4 关键事实（容易被忽略的影响边界）
+### 6.4 Investigation Order
 
-- <事实 1>
-- <事实 2>
-
----
-
-## §8 开关 & 可观测性
-
-<!-- 可选节。不填就保留标题 + 一行占位，不要删。 -->
-
-_暂未沉淀_
+> Missing output -> inspect `<A>`, then `<B>`, then `<C>`.
 
 ---
 
-## §9 测试要点
+## Section 7: Blast Radius
 
-<!-- 可选节。不填就保留标题 + 一行占位，不要删。 -->
+### 7.1 Response Fields Written
 
-_暂未沉淀_
+| Response field | Meaning | Consumer |
+|----------------|---------|----------|
+| `<response.path.field>` | <meaning> | <list page / detail page / downstream> |
+
+### 7.2 Downstream Systems
+
+| Downstream | Consumption | Impact |
+|------------|-------------|--------|
+| <orders / risk / monitoring> | <API / event / shared data> | <one line> |
+
+### 7.3 Domain Consumers
+
+- [[domain/example-a]] - <usage>
+- [[domain/example-b]] - <usage>
+
+### 7.4 Easy-to-Miss Boundaries
+
+- <fact 1>
+- <fact 2>
 
 ---
 
-## §10 WHY / 历史背景
+## Section 8: Flags and Observability
 
-<!-- 可选节。不填就保留标题 + 一行占位，不要删。 -->
-
-_暂未沉淀_
+_Not captured yet_
 
 ---
 
-## §11 引用 / 跨模块链接
+## Section 9: Test Focus
 
-### 11.1 源码锚点
+_Not captured yet_
 
-- `<Class#method>` — <一句话>
-- `<Class#method>` — <一句话>
+---
 
-### 11.2 外部文档
+## Section 10: Why and History
 
-- <文档链接 + 标题>
-- <PR / 故障复盘链接>
+_Not captured yet_
 
-### 11.3 跨模块链接
+---
 
-- [[architecture/<module>]] — <为什么链>
-- [[domain/<module>]] — <为什么链>
+## Section 11: References and Cross-Module Links
+
+### 11.1 Source Anchors
+
+- `<Class#method>` - <one line>
+- `<Class#method>` - <one line>
+
+### 11.2 External Documents
+
+- <document title and URL>
+- <pull request or incident review URL>
+
+### 11.3 Cross-Module Links
+
+- [[architecture/<module>]] - <reason for the link>
+- [[domain/<module>]] - <reason for the link>
