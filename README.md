@@ -103,7 +103,7 @@ Adding a new skill:
 2. Run `./scripts/check.sh`
 3. Notify consumers to run `/plugin update skill@skill` + restart
 
-Install the optional local commit hook with `pre-commit install`. Pull requests and pushes to `main` run the same checks in GitHub Actions.
+Install the optional local commit hook with `pre-commit install`. Pull requests and pushes to `main` run the same checks in GitHub Actions, including the English-only maintained-tree policy.
 
 The checks require Bash, Git, and `jq`. On macOS, install the JSON tool with `brew install jq` if it is not already available.
 

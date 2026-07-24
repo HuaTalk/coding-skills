@@ -45,8 +45,30 @@ check_manifests() {
     fail "marketplace source must be ./"
   fi
 
+  if ! jq -e '(.languages == ["en"]) and (has("description_zh") | not)' \
+      "$ROOT/.claude-plugin/plugin.json" >/dev/null; then
+    fail "plugin manifest must declare English as the only maintained language"
+  fi
+
   if ((ERRORS == errors_before)); then
     pass "plugin manifests"
+  fi
+  return 0
+}
+
+check_english_only() {
+  local matches grep_status
+
+  if matches=$(git -C "$ROOT" grep -nI -P '[\x{4E00}-\x{9FFF}]' -- .); then
+    printf '%s\n' "$matches" >&2
+    fail "maintained files contain CJK text; archive historical Chinese content instead"
+  else
+    grep_status=$?
+    if ((grep_status == 1)); then
+      pass "English-only maintained tree"
+    else
+      fail "unable to scan maintained files for CJK text (git grep exit $grep_status)"
+    fi
   fi
   return 0
 }
@@ -171,6 +193,7 @@ main() {
 
   check_manifests
   check_skills
+  check_english_only
   if ! bash "$ROOT/scripts/test-skill-triggers.sh"; then
     fail "skill trigger phrases"
   fi

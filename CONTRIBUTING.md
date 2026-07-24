@@ -27,7 +27,7 @@ Run the repository gate from the project root:
 ./scripts/check.sh
 ```
 
-It validates manifests, skill metadata, documentation inventory, trigger fixtures, release metadata, credential patterns, and the installer smoke test. Install the optional local hook with `pre-commit install` to run the same gate before commits.
+It validates manifests, skill metadata, the English-only policy, documentation inventory, trigger fixtures, release metadata, credential patterns, and the installer smoke test. Install the optional local hook with `pre-commit install` to run the same gate before commits.
 
 The trigger fixtures in `scripts/test-skill-triggers.sh` are intentionally small representative phrases, not a claim about model recall. Update them when a trigger is intentionally changed.
 
