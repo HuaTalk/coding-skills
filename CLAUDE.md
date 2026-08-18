@@ -31,8 +31,8 @@ Skills are fully self-contained with zero cross-references. Describe scope bound
 ### Stance vs Protocol
 
 Skills declare their behavioral type in `metadata.category`:
-- **Stance** — attitude/behavioral guidelines, no fixed steps (e.g. `explore-legacy`, `unknown-unknowns`, `openspec-explore`)
-- **Protocol** — step-by-step workflow with mandatory execution order (e.g. `domain-context`, `best-effort-delivery`, `skill-simplifier`)
+- **Stance** — attitude/behavioral guidelines, no fixed steps (e.g. `explore-legacy`, `unknown-unknowns`)
+- **Protocol** — step-by-step workflow with mandatory execution order (e.g. `domain-context`, `skill-simplifier`)
 
 ### "Heavy Architecture, Light Details"
 
@@ -61,9 +61,8 @@ English is the only maintained language. Each skill has one canonical `SKILL.md`
 
 ## Skill Sources
 
-1. **Team-maintained** (edit in this repo): `best-effort-delivery`, `domain-context`, `explore-legacy`, `light-explore`, `openspec-explore`, `skill-simplifier`, `unknown-unknowns`, `verification-harness`
-2. **Upstream-adapted**: `brainstorming` (from [obra/superpowers](https://github.com/obra/superpowers)). Adapted from upstream with modifications — see skill frontmatter for details.
-3. **Consumer-installed**: `lark-*`, `meegle`, `planning-with-files`, and other vendor/community skills are installed by users in their own Claude Code environments. Not shipped here.
+1. **Team-maintained** (edit in this repo): `domain-context`, `explore-legacy`, `light-explore`, `skill-simplifier`, `unknown-unknowns`, `verification-harness`
+2. **Consumer-installed**: `lark-*`, `meegle`, `planning-with-files`, and other vendor/community skills are installed by users in their own Claude Code environments. Not shipped here.
 
 ## Plugin Manifests
 

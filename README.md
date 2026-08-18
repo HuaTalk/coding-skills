@@ -29,12 +29,10 @@ Upgrade: `/plugin update skill@skill` + restart.
 ├── .github/
 │   └── workflows/check.yml # CI repository checks
 ├── skills/                 # Skills (auto-discovered at plugin root)
-│   ├── best-effort-delivery/   # Best-effort delivery for ambiguous tasks
-│   ├── brainstorming/          # Needs clarification before building (from obra/superpowers)
 │   ├── domain-context/         # Domain knowledge capture protocol
 │   ├── explore-legacy/         # Legacy code exploration
 │   ├── light-explore/          # Lightweight exploration
-│   ├── openspec-explore/       # OpenSpec free exploration
+│   ├── prefer-pure-function/   # Pure function and immutability style
 │   ├── skill-simplifier/       # Skill review and simplification
 │   ├── unknown-unknowns/       # Blind-spot detection
 │   └── verification-harness/   # Post-implementation adversarial verification
@@ -87,11 +85,9 @@ ln -sf ~/path/to/skill/.mcp.json /path/to/project/.mcp.json
 
 | Scenario | Skill |
 |----------|-------|
-| New feature / major refactor / production impact | `brainstorming` |
 | 1–2 small decisions to clarify | `light-explore` |
 | Unfamiliar legacy code / root-cause investigation | `explore-legacy` |
 | Question already implies a solution, but might be misaligned | `unknown-unknowns` |
-| Ambiguous task, user wants autonomous execution | `best-effort-delivery` |
 | Domain rule capture | `domain-context` |
 | Post-implementation verification (tests + review) | `verification-harness` |
 | Single bug / config change / < 30 lines of clear change | Skip skills, just do it |

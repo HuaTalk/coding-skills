@@ -6,13 +6,12 @@
   "author": {
     "name": "HuaTalk"
   },
-  "repository": "https://github.com/HuaTalk/skills.git",
+  "repository": "https://github.com/HuaTalk/coding-skills.git",
   "keywords": [
     "claude-code",
     "plugin",
     "skills",
     "workflow",
-    "openspec",
     "planning"
   ]
 }
