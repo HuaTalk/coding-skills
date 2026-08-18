@@ -56,26 +56,54 @@ check_manifests() {
   return 0
 }
 
-check_english_only() {
-  local matches grep_status
+# A skill whose SKILL.md contains CJK characters is classified as a Chinese
+# skill. Chinese skills are exempt from the English-maintained checks (CJK
+# scan, metadata, inventory); dispatcher-critical fields are still enforced.
+skill_is_chinese() {
+  local skill_dir=$1
+  local rel="skills/$skill_dir/SKILL.md"
 
-  if matches=$(git -C "$ROOT" grep -nI -P '[\x{4E00}-\x{9FFF}]' -- .); then
+  if ! git -C "$ROOT" ls-files --error-unmatch "$rel" >/dev/null 2>&1; then
+    return 1  # untracked skills are checked strictly
+  fi
+  git -C "$ROOT" grep -qI -P '[\x{4E00}-\x{9FFF}]' -- "$rel" 2>/dev/null
+}
+
+check_english_only() {
+  local matches grep_status=0
+  local exclude=() skill_file skill_dir
+
+  shopt -s nullglob
+  for skill_file in "$ROOT"/skills/*/SKILL.md; do
+    skill_dir=$(basename "$(dirname "$skill_file")")
+    if skill_is_chinese "$skill_dir"; then
+      exclude+=(":(exclude)skills/$skill_dir")
+    fi
+  done
+  shopt -u nullglob
+
+  if (( ${#exclude[@]} > 0 )); then
+    matches=$(git -C "$ROOT" grep -nI -P '[\x{4E00}-\x{9FFF}]' -- . "${exclude[@]}" 2>/dev/null) \
+      || grep_status=$?
+  else
+    matches=$(git -C "$ROOT" grep -nI -P '[\x{4E00}-\x{9FFF}]' -- . 2>/dev/null) \
+      || grep_status=$?
+  fi
+
+  if ((grep_status == 0)); then
     printf '%s\n' "$matches" >&2
     fail "maintained files contain CJK text; archive historical Chinese content instead"
+  elif ((grep_status == 1)); then
+    pass "English-only maintained tree (${#exclude[@]} Chinese skill(s) exempt)"
   else
-    grep_status=$?
-    if ((grep_status == 1)); then
-      pass "English-only maintained tree"
-    else
-      fail "unable to scan maintained files for CJK text (git grep exit $grep_status)"
-    fi
+    fail "unable to scan maintained files for CJK text (git grep exit $grep_status)"
   fi
   return 0
 }
 
 check_skills() {
   local skill_file skill_dir name description author version category skill_status skill_token
-  local skill_count=0
+  local en_count=0 zh_count=0
   local errors_before=$ERRORS
 
   shopt -s nullglob
@@ -91,15 +119,24 @@ check_skills() {
     skill_dir=$(basename "$(dirname "$skill_file")")
     name=$(frontmatter_value "$skill_file" name)
     description=$(frontmatter_value "$skill_file" description)
+
+    # Dispatcher-critical fields apply to every skill regardless of language.
+    [[ $name =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || fail "$skill_dir: invalid or missing name"
+    [[ $name == "$skill_dir" ]] || fail "$skill_dir: name does not match directory"
+    [[ -n $description && $description != '""' ]] || fail "$skill_dir: missing description"
+
+    if skill_is_chinese "$skill_dir"; then
+      zh_count=$((zh_count + 1))
+      continue
+    fi
+
+    en_count=$((en_count + 1))
     author=$(frontmatter_value "$skill_file" author)
     version=$(frontmatter_value "$skill_file" version)
     category=$(frontmatter_value "$skill_file" category)
     skill_status=$(frontmatter_value "$skill_file" status)
     skill_token=$(printf '\x60%s\x60' "$skill_dir")
 
-    [[ $name =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || fail "$skill_dir: invalid or missing name"
-    [[ $name == "$skill_dir" ]] || fail "$skill_dir: name does not match directory"
-    [[ -n $description && $description != '""' ]] || fail "$skill_dir: missing description"
     [[ -n $author ]] || fail "$skill_dir: missing metadata.author"
     local quoted_semver='^"[0-9]+\.[0-9]+\.[0-9]+"$'
     [[ $version =~ $quoted_semver ]] || fail "$skill_dir: version must be a quoted semver"
@@ -107,11 +144,10 @@ check_skills() {
     [[ $skill_status == "stable" || $skill_status == "experimental" ]] || fail "$skill_dir: invalid metadata.status"
     grep -Fq "$skill_dir/" "$ROOT/README.md" || fail "$skill_dir: missing from README inventory"
     grep -Fq "$skill_token" "$ROOT/CLAUDE.md" || fail "$skill_dir: missing from CLAUDE.md inventory"
-    skill_count=$((skill_count + 1))
   done
 
   if ((ERRORS == errors_before)); then
-    pass "$skill_count skill definitions"
+    pass "$en_count English skills checked, $zh_count Chinese skill(s) exempt"
   fi
   return 0
 }
