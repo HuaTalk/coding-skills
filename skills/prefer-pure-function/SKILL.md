@@ -1,6 +1,11 @@
 ---
 name: prefer-pure-function
 description: 编码时优先纯函数与不可变风格，避免原地修改、使用纯函数命名方式、隔离可变性。触发：纯函数、不可变、函数式风格。
+metadata:
+  author: HuaTalk
+  version: "1.0.0"
+  category: methodology
+  status: experimental
 ---
 
 # Prefer Pure Function — 优先纯函数与不可变风格

@@ -32,7 +32,7 @@ Upgrade: `/plugin update skill@skill` + restart.
 │   ├── domain-context/         # Domain knowledge capture protocol
 │   ├── explore-legacy/         # Legacy code exploration
 │   ├── light-explore/          # Lightweight exploration
-│   ├── prefer-pure-function/   # Pure function and immutability style
+│   ├── prefer-pure-function/   # Pure function style (Chinese skill)
 │   ├── skill-simplifier/       # Skill review and simplification
 │   ├── unknown-unknowns/       # Blind-spot detection
 │   └── verification-harness/   # Post-implementation adversarial verification
@@ -53,7 +53,7 @@ Upgrade: `/plugin update skill@skill` + restart.
 
 > Claude Code discovers plugin skills from the root-level `skills/` directory; they cannot live under `.claude/`.
 
-English is the only maintained language. Each skill has one canonical `SKILL.md`; translated variants are not maintained. The last Chinese sources remain available only through the frozen archive documented in [`docs/archive/chinese-snapshot.md`](./docs/archive/chinese-snapshot.md).
+English is the only maintained language; translated variants are not maintained. Chinese-authored skills (e.g. `prefer-pure-function`) are permitted — `scripts/check.sh` classifies each skill by CJK detection and exempts Chinese skills from the English-maintained checks while still validating their dispatcher-critical fields. The last Chinese sources of the pre-English era remain available only through the frozen archive documented in [`docs/archive/chinese-snapshot.md`](./docs/archive/chinese-snapshot.md).
 
 ## Setup Guide
 
@@ -90,6 +90,7 @@ ln -sf ~/path/to/skill/.mcp.json /path/to/project/.mcp.json
 | Question already implies a solution, but might be misaligned | `unknown-unknowns` |
 | Domain rule capture | `domain-context` |
 | Post-implementation verification (tests + review) | `verification-harness` |
+| Prefer pure functions and immutability in new code | `prefer-pure-function` |
 | Single bug / config change / < 30 lines of clear change | Skip skills, just do it |
 
 ## Maintenance

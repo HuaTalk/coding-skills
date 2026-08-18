@@ -57,12 +57,13 @@ metadata:
 
 The `description` field is the dispatcher's sole matching surface. It doubles as the English trigger keyword set.
 
-English is the only maintained language. Each skill has one canonical `SKILL.md`; do not add translated variants such as `SKILL-zh.md`. Historical Chinese sources are frozen in Git history and must not be synchronized with current files.
+English is the only maintained language; do not add translated variants such as `SKILL-zh.md`. Historical Chinese sources are frozen in Git history and must not be synchronized with current files. Chinese-authored skills (e.g. `prefer-pure-function`) are permitted: `scripts/check.sh` classifies each skill by CJK detection and exempts Chinese skills from the English-maintained checks (metadata, inventory, English-only scan) while still enforcing the dispatcher-critical fields (`name`, `description`).
 
 ## Skill Sources
 
 1. **Team-maintained** (edit in this repo): `domain-context`, `explore-legacy`, `light-explore`, `skill-simplifier`, `unknown-unknowns`, `verification-harness`
-2. **Consumer-installed**: `lark-*`, `meegle`, `planning-with-files`, and other vendor/community skills are installed by users in their own Claude Code environments. Not shipped here.
+2. **Chinese-authored**: `prefer-pure-function` — maintained in Chinese; exempt from the English-maintained checks (see Language policy above)
+3. **Consumer-installed**: `lark-*`, `meegle`, `planning-with-files`, and other vendor/community skills are installed by users in their own Claude Code environments. Not shipped here.
 
 ## Plugin Manifests
 
