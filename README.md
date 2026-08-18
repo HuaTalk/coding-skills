@@ -32,6 +32,7 @@ Upgrade: `/plugin update skill@skill` + restart.
 │   ├── domain-context/         # Domain knowledge capture protocol
 │   ├── explore-legacy/         # Legacy code exploration
 │   ├── light-explore/          # Lightweight exploration
+│   ├── prefer-guava/           # Guava usage scenarios (Chinese skill)
 │   ├── prefer-pure-function/   # Pure function style (Chinese skill)
 │   ├── skill-simplifier/       # Skill review and simplification
 │   ├── unknown-unknowns/       # Blind-spot detection
@@ -90,6 +91,7 @@ ln -sf ~/path/to/skill/.mcp.json /path/to/project/.mcp.json
 | Question already implies a solution, but might be misaligned | `unknown-unknowns` |
 | Domain rule capture | `domain-context` |
 | Post-implementation verification (tests + review) | `verification-harness` |
+| Guava-based collections, caching, concurrency, validation | `prefer-guava` |
 | Prefer pure functions and immutability in new code | `prefer-pure-function` |
 | Single bug / config change / < 30 lines of clear change | Skip skills, just do it |
 

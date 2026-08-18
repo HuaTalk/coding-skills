@@ -62,7 +62,7 @@ English is the only maintained language; do not add translated variants such as 
 ## Skill Sources
 
 1. **Team-maintained** (edit in this repo): `domain-context`, `explore-legacy`, `light-explore`, `skill-simplifier`, `unknown-unknowns`, `verification-harness`
-2. **Chinese-authored**: `prefer-pure-function` — maintained in Chinese; exempt from the English-maintained checks (see Language policy above)
+2. **Chinese-authored**: `prefer-guava`, `prefer-pure-function` — maintained in Chinese; exempt from the English-maintained checks (see Language policy above)
 3. **Consumer-installed**: `lark-*`, `meegle`, `planning-with-files`, and other vendor/community skills are installed by users in their own Claude Code environments. Not shipped here.
 
 ## Plugin Manifests
