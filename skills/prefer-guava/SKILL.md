@@ -40,11 +40,6 @@ Java 编码时遇到下列场景，优先用 Guava 的成熟工具，不手写�
 | 判断空串、补齐、重复 | `Strings.isNullOrEmpty` / `padStart` / `padEnd` / `repeat` |
 | 按字符类匹配或裁剪 | `CharMatcher`（`whitespace()`、`isDigit()`、`anyOf("abc")`、`trimFrom`） |
 
-## 4. 本地缓存
-
-- 进程内缓存（条数上限 / 过期 / 弱引用） → `CacheBuilder.maximumSize(N).expireAfterWrite(D)`，`getIfPresent`
-- 缺失时自动加载 → `LoadingCache` + `CacheLoader`，`getUnchecked`
-
 ## 5. 并发与异步
 
 | 场景 | 用 |
